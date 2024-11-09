@@ -8,6 +8,8 @@
 #' associated Excel format, we recommend using [xlr_integer], [xlr_numeric],
 #' or [xlr_percent] types instead.
 #'
+#' You can convert a vector back to its base type with [as_base_r()].
+#'
 #' @param x A vector
 #'  * For `xlr_vector()`: A vector
 #'  * For `is_xlr_vector()`: An object to test
@@ -20,7 +22,7 @@
 #'
 #' @return An S3 vector of class `xlr_vector`
 #'
-#' @seealso [xlr_percent()], [xlr_integer()], [xlr_numeric()]
+#' @seealso [xlr_percent()], [xlr_integer()], [xlr_numeric()], [as_base_r()]
 #'
 #' @example inst/examples/xlr_vector.R
 #'

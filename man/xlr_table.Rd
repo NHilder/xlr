@@ -39,6 +39,8 @@ functions on a \code{xlr_table}, without losing the \code{xlr_table} attributes.
 can check if the \code{dplyr} function is supported by checking the documentation
 of the function. Currently, it is not possible to use \code{group_by} and a \code{xlr_table},
 as this would require the implementation of a new class.
+
+You can convert a table back to a data.frame with base type with \code{\link[=as_base_r]{as_base_r()}}.
 }
 \examples{
 library(xlr)
@@ -69,5 +71,5 @@ x <- x |>
 }
 }
 \seealso{
-\code{\link[=update_theme]{update_theme()}}
+\code{\link[=update_theme]{update_theme()}}, \code{\link[=as_base_r]{as_base_r()}}
 }

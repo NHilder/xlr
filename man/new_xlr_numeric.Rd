@@ -21,7 +21,7 @@ new_xlr_numeric(
 
 \item{dp}{the number of decimal places to print}
 
-\item{scientific}{logical,}
+\item{scientific}{logical. Whether to format the numeric using scientific notation.}
 
 \item{style}{Additional styling options for the vector. See \link{xlr_format} for more details.}
 

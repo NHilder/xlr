@@ -548,7 +548,8 @@ test_that("data_to_worksheet() adds data for an excel data table option",{
            hp = xlr_vector(hp),
            drat = xlr_numeric(drat, dp = 4),
            wt = xlr_percent(wt,dp =2),
-           vs = rep("test",nrow(mtcars))) |>
+           vs = rep("test",nrow(mtcars)),
+           scientific = xlr_numeric(qsec,scientific = TRUE)) |>
     suppressWarnings()
 
   wb <- createWorkbook()

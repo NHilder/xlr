@@ -29,7 +29,8 @@ An S3 vector of class \code{xlr_percent}
 }
 \description{
 This creates a double vector that represent percentages, so that it is
-both printed nicely, and can easily be outputted to excel in the correct format
+both printed nicely, and can easily be outputted to excel in the correct format. You can
+convert a vector back to its base type with \code{\link[=as_base_r]{as_base_r()}}.
 }
 \examples{
 library(xlr)
@@ -65,5 +66,5 @@ df |>
   dplyr::mutate(col_xlr_percent = as_xlr_percent(col_str,2))
 }
 \seealso{
-\code{\link[=xlr_vector]{xlr_vector()}}, \code{\link[=xlr_integer]{xlr_integer()}}, \code{\link[=xlr_numeric]{xlr_numeric()}}
+\code{\link[=xlr_vector]{xlr_vector()}}, \code{\link[=xlr_integer]{xlr_integer()}}, \code{\link[=xlr_numeric]{xlr_numeric()}}, \code{\link[=as_base_r]{as_base_r()}}
 }

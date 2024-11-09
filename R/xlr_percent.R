@@ -3,7 +3,8 @@
 #' `xlr_percent` vector
 #'
 #' This creates a double vector that represent percentages, so that it is
-#' both printed nicely, and can easily be outputted to excel in the correct format
+#' both printed nicely, and can easily be outputted to excel in the correct format. You can
+#' convert a vector back to its base type with [as_base_r()].
 #'
 #' @param x
 #'  * For `xlr_percent()`: A numeric vector
@@ -17,7 +18,7 @@
 #'
 #' @example inst/examples/xlr_percent.R
 #'
-#' @seealso [xlr_vector()], [xlr_integer()], [xlr_numeric()]
+#' @seealso [xlr_vector()], [xlr_integer()], [xlr_numeric()], [as_base_r()]
 #'
 #' @export
 xlr_percent <- function(x = double(),

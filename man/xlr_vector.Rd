@@ -39,6 +39,8 @@ can easily be outputted to excel in the correct format.
 While you can use it with \code{integer}, and \code{double} types and specifying the
 associated Excel format, we recommend using \link{xlr_integer}, \link{xlr_numeric},
 or \link{xlr_percent} types instead.
+
+You can convert a vector back to its base type with \code{\link[=as_base_r]{as_base_r()}}.
 }
 \examples{
 library(xlr)
@@ -63,5 +65,5 @@ iris |>
                                              xlr_format(text_style = "italic")))
 }
 \seealso{
-\code{\link[=xlr_percent]{xlr_percent()}}, \code{\link[=xlr_integer]{xlr_integer()}}, \code{\link[=xlr_numeric]{xlr_numeric()}}
+\code{\link[=xlr_percent]{xlr_percent()}}, \code{\link[=xlr_integer]{xlr_integer()}}, \code{\link[=xlr_numeric]{xlr_numeric()}}, \code{\link[=as_base_r]{as_base_r()}}
 }

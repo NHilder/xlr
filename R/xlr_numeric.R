@@ -5,7 +5,8 @@ methods::setOldClass(c("xlr_numeric","vctrs_vctr"))
 #' `xlr_numeric` vector
 #'
 #' This creates a double vector that represent doubles nicely, so that it is
-#' both printed nicely, and can easily be outputted to excel in the correct format
+#' both printed nicely, and can easily be outputted to excel in the correct format. You can
+#' convert a vector back to its base type with [as_base_r()].
 #'
 #'
 #' @param x
@@ -20,7 +21,7 @@ methods::setOldClass(c("xlr_numeric","vctrs_vctr"))
 #'
 #' @example inst/examples/xlr_numeric.R
 #'
-#' @seealso [xlr_percent()], [xlr_integer()], [xlr_vector()]
+#' @seealso [xlr_percent()], [xlr_integer()], [xlr_vector()], [as_base_r()]
 #'
 #' @export
 xlr_numeric <- function(x = numeric(),

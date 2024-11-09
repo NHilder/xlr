@@ -15,6 +15,8 @@
 #' of the function. Currently, it is not possible to use `group_by` and a `xlr_table`,
 #' as this would require the implementation of a new class.
 #'
+#' You can convert a table back to a data.frame with base type with [as_base_r()].
+#'
 #' @param x a data object
 #'    * for `xlr_table()` : a `data.frame`, or `tibble`. See notes for further details.
 #'    * for `is_xlr_table()` : An object
@@ -28,7 +30,7 @@
 #'
 #' @example inst/examples/xlr_table.R
 #'
-#' @seealso [update_theme()]
+#' @seealso [update_theme()], [as_base_r()]
 xlr_table <- function(x,
                        title = character(),
                        footnote = character()) {
