@@ -50,18 +50,18 @@ test_that("build_qtable() works with the simplest data",{
                   ~ haven::as_factor(.x) |>
                     haven::zap_label()))
   output <-
-    data.frame(`Question Block` = beta_vector(c("Q1_1", "Q1_1", "Q1_1", "Q1_1", "Q1_1", "Q1_2", "Q1_2",
+    data.frame(`Question Block` = xlr_vector(c("Q1_1", "Q1_1", "Q1_1", "Q1_1", "Q1_1", "Q1_2", "Q1_2",
                                   "Q1_2", "Q1_2", "Q1_2", "Q1_3", "Q1_3", "Q1_4", "Q1_4")),
-               value = beta_vector(c("Strongly Disagree", "Disagree",
+               value = xlr_vector(c("Strongly Disagree", "Disagree",
                                      "Neutral", "Agree", "Strongly Agree", "Strongly Disagree", "Disagree",
                                      "Neutral", "Agree", "Strongly Agree", "Strongly Disagree", "Strongly Agree",
                                      "Disagree", "Agree")),
-               N = beta_integer(c(2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
+               N = xlr_integer(c(2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
                                   2L, 2L, 5L, 5L, 5L, 5L)),
-               Percent = beta_percent(c(0.2, 0.2, 0.2, 0.2, 0.2,
+               Percent = xlr_percent(c(0.2, 0.2, 0.2, 0.2, 0.2,
                                         0.2, 0.2, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, 0.5))
     ,check.names = FALSE) |>
-    beta_table()
+    xlr_table()
 
   # should expect them to the same
   expect_equal(build_qtable(df,starts_with("Q1")),output)
@@ -71,21 +71,21 @@ test_that("build_qtable() works for data with column labels",{
 
   df <-create_block_question_df()
   output <-
-    data.frame(`Question Block` = beta_vector(c("Pants are good to wear", "Pants are good to wear",
+    data.frame(`Question Block` = xlr_vector(c("Pants are good to wear", "Pants are good to wear",
                                   "Pants are good to wear", "Pants are good to wear", "Pants are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Shirts are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Shoes are good to wear",
                                   "Shoes are good to wear", "Q1_4", "Q1_4")),
-               value = beta_vector(c("Strongly Disagree", "Disagree",
+               value = xlr_vector(c("Strongly Disagree", "Disagree",
                                    "Neutral", "Agree", "Strongly Agree", "Strongly Disagree", "Disagree",
                                    "Neutral", "Agree", "Strongly Agree", "Strongly Disagree", "Strongly Agree",
                                    "Disagree", "Agree")),
-               N = beta_integer(c(2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
+               N = xlr_integer(c(2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,
                                   2L, 2L, 5L, 5L, 5L, 5L)),
-               Percent = beta_percent(c(0.2, 0.2, 0.2, 0.2, 0.2,
+               Percent = xlr_percent(c(0.2, 0.2, 0.2, 0.2, 0.2,
                                       0.2, 0.2, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, 0.5))
                ,check.names = FALSE) |>
-    beta_table()
+    xlr_table()
 
   # should expect them to the same
   expect_equal(build_qtable(df,starts_with("Q1")),output)
@@ -95,23 +95,23 @@ test_that("build_qtable() works for data with column labels",{
 test_that("build_qtable() works with weights as expected",{
   df <- create_block_question_df()
   output <-
-    data.frame(`Question Block` = beta_vector(c("Pants are good to wear", "Pants are good to wear",
+    data.frame(`Question Block` = xlr_vector(c("Pants are good to wear", "Pants are good to wear",
                                   "Pants are good to wear", "Pants are good to wear", "Pants are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Shirts are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Shoes are good to wear",
                                   "Shoes are good to wear", "Q1_4", "Q1_4")),
-               value = beta_vector(c("Strongly Disagree", "Disagree",
+               value = xlr_vector(c("Strongly Disagree", "Disagree",
                                      "Neutral", "Agree", "Strongly Agree", "Strongly Disagree", "Disagree",
                                      "Neutral", "Agree", "Strongly Agree", "Strongly Disagree", "Strongly Agree",
                                      "Disagree", "Agree")),
-               N = beta_double(c(0.5, 0.6, 0.5, 0.7, 0.9, 0.9,
+               N = xlr_double(c(0.5, 0.6, 0.5, 0.7, 0.9, 0.9,
                                  0.7, 0.5, 0.6, 0.5, 0.9, 2.3, 0.9, 2.3),
                                dp = 1),
-               Percent = beta_percent(c(0.15625, 0.1875, 0.15625,
+               Percent = xlr_percent(c(0.15625, 0.1875, 0.15625,
                                         0.21875, 0.28125, 0.28125, 0.21875, 0.15625, 0.1875, 0.15625,
                                         0.28125, 0.71875, 0.28125, 0.71875))
                ,check.names = FALSE) |>
-    beta_table()
+    xlr_table()
 
   # should expect them to the same
   expect_equal(build_qtable(df,starts_with("Q1"),wt = weight),output)
@@ -124,24 +124,24 @@ test_that("build_qtable() works with integer weights",{
   df <-create_block_question_df() |>
     mutate(weight = as.integer(weight *100))
   output <-
-    data.frame(`Question Block` = beta_vector(c("Pants are good to wear", "Pants are good to wear",
+    data.frame(`Question Block` = xlr_vector(c("Pants are good to wear", "Pants are good to wear",
                                   "Pants are good to wear", "Pants are good to wear", "Pants are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Shirts are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Shoes are good to wear",
                                   "Shoes are good to wear", "Q1_4", "Q1_4")),
-               value = beta_vector(c("Strongly Disagree", "Disagree",
+               value = xlr_vector(c("Strongly Disagree", "Disagree",
                                      "Neutral", "Agree", "Strongly Agree", "Strongly Disagree", "Disagree",
                                      "Neutral", "Agree", "Strongly Agree", "Strongly Disagree", "Strongly Agree",
                                      "Disagree", "Agree")),
-               N = beta_double(c(0.5, 0.6, 0.5, 0.7, 0.9, 0.9,
+               N = xlr_double(c(0.5, 0.6, 0.5, 0.7, 0.9, 0.9,
                                  0.7, 0.5, 0.6, 0.5, 0.9, 2.3, 0.9, 2.3),
                                dp = 1),
-               Percent = beta_percent(c(0.15625, 0.1875, 0.15625,
+               Percent = xlr_percent(c(0.15625, 0.1875, 0.15625,
                                         0.21875, 0.28125, 0.28125, 0.21875, 0.15625, 0.1875, 0.15625,
                                         0.28125, 0.71875, 0.28125, 0.71875))
                ,check.names = FALSE) |>
     mutate(N = N*100) |>
-    beta_table()
+    xlr_table()
 
   # should expect them to the same
   expect_equal(build_qtable(df,starts_with("Q1"),wt = weight),output)
@@ -156,7 +156,7 @@ test_that("build_qtable() works with cuts",{
     data.frame(gender = c("f", "f", "f", "f", "f",
                           "f", "f", "f", "f", "f", "f", "f", "f", "f", "m", "m", "m", "m",
                           "m", "m", "m", "m", "m", "m", "m", "m", "m", "m"),
-               `Question Block` = beta_vector(c("Pants are good to wear", "Pants are good to wear",
+               `Question Block` = xlr_vector(c("Pants are good to wear", "Pants are good to wear",
                                   "Pants are good to wear", "Pants are good to wear", "Pants are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Shirts are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Shoes are good to wear",
@@ -165,21 +165,21 @@ test_that("build_qtable() works with cuts",{
                                   "Pants are good to wear", "Shirts are good to wear", "Shirts are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Shirts are good to wear",
                                   "Shoes are good to wear", "Shoes are good to wear", "Q1_4", "Q1_4")),
-               value = beta_vector(c("Strongly Disagree", "Disagree",
+               value = xlr_vector(c("Strongly Disagree", "Disagree",
                                      "Neutral", "Agree", "Strongly Agree", "Strongly Disagree", "Disagree",
                                      "Neutral", "Agree", "Strongly Agree", "Strongly Disagree", "Strongly Agree",
                                      "Disagree", "Agree", "Strongly Disagree", "Disagree", "Neutral",
                                      "Agree", "Strongly Agree", "Strongly Disagree", "Disagree", "Neutral",
                                      "Agree", "Strongly Agree", "Strongly Disagree", "Strongly Agree",
                                      "Disagree", "Agree")),
-               N = beta_integer(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
+               N = xlr_integer(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
                                   1L, 1L, 2L, 3L, 2L, 3L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
                                   3L, 2L, 3L, 2L)),
-               Percent = beta_percent(c(0.2, 0.2, 0.2, 0.2, 0.2,
+               Percent = xlr_percent(c(0.2, 0.2, 0.2, 0.2, 0.2,
                                         0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.6, 0.4, 0.6, 0.2, 0.2, 0.2, 0.2,
                                         0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.6, 0.4, 0.6, 0.4))
                ,check.names = FALSE) |>
-    beta_table()
+    xlr_table()
 
   # should expect them to the same
   expect_equal(build_qtable(df,starts_with("Q1"),gender),output)
@@ -199,27 +199,27 @@ test_that("build_qtable() works with multiple cuts",{
                gender = c("f", "f", "f", "f", "m",
                           "m", "m", "m", "m", "m", "f", "f", "f", "f", "f", "f", "m", "m",
                           "m", "m"),
-               `Question Block` = beta_vector(c("Pants are good to wear", "Pants are good to wear",
+               `Question Block` = xlr_vector(c("Pants are good to wear", "Pants are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Pants are good to wear",
                                   "Pants are good to wear", "Pants are good to wear", "Shirts are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Pants are good to wear",
                                   "Pants are good to wear", "Pants are good to wear", "Shirts are good to wear",
                                   "Shirts are good to wear", "Shirts are good to wear", "Pants are good to wear",
                                   "Pants are good to wear", "Shirts are good to wear", "Shirts are good to wear")),
-               value = beta_vector(c("Disagree", "Agree", "Disagree",
+               value = xlr_vector(c("Disagree", "Agree", "Disagree",
                                      "Agree", "Strongly Disagree", "Neutral", "Strongly Agree", "Strongly Disagree",
                                      "Neutral", "Strongly Agree", "Strongly Disagree", "Neutral",
                                      "Strongly Agree", "Strongly Disagree", "Neutral", "Strongly Agree",
                                      "Disagree", "Agree", "Disagree", "Agree")),
-               N = beta_integer(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
+               N = xlr_integer(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
                                   1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L)),
-               Percent = beta_percent(c(0.5, 0.5, 0.5, 0.5, 0.333333333333333,
+               Percent = xlr_percent(c(0.5, 0.5, 0.5, 0.5, 0.333333333333333,
                                    0.333333333333333, 0.333333333333333, 0.333333333333333, 0.333333333333333,
                                    0.333333333333333, 0.333333333333333, 0.333333333333333, 0.333333333333333,
                                    0.333333333333333, 0.333333333333333, 0.333333333333333, 0.5,
                                    0.5, 0.5, 0.5))
                ,check.names = FALSE) |>
-    beta_table()
+    xlr_table()
 
   # should expect them to the same
   expect_equal(build_qtable(df,starts_with("Q1"),c(group,gender)),output)

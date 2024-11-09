@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(BETAexcel)
+library(xlr)
 
-test_check("BETAexcel")
+test_check("xlr")

@@ -14,10 +14,10 @@ test_that("build_multiple_response_table() works for the simplest case", {
 
   expected_output <-
     data.frame(enjoy_fruit = c("Apple","Banana","Pear"),
-               N = beta_integer(c(3,4,5)),
-               N_group = beta_integer(rep(6,3)),
-               Percent = beta_percent(c(.5,4/6,5/6))) |>
-    beta_table()
+               N = xlr_integer(c(3,4,5)),
+               N_group = xlr_integer(rep(6,3)),
+               Percent = xlr_percent(c(.5,4/6,5/6))) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -35,10 +35,10 @@ test_that("build_multiple_response_table() works with question labels", {
 
   expected_output <-
     data.frame(enjoy_fruit = c("Apple","Banana","Pear"),
-               N = beta_integer(c(3,4,5)),
-               N_group = beta_integer(rep(6,3)),
-               Percent = beta_percent(c(.5,4/6,5/6))) |>
-    beta_table()
+               N = xlr_integer(c(3,4,5)),
+               N_group = xlr_integer(rep(6,3)),
+               Percent = xlr_percent(c(.5,4/6,5/6))) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -58,10 +58,10 @@ test_that("build_multiple_response_table() works when we add one grouping variab
     data.frame(
       col_1 = c("a","a","a","b","b","c","c","c"),
       enjoy_fruit = c("Apple","Banana","Pear","Banana","Pear","Apple","Banana","Pear"),
-               N = beta_integer(c(2L, 1L, 2L, 2L, 2L, 1L, 1L, 1L)),
-               N_group = beta_integer(c(2,2,2,2,2,2,2,2))) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_group)) |>
-    beta_table()
+               N = xlr_integer(c(2L, 1L, 2L, 2L, 2L, 1L, 1L, 1L)),
+               N_group = xlr_integer(c(2,2,2,2,2,2,2,2))) |>
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
+    xlr_table()
 
   expect_equal(func_output,expected_output)
 
@@ -82,10 +82,10 @@ test_that("build_multiple_response_table() works when we add two grouping variab
       col_1 = c("a","a","a","b","b","b","b","c","c","c"),
       col_2 = c(rep("d",5),rep("e",5)),
       enjoy_fruit = c("Apple","Banana","Pear","Banana","Pear","Banana","Pear","Apple","Banana","Pear"),
-      N = beta_integer(c(2L, 1L, 2L, 1L, 1L, 1L, 1L, 1L, 1L, 1L)),
-      N_group = beta_integer(c(2,2,2,1,1,1,1,2,2,2)))  |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_group)) |>
-    beta_table()
+      N = xlr_integer(c(2L, 1L, 2L, 1L, 1L, 1L, 1L, 1L, 1L, 1L)),
+      N_group = xlr_integer(c(2,2,2,1,1,1,1,2,2,2)))  |>
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
+    xlr_table()
 
   expect_equal(func_output,expected_output)
 
@@ -107,11 +107,11 @@ test_that("build_multiple_response_table() works when we add two multiple respon
                       "Banana", "Banana", "Banana", "Pear", "Pear", "Pear"),
       enjoy_veg = c("Carrot", "Potato", "Tomato",
                     "Carrot", "Potato", "Tomato", "Carrot", "Potato", "Tomato"),
-      N = beta_integer(c(2L, 2L, 2L, 3L, 4L, 3L, 4L, 4L,3L)),
-      N_enjoy_fruit = beta_integer(c(3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L))
+      N = xlr_integer(c(2L, 2L, 2L, 3L, 4L, 3L, 4L, 4L,3L)),
+      N_enjoy_fruit = xlr_integer(c(3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L))
       ) |>
-      mutate(Percent = beta_percent(vec_cast(N,double())/N_enjoy_fruit)) |>
-    beta_table()
+      mutate(Percent = xlr_percent(vec_cast(N,double())/N_enjoy_fruit)) |>
+    xlr_table()
 
   expect_equal(func_output,expected_output)
 })
@@ -134,11 +134,11 @@ test_that("build_multiple_response_table() works when we add two multiple respon
       enjoy_fruit = c("Apple", "Banana",
                       "Pear", "Apple", "Banana", "Pear", "Apple", "Banana", "Pear"),
 
-      N = beta_integer(c(2L, 3L, 4L, 2L, 4L, 4L, 2L, 3L, 3L)),
-      N_enjoy_veg = beta_integer(c(6L, 6L, 6L, 6L, 6L, 6L, 5L, 5L, 5L))
+      N = xlr_integer(c(2L, 3L, 4L, 2L, 4L, 4L, 2L, 3L, 3L)),
+      N_enjoy_veg = xlr_integer(c(6L, 6L, 6L, 6L, 6L, 6L, 5L, 5L, 5L))
     ) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_enjoy_veg)) |>
-    beta_table()
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_enjoy_veg)) |>
+    xlr_table()
 
   expect_equal(func_output,expected_output)
 })
@@ -168,14 +168,14 @@ test_that("build_multiple_response_table() works when we add two multiple respon
                 "Potato", "Tomato", "Carrot", "Potato", "Tomato", "Carrot", "Potato",
                 "Tomato", "Carrot", "Potato", "Tomato", "Carrot", "Potato", "Tomato",
                 "Carrot", "Potato", "Tomato", "Carrot", "Potato", "Tomato"),
-      N = beta_integer(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
+      N = xlr_integer(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
                          2L, 2L, 1L, 2L, 2L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L)),
-      N_group = beta_integer(c(2L, 2L, 2L, 1L, 1L, 2L,
+      N_group = xlr_integer(c(2L, 2L, 2L, 1L, 1L, 2L,
                              2L, 2L, 2L, 2L, 2L, 2L, 2L, 2L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
                              1L)),
-      Percent = beta_percent(c(0.5, 0.5, 0.5, 1, 1, 0.5,
+      Percent = xlr_percent(c(0.5, 0.5, 0.5, 1, 1, 0.5,
                           0.5, 0.5, 1, 1, 0.5, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1))) |>
-    beta_table()
+    xlr_table()
 
   expect_equal(func_output,expected_output)
 })
@@ -311,10 +311,10 @@ test_that("build_multiple_response_table() works for a simple NA case", {
 
   expected_output <-
     data.frame(enjoy_fruit = c("Apple","Banana","Pear",NA),
-               N = beta_integer(c(3,4,5,1)),
-               N_group = beta_integer(rep(7,4))) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_group)) |>
-    beta_table()
+               N = xlr_integer(c(3,4,5,1)),
+               N_group = xlr_integer(rep(7,4))) |>
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -335,10 +335,10 @@ test_that("build_multiple_response_table() works for NA case and a column group"
     data.frame(
       col_1 = c("a","a","a","b","b","c","c","c","c"),
       enjoy_fruit = c("Apple","Banana","Pear","Banana","Pear","Apple","Banana","Pear",NA),
-      N = beta_integer(c(2L, 1L, 2L, 2L, 2L, 1L, 1L, 1L,1L)),
-      N_group = beta_integer(c(2,2,2,2,2,3,3,3,3))) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_group)) |>
-    beta_table()
+      N = xlr_integer(c(2L, 1L, 2L, 2L, 2L, 1L, 1L, 1L,1L)),
+      N_group = xlr_integer(c(2,2,2,2,2,3,3,3,3))) |>
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -364,12 +364,12 @@ test_that("build_multiple_response_table() works for NA for a group and multiple
       enjoy_fruit = c("Apple", "Pear", "Banana",
                       "Pear", "Apple", "Banana", "Pear", NA,
                       "Apple", "Banana", "Pear"),
-      N = beta_integer(c(1L, 1L, 2L, 2L, 1L, 1L, 1L, 1L,
+      N = xlr_integer(c(1L, 1L, 2L, 2L, 1L, 1L, 1L, 1L,
                          1L, 1L, 1L)),
-      N_group = beta_integer(c(1L, 1L, 2L, 2L, 3L, 3L,
+      N_group = xlr_integer(c(1L, 1L, 2L, 2L, 3L, 3L,
                                3L, 3L, 1L, 1L, 1L))) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_group)) |>
-    beta_table()
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -393,11 +393,11 @@ test_that("build_multiple_response_table() works for NA multiple response, only 
       enjoy_veg = c("Carrot", "Potato", "Tomato",
                     "Carrot", "Potato", "Tomato", "Carrot", "Potato", "Tomato",
                     "Carrot", "Potato", "Tomato"),
-      N = beta_integer(c(2L, 2L, 2L, 3L, 4L, 3L, 4L, 4L,3L,1,1,1)),
-      N_enjoy_fruit = beta_integer(c(3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L,1,1,1))
+      N = xlr_integer(c(2L, 2L, 2L, 3L, 4L, 3L, 4L, 4L,3L,1,1,1)),
+      N_enjoy_fruit = xlr_integer(c(3L, 3L, 3L, 4L, 4L, 4L, 5L, 5L, 5L,1,1,1))
     ) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_enjoy_fruit)) |>
-    beta_table()
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_enjoy_fruit)) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -421,13 +421,13 @@ test_that("build_multiple_response_table() works for NA multiple response,
         enjoy_fruit = c("Apple", "Banana",
                       "Pear", NA, "Apple", "Banana", "Pear", NA, "Apple", "Banana",
                       "Pear", NA),
-        N = beta_integer(c(2L, 3L, 4L, 1L, 2L, 4L, 4L, 1L,
+        N = xlr_integer(c(2L, 3L, 4L, 1L, 2L, 4L, 4L, 1L,
                            2L, 3L, 3L, 1L)),
-        N_enjoy_veg = beta_integer(c(6L, 6L, 6L, 6L, 6L,
+        N_enjoy_veg = xlr_integer(c(6L, 6L, 6L, 6L, 6L,
                                      6L, 6L, 6L, 5L, 5L, 5L, 5L))
       ) |>
-      mutate(Percent = beta_percent(vec_cast(N,double())/N_enjoy_veg)) |>
-      beta_table()
+      mutate(Percent = xlr_percent(vec_cast(N,double())/N_enjoy_veg)) |>
+      xlr_table()
 
     expect_equal(func_output, expected_output)
 })
@@ -461,15 +461,15 @@ test_that("build_multiple_response_table() works for NA multiple response and a 
                     "Pear", "Banana", "Pear", "Banana", "Pear", "Apple", "Banana",
                     "Pear", NA, "Apple", "Banana", "Pear", NA, "Apple", "Banana",
                     "Pear", NA, "Apple", "Banana", "Pear", "Apple", "Banana", "Pear"),
-      N = beta_integer(c(1L, 1L, 2L, 2L, 2L, 2L, 1L, 1L,
+      N = xlr_integer(c(1L, 1L, 2L, 2L, 2L, 2L, 1L, 1L,
                       1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,
                       1L, 1L)),
-      N_group = beta_integer(c(1L, 1L, 2L, 2L, 2L, 2L,
+      N_group = xlr_integer(c(1L, 1L, 2L, 2L, 2L, 2L,
                             1L, 1L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 1L, 1L,
                             1L, 1L, 1L, 1L))
     ) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_group)) |>
-    beta_table()
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -489,11 +489,11 @@ test_that("build_mtable works with weights in the simplest case",{
   expected_output <-
     data.frame(
       enjoy_fruit = c("Apple", "Banana", "Pear"),
-      N = beta_double(c(0.7, 0.7, 0.9), dp = 1),
-      N_group = beta_double(c(1.2, 1.2, 1.2), dp = 1)
+      N = xlr_double(c(0.7, 0.7, 0.9), dp = 1),
+      N_group = xlr_double(c(1.2, 1.2, 1.2), dp = 1)
       ) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_group)) |>
-    beta_table()
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -512,11 +512,11 @@ test_that("build_mtable works with weights in the simplest case and NA",{
   expected_output <-
     data.frame(
       enjoy_fruit = c("Apple", "Banana", "Pear", NA),
-      N = beta_double(c(0.7, 0.7, 0.9, 0.4), dp = 1),
-      N_group = beta_double(c(1.6, 1.6, 1.6, 1.6), dp = 1)
+      N = xlr_double(c(0.7, 0.7, 0.9, 0.4), dp = 1),
+      N_group = xlr_double(c(1.6, 1.6, 1.6, 1.6), dp = 1)
     ) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_group)) |>
-    beta_table()
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -540,13 +540,13 @@ test_that("build_mtable works with weights, one multiple response col,
                           "c", "c"),
       enjoy_fruit = c("Apple", "Banana",
                     "Pear", "Banana", "Pear", "Apple", "Banana", "Pear"),
-      N = beta_double(c(0.4, 0.2, 0.4, 0.2, 0.2, 0.3,
+      N = xlr_double(c(0.4, 0.2, 0.4, 0.2, 0.2, 0.3,
                         0.3, 0.3), dp = 1),
-      N_group = beta_double(c(0.4, 0.4, 0.4, 0.2, 0.2,
+      N_group = xlr_double(c(0.4, 0.4, 0.4, 0.2, 0.2,
                               0.6, 0.6, 0.6), dp = 1)
     ) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_group)) |>
-    beta_table()
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -567,13 +567,13 @@ test_that("build_mtable works with weights, two multiple response col",{
                       "Banana", "Banana", "Banana", "Pear", "Pear", "Pear"),
       enjoy_veg = c("Carrot", "Potato", "Tomato",
                     "Carrot", "Potato", "Tomato", "Carrot", "Potato", "Tomato"),
-      N = beta_double(c(0.5, 0.5, 0.5, 0.5, 0.7, 0.6,
+      N = xlr_double(c(0.5, 0.5, 0.5, 0.5, 0.7, 0.6,
                         0.7, 0.7, 0.6), dp = 1),
-      N_enjoy_fruit = beta_double(c(0.7, 0.7, 0.7, 0.7,
+      N_enjoy_fruit = xlr_double(c(0.7, 0.7, 0.7, 0.7,
                               0.7, 0.7, 0.9, 0.9, 0.9), dp = 1)
     ) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_enjoy_fruit)) |>
-    beta_table()
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_enjoy_fruit)) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })
@@ -604,15 +604,15 @@ test_that("build_mtable works with weights, two multiple response col,
                     "Potato", "Tomato", "Carrot", "Potato", "Tomato", "Carrot", "Potato",
                     "Tomato", "Carrot", "Potato", "Tomato", "Carrot", "Potato", "Tomato",
                     "Carrot", "Potato", "Tomato", "Carrot", "Potato", "Tomato"),
-      N = beta_double(c(0.2, 0.2, 0.2, 0.2, 0.2, 0.2,
+      N = xlr_double(c(0.2, 0.2, 0.2, 0.2, 0.2, 0.2,
                         0.2, 0.2, 0.2, 0.2, 0.1, 0.2, 0.2, 0.1, 0.3, 0.3, 0.3, 0.3, 0.3,
                         0.3, 0.3, 0.3, 0.3), dp = 1),
-      N_group = beta_double(c(0.4, 0.4, 0.4, 0.2, 0.2,
+      N_group = xlr_double(c(0.4, 0.4, 0.4, 0.2, 0.2,
                               0.4, 0.4, 0.4, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.3,
                               0.3, 0.3, 0.3, 0.3, 0.3), dp = 1)
     ) |>
-    mutate(Percent = beta_percent(vec_cast(N,double())/N_group)) |>
-    beta_table()
+    mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
+    xlr_table()
 
   expect_equal(func_output, expected_output)
 })

@@ -1,4 +1,4 @@
-library(BETAexcel)
+library(xlr)
 
 # You can use this function to calculate the number count and percentage
 # of a categorical variable

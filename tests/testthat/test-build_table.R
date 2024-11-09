@@ -15,9 +15,9 @@ test_that("build_table works on the most simple case", {
   df <-create_block_question_df()
 
   output <- data.frame(gender = c("f","m"),
-                       N = beta_integer(c(5,5)),
-                       Percent = beta_percent(c(.5,.5))) |>
-    beta_table()
+                       N = xlr_integer(c(5,5)),
+                       Percent = xlr_percent(c(.5,.5))) |>
+    xlr_table()
 
   expect_equal(build_table(df,gender),
                output)
@@ -30,9 +30,9 @@ test_that("build_table works when using a tidyselect statement to select cols", 
                        gender = c("f","m","f","m"),
                        gender2 = c("female","male","female","male"),
                        gender3 = c("female","male","female","male"),
-                       N = beta_integer(c(2,3,3,2)),
-                       Percent = beta_percent(c(1,1,1,1))) |>
-    beta_table()
+                       N = xlr_integer(c(2,3,3,2)),
+                       Percent = xlr_percent(c(1,1,1,1))) |>
+    xlr_table()
 
   expect_equal(build_table(df,cols = group:gender3),
                output)
@@ -43,10 +43,10 @@ test_that("build_table works with weights as expected", {
   df <-create_block_question_df()
 
   output <- data.frame(gender = c("f","m"),
-                       N = beta_double(c(1.6,1.6),
+                       N = xlr_double(c(1.6,1.6),
                                        1),
-                       Percent = beta_percent(c(.5,.5))) |>
-    beta_table()
+                       Percent = xlr_percent(c(.5,.5))) |>
+    xlr_table()
 
   expect_equal(build_table(df,gender,wt = weight),
                output)
@@ -58,10 +58,10 @@ test_that("build_table works with integer weights as expected", {
     mutate(weight = as.integer(weight * 100))
 
   output <- data.frame(gender = c("f","m"),
-                       N = beta_double(c(160,160),
+                       N = xlr_double(c(160,160),
                                        1),
-                       Percent = beta_percent(c(.5,.5))) |>
-    beta_table()
+                       Percent = xlr_percent(c(.5,.5))) |>
+    xlr_table()
 
   expect_equal(build_table(df,gender,wt = weight),
                output)

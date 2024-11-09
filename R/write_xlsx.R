@@ -1,13 +1,13 @@
 
-#' Write a `beta_table`, `data.frame`, or `tibble` to an .xlsx (Excel) file
+#' Write a `xlr_table`, `data.frame`, or `tibble` to an .xlsx (Excel) file
 #'
-#' This function writes `beta_table`, `data.frame`, or `tibble` to an .xlsx
+#' This function writes `xlr_table`, `data.frame`, or `tibble` to an .xlsx
 #' (Excel file). Like \link[openxlsx]{write.xlsx} you can also write a `list` of
-#' `beta_table`'s, `data.frame`'s, and `tibbles`'s to the one file.
-#' The main use of this function is that it uses the formatting in a `beta_table`
-#' when it writes to the Excel sheet. See [beta_table] for more information.
+#' `xlr_table`'s, `data.frame`'s, and `tibbles`'s to the one file.
+#' The main use of this function is that it uses the formatting in a `xlr_table`
+#' when it writes to the Excel sheet. See [xlr_table] for more information.
 #'
-#' @param x a single or `list` of types `beta_table`, `data.frame`, or `tibble`.
+#' @param x a single or `list` of types `xlr_table`, `data.frame`, or `tibble`.
 #' @param file character. A valid file path.
 #' @param sheet_name a sheet name (optional). Only valid for when you pass a single
 #' object to `x`.
@@ -39,7 +39,7 @@ write_xlsx <- function(x,
                         excel_data_table = TRUE){
 
   # Check all the types for parts that are not passed to
-  # beta_to_workbook
+  # xlr_to_workbook
   type_abort(file, is_scalar_character, "character", call = caller_env())
   type_abort(overwrite,
              is_true_or_false,
@@ -85,7 +85,7 @@ write_xlsx <- function(x,
       cli_abort("Cannot write file, {.file {file}} already exists!")
     }
   }
-  wb <- beta_to_workbook(x,
+  wb <- xlr_to_workbook(x,
                         sheet_name = sheet_name,
                         old_wb = wb,
                         overwrite_sheet = overwrite_sheets,

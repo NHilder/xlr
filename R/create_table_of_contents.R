@@ -18,7 +18,7 @@
 #' This function uses the sheet names to create the table of contents. For the
 #' titles it pulls the text that is the position A1 in each of the sheets. It
 #' chooses this as this is the default location of titles when you write a
-#' [beta_table] with [write_xlsx].
+#' [xlr_table] with [write_xlsx].
 #'
 #'
 #' @example inst/examples/create_table_of_contents.R
@@ -88,7 +88,7 @@ create_table_of_contents_workbook <- function(wb,
   if (length(sheet_names) == 0){
     cli_abort(c("!" = "Your workbook does not contain any sheets! Nothing to make a table of contents for.",
                 "i" = "Add data to your workbook and then call create_table_of_contents().",
-                "i" = "If you are exporting data from R, consider using {.fun BETAexcel::write_xlsx} instead."),
+                "i" = "If you are exporting data from R, consider using {.fun xlr::write_xlsx} instead."),
               call = call)
   }
   # first lets add the table of contents title

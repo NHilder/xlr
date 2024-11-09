@@ -18,8 +18,8 @@
 #' @param footnote optional parameter to pass a custom footnote to the question,
 #' this parameter overwrites `use_questions`.
 #'
-#' @return a `beta_table` object. Use [write_xlsx] to write to an excel file.
-#' See [beta_table] for more information.
+#' @return a `xlr_table` object. Use [write_xlsx] to write to an excel file.
+#' See [xlr_table] for more information.
 #'
 #' @details
 #' A multiple response response is a series of columns with a single unique
@@ -38,7 +38,7 @@
 #' your data is long, you will need to pivot the data before hand, we recommend
 #' using \link[tidyr]{pivot_wider}.
 #'
-#' By default this function converts \link[haven]{labelled} to a [beta_vector]
+#' By default this function converts \link[haven]{labelled} to a [xlr_vector]
 #' by default (and underlying it is a `character()` type).
 #'
 #' This function and its family ([build_table], [build_qtable]) is designed to
@@ -202,7 +202,7 @@ build_mtable <- function(
     output <-
       output |>
       # Add proportion to end
-      mutate(Percent = beta_percent(N/N_group),
+      mutate(Percent = xlr_percent(N/N_group),
              # add code to convert the NA string to an NA
              "{sym_mcol}" := ifelse({{ sym_mcol }} == "NA",NA,vec_cast({{ sym_mcol }}, character()))
              ) |>
@@ -211,18 +211,18 @@ build_mtable <- function(
     # now tidy up the table
     final_table <-
       output |>
-      beta_table(table_title,
+      xlr_table(table_title,
                  footnote)
 
     # Now we apply some formatting depending if wts are applied, if the are
     # we can gaurentee N is an integer, if not we treat it as a double to 1 dp
     final_table <-
       if (quo_is_null(wt_quo))
-        mutate(final_table, N = beta_integer(N))
+        mutate(final_table, N = xlr_integer(N))
     else
       mutate(final_table,
-             N = beta_double(N, dp = 1),
-             N_group = beta_double(N_group, dp = 1))
+             N = xlr_double(N, dp = 1),
+             N_group = xlr_double(N_group, dp = 1))
   } else{
 
     mcol_1 <- mcols[1]
@@ -304,7 +304,7 @@ build_mtable <- function(
     output <-
       output |>
       # Add proportion to end
-      mutate(Percent = beta_percent(N / {{group_col_name_quo}}),
+      mutate(Percent = xlr_percent(N / {{group_col_name_quo}}),
              # add code to convert the NA string to an NA
              "{mcol_1}" := ifelse({{ sym_mcol_1 }} == "NA",NA,vec_cast({{ sym_mcol_1 }}, character())),
              "{mcol_2}" := ifelse({{ sym_mcol_2 }} == "NA",NA,vec_cast({{ sym_mcol_2 }}, character())),
@@ -314,18 +314,18 @@ build_mtable <- function(
     # now tidy up the table
     final_table <-
       output |>
-      beta_table(table_title,
+      xlr_table(table_title,
                  footnote)
 
     # Now we apply some formatting depending if wts are applied, if the are
     # we can gaurentee N is an integer, if not we treat it as a double to 1 dp
     final_table <-
       if (quo_is_null(wt_quo))
-        mutate(final_table, N = beta_integer(N))
+        mutate(final_table, N = xlr_integer(N))
       else
         mutate(final_table,
-               N = beta_double(N, dp = 1),
-               "{group_col_name_quo}" := beta_double({{ group_col_name_quo }},dp = 1))
+               N = xlr_double(N, dp = 1),
+               "{group_col_name_quo}" := xlr_double({{ group_col_name_quo }},dp = 1))
   }
   final_table
 }

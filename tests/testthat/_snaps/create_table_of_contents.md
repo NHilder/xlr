@@ -51,5 +51,5 @@
       Error in `create_table_of_contents()`:
       ! Your workbook does not contain any sheets! Nothing to make a table of contents for.
       i Add data to your workbook and then call create_table_of_contents().
-      i If you are exporting data from R, consider using `BETAexcel::write_xlsx()` instead.
+      i If you are exporting data from R, consider using `xlr::write_xlsx()` instead.
 

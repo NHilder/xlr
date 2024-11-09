@@ -2,7 +2,7 @@
 
 #' Clothes opinions data
 #'
-#' This is a fake data set used to show how to work with the BETAexcel package.
+#' This is a fake data set used to show how to work with the xlr package.
 #'
 #' @format ## `clothes_opinions`
 #' A data frame with 1000 rows and 20 variables.

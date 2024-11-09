@@ -37,10 +37,10 @@ the table of contents. It guesses what the information is, see details below.
 This function uses the sheet names to create the table of contents. For the
 titles it pulls the text that is the position A1 in each of the sheets. It
 chooses this as this is the default location of titles when you write a
-\link{beta_table} with \link{write_xlsx}.
+\link{xlr_table} with \link{write_xlsx}.
 }
 \examples{
-library(BETAexcel)
+library(xlr)
 
 table_list <- list("Sheet name 1" = mtcars,
                    "Sheet name 2" = mtcars)
@@ -49,7 +49,7 @@ output_file <- "example_file.xlsx"
 
 \dontrun{
 # using write xlsx we create an excel document
-# You could use BETAexcel::write_xlsx to create a table of
+# You could use xlr::write_xlsx to create a table of
 # contents automatically.
 write.xlsx(table_list,
            output_file)

@@ -5,7 +5,7 @@ Authors@R:
     person(given = "Nicholas",
            family = "Hilderson",
            role = c("aut", "cre"),
-           email = "nicholas.hilderson@pmc.gov.au"
+           email = "nicholas.hilderson@gmail.com"
            )
 Description: What the package does (one paragraph).
 License: GPL (>= 3)
@@ -13,25 +13,28 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Collate:
-  beta_table.R
-  beta_to_workbook.R
+  xlr_table.R
+  xlr_to_workbook.R
   build_multiple_response_table.R
   build_table.R
   write_xlsx.R
-  beta_double.R
-  beta_integer.R
-  beta_vector.R
-  beta_percent.R
-  beta_format.R
+  xlr_double.R
+  xlr_integer.R
+  xlr_vector.R
+  xlr_percent.R
+  xlr_format.R
   openxlsx_utils.R
-  beta_excel_doc.R
+  xlr_doc.R
   error_utils.R
   create_table_of_contents.R
   build_question_block_table.R
   table_utils.R
   data.R
 Suggests: 
-    testthat (>= 3.0.0)
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    data.table
 Config/testthat/edition: 3
 Imports:
   rlang,
@@ -45,3 +48,7 @@ Imports:
   pillar,
   tidyr,
   tidyselect
+Depends: 
+    R (>= 2.10)
+LazyData: true
+VignetteBuilder: knitr

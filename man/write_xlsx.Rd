@@ -2,7 +2,7 @@
 % Please edit documentation in R/write_xlsx.R
 \name{write_xlsx}
 \alias{write_xlsx}
-\title{Write a \code{beta_table}, \code{data.frame}, or \code{tibble} to an .xlsx (Excel) file}
+\title{Write a \code{xlr_table}, \code{data.frame}, or \code{tibble} to an .xlsx (Excel) file}
 \usage{
 write_xlsx(
   x,
@@ -17,7 +17,7 @@ write_xlsx(
 )
 }
 \arguments{
-\item{x}{a single or \code{list} of types \code{beta_table}, \code{data.frame}, or \code{tibble}.}
+\item{x}{a single or \code{list} of types \code{xlr_table}, \code{data.frame}, or \code{tibble}.}
 
 \item{file}{character. A valid file path.}
 
@@ -42,14 +42,14 @@ file.}
 in the worksheet. These are more accessible than data in the sheet.}
 }
 \description{
-This function writes \code{beta_table}, \code{data.frame}, or \code{tibble} to an .xlsx
+This function writes \code{xlr_table}, \code{data.frame}, or \code{tibble} to an .xlsx
 (Excel file). Like \link[openxlsx]{write.xlsx} you can also write a \code{list} of
-\code{beta_table}'s, \code{data.frame}'s, and \code{tibbles}'s to the one file.
-The main use of this function is that it uses the formatting in a \code{beta_table}
-when it writes to the Excel sheet. See \link{beta_table} for more information.
+\code{xlr_table}'s, \code{data.frame}'s, and \code{tibbles}'s to the one file.
+The main use of this function is that it uses the formatting in a \code{xlr_table}
+when it writes to the Excel sheet. See \link{xlr_table} for more information.
 }
 \examples{
-library(BETAexcel)
+library(xlr)
 library(tibble)
 # we can write a data.frame or tibble with write_xlsx
 example_tibble <- tibble(example = c(1:100))
@@ -63,22 +63,22 @@ write_xlsx(example_tibble,
            "example_file.xlsx",
            sheet_name = "Example sheet")}
 
-# You can write a beta_table.
-# When you write a beta_table you can specify the formatting as well as titles
+# You can write a xlr_table.
+# When you write a xlr_table you can specify the formatting as well as titles
 # and footnotes.
-example_beta_table <- beta_table(mtcars,
+example_xlr_table <- xlr_table(mtcars,
                                  "This is a title",
                                  "This is a footnote")
 
 \dontrun{
-write_xlsx(example_beta_table,
+write_xlsx(example_xlr_table,
            "example_file.xlsx")}
 
 # like openxlsx, you can also pass a list
-table_list <- list("Sheet name 1" = beta_table(mtcars,
+table_list <- list("Sheet name 1" = xlr_table(mtcars,
                                                "This is a title",
                                                "This is a footnote"),
-                   "Sheet name 2" = beta_table(mtcars,
+                   "Sheet name 2" = xlr_table(mtcars,
                                               "This is a title too",
                                               "This is a footnote as well"))
 

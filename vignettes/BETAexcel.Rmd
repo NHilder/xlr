@@ -1,8 +1,8 @@
 ---
-title: Getting started with BETAexcel
+title: Getting started with xlr
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting started with BETAexcel}
+  %\VignetteIndexEntry{Getting started with xlr}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-library(BETAexcel)
+library(xlr)
 # delete the example files if they exist already
 if (file.exists("example.xlsx")) file.remove("example.xlsx")
 if (file.exists("example2.xlsx")) file.remove("example2.xlsx")
@@ -23,7 +23,7 @@ options(tibble.print_min = 4L, tibble.print_max = 4L)
 set.seed(123456)
 ```
 
-BETAexcel is designed to help with the analysis of survey data and
+xlr is designed to help with the analysis of survey data and
 conduct modelling, and then export this information to Excel in an easy
 and consistent way.
 
@@ -68,7 +68,7 @@ It was designed to mimic data initially saved as a `.sav` file and
 imported with `haven::import_spss()`. Data with this form can easily be
 exported from major survey platforms such as
 [Qualtrics](https://www.qualtrics.com/), and includes useful information
-such as question labels which BETAexcel functions can utilise
+such as question labels which xlr functions can utilise
 automatically.
 
 ## Analysing survey data
@@ -83,7 +83,7 @@ There are three main functions to analyse survey data:
 -   `build_qtable()` which creates 1, 2, 3, ... -way tables for a
     **block** of questions.
 
-We will start by introducing `beta_table()` and go through all of its
+We will start by introducing `xlr_table()` and go through all of its
 functionality. This functionality is similar for `build_mtable()` and
 `build_qtable()`.
 
@@ -129,12 +129,12 @@ who use dplyr verbs.
 The data returns has a **long format** by default. Currently wide table
 table is unsupported but may be included in a future update.
 
-#### Introduction to beta_table()
+#### Introduction to xlr_table()
 
-You can also see that it has a special type `beta_table()`. This is a S3
-class defined by BETAexcel to help output the data to Excel. It contains
+You can also see that it has a special type `xlr_table()`. This is a S3
+class defined by xlr to help output the data to Excel. It contains
 the table data, a table title and a footnote, as well as hidden data to
-help format the table in Excel. You can learn more about `beta_table()`
+help format the table in Excel. You can learn more about `xlr_table()`
 in the vignette `to do`.
 
 You can directly pass a title and a footnote to `build_table()` by
@@ -147,11 +147,11 @@ clothes_opinions |>
               footnote = "This shows that the data has a representative sample.")
 ```
 
-#### Labels in BETAexcel
+#### Labels in xlr
 
 Now if you were paying close attention, you may have noticed that
 `clothes_opinions$gender2` went from being `haven_labelled` to a
-`beta_vector()`. A `beta_vector` is a wrapper around other types (see
+`xlr_vector()`. A `xlr_vector` is a wrapper around other types (see
 below for more details), and the base type is `character()`. All
 `build_*` functions will convert this data automatically, as well as
 pull information on the labels. See `haven`'s documentation for more
@@ -266,7 +266,7 @@ clothes_opinions |>
 ```
 
 As above you can see the `build_mtable()` automatically converts haven
-labelled data to a `beta_vector()`.
+labelled data to a `xlr_vector()`.
 
 #### Multiple multiple response columns
 
@@ -318,48 +318,48 @@ clothes_opinions |>
                gender2)
 ```
 
-## beta_table(), BETA types and writing to Excel
+## xlr_table(), xlr types and writing to Excel
 
-A key part of the BETAexcel is to export data to Excel in an easy, and
+A key part of the xlr is to export data to Excel in an easy, and
 user friendly way. The workhorse function in this scenario is
-`beta_table()`, and if you like the default options is meant to be the
+`xlr_table()`, and if you like the default options is meant to be the
 function that you will mostly use.
 
-A `beta_table()` is a `tibble::tibble()` with an optional title, and
+A `xlr_table()` is a `tibble::tibble()` with an optional title, and
 footnote, as well as a number of formatting options.
 
 ```{R}
 clothes_opinions |>
-  beta_table("This is a title",
+  xlr_table("This is a title",
              "this is a footnote with extra information")
 ```
 
-When you call `beta_table()` it converts the elements of your table to
-different `BETAexcel` types.
+When you call `xlr_table()` it converts the elements of your table to
+different `xlr` types.
 
 ### Types
 
-BETAexcel types are defined to help with the formatting of columns when
+xlr types are defined to help with the formatting of columns when
 they are output to Excel. There are four difference types defined in
-BETAexcel:
+xlr:
 
--   `beta_double()` to format doubles neatly.
+-   `xlr_double()` to format doubles neatly.
 
--   `beta_integer()` to format integer data neatly.
+-   `xlr_integer()` to format integer data neatly.
 
--   `beta_percent()` to format numeric data as a percentage.
+-   `xlr_percent()` to format numeric data as a percentage.
 
--   `beta_vector()` a general type to format data nicely without
+-   `xlr_vector()` a general type to format data nicely without
     specific rules.
 
-All of the above variables contain the argument `beta_format` which only
-takes a `beta_format()` object. `beta_format()` allows you to control
+All of the above variables contain the argument `xlr_format` which only
+takes a `xlr_format()` object. `xlr_format()` allows you to control
 different formatting options when the data is outputted to Excel, it
 currently does not change how the data looks in console. You can change
-the font size, colour, text position etc. with `beta_format()`. See
-`?beta_format` for the full range of options.
+the font size, colour, text position etc. with `xlr_format()`. See
+`?xlr_format` for the full range of options.
 
-For `beta_double()` and `beta_percent()` you can also set the number of
+For `xlr_double()` and `xlr_percent()` you can also set the number of
 decimal places through setting `dp=x`.
 
 ### Updating/Formatting columns
@@ -368,31 +368,31 @@ You can update the format of individual columns by using `dplyr::mutate`
 or base R by setting the column with new formatting options:
 
 ```{R}
-table <- beta_table(mtcars, "A clever title", "A useful footnote")
+table <- xlr_table(mtcars, "A clever title", "A useful footnote")
              
 # Lets update the format of the mpg column so that it displays using 0 decimal places
-table$mpg <- beta_double(table$mpg, dp = 0)
+table$mpg <- xlr_double(table$mpg, dp = 0)
 
 # You can also use mutate to achieve the same thing, this is useful for
 # updating multiple columns either by using across or in a single statement
 table <- table |>
   dplyr::mutate(
-    mpg = beta_double(mpg, dp = 0),
-    # convert columns that are integers to beta_integer type
-    across(vs:carb, ~ beta_integer(.x))
+    mpg = xlr_double(mpg, dp = 0),
+    # convert columns that are integers to xlr_integer type
+    across(vs:carb, ~ xlr_integer(.x))
   )
 ```
 
 ### dplyr verbs
 
-The `beta_table()` type is implemented to work with most `dplyr` verbs
+The `xlr_table()` type is implemented to work with most `dplyr` verbs
 to make working with the data as seamless as possible. To find out more
-see `?betaexcel_and_dplyr`.
+see `?xlr_and_dplyr`.
 
 ## Writing data to Excel
 
-BETAexcel makes writing data to Excel easy using the `write_xlsx()`
-function. This function takes either a `beta_table`, `tibble` or
+xlr makes writing data to Excel easy using the `write_xlsx()`
+function. This function takes either a `xlr_table`, `tibble` or
 `data.frame`. Note when you output a single object you need to specify
 
 ```{R}
@@ -406,7 +406,7 @@ The output looks like this in Excel:
 ![Example of exporting a data.frame with write_xlsx, it shows a simple
 table in Excel.](img/data.frame_example.png)
 
-When you output a `beta_table` with this function additional formatting
+When you output a `xlr_table` with this function additional formatting
 will be applied to the data as well as the title and a footnote.
 
 ```{R}
@@ -417,8 +417,8 @@ write_xlsx(table,
 
 The output looks like this in Excel:
 
-![Example of using a beta_table with write_xlsx, the table now has a
-table, footnote and formatting!](img/beta_table_example.png)
+![Example of using a xlr_table with write_xlsx, the table now has a
+table, footnote and formatting!](img/xlr_table_example.png)
 
 To update this formatting you either need to update the styles of the
 columns using the above, or if you want to modify the style of the table
@@ -428,7 +428,7 @@ update title colour to be red and the underlined:
 
 ```{R}
 table <- update_theme(table,
-                      title_format = beta_format(font_colour = "red",
+                      title_format = xlr_format(font_colour = "red",
                                                  text_style = "underline"))
 write_xlsx(table,
            file = "example.xlsx",
@@ -444,7 +444,7 @@ See `?update_theme` for more details.
 
 Like `openxlsx::write.xlsx()` you can also pass a list of What is
 particularly useful about this function is that it can output a `list`
-of `beta_table`'s (or tibbles or data.frames) to Excel. This is useful
+of `xlr_table`'s (or tibbles or data.frames) to Excel. This is useful
 if you are working survey data as you usually generate a long list of
 tables in a list.
 
@@ -453,7 +453,7 @@ table of contents from the table data.
 
 # Putting it all together
 
-Example of how you can use BETAexcel to analyse a survey is below:
+Example of how you can use xlr to analyse a survey is below:
 
 ```{R}
 output_list <- list()

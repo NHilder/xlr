@@ -1,4 +1,4 @@
-library(BETAexcel)
+library(xlr)
 
 # You can use this function to get a block of questions
 build_qtable(

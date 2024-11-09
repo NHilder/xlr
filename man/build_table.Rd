@@ -35,8 +35,8 @@ column label to a footnote with the question. See details for more information.}
 footnote to the question, this parameter overwrites \code{use_questions}.}
 }
 \value{
-a \code{beta_table} object. Use \link{write_xlsx} to write to an excel file.
-See \link{beta_table} for more information.
+a \code{xlr_table} object. Use \link{write_xlsx} to write to an excel file.
+See \link{xlr_table} for more information.
 }
 \description{
 \code{build_table} creates a one, two, three, ..., n-way table. It should be used
@@ -53,14 +53,14 @@ can be exported from popular survey providers such as Qualtrics. When you
 read in data with \code{haven::read_sav} it imports data with the questions,
 labels for the response options etc.
 
-By default this function converts \link[haven]{labelled} to a \link{beta_vector}
+By default this function converts \link[haven]{labelled} to a \link{xlr_vector}
 by default (and underlying it is a \code{character()} type).
 
 See \link[haven]{labelled} and \link[haven]{read_sav} if you would like more
 details on the importing type.
 }
 \examples{
-library(BETAexcel)
+library(xlr)
 
 # You can use this function to calculate the number count and percentage
 # of a categorical variable

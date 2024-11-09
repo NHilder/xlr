@@ -1,4 +1,4 @@
-library(BETAexcel)
+library(xlr)
 
 table_list <- list("Sheet name 1" = mtcars,
                    "Sheet name 2" = mtcars)
@@ -7,7 +7,7 @@ output_file <- "example_file.xlsx"
 
 \dontrun{
 # using write xlsx we create an excel document
-# You could use BETAexcel::write_xlsx to create a table of
+# You could use xlr::write_xlsx to create a table of
 # contents automatically.
 write.xlsx(table_list,
            output_file)

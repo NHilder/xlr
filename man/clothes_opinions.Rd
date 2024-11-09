@@ -31,6 +31,6 @@ This column is intentionally has no label.}
 clothes_opinions
 }
 \description{
-This is a fake data set used to show how to work with the BETAexcel package.
+This is a fake data set used to show how to work with the xlr package.
 }
 \keyword{datasets}

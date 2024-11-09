@@ -38,8 +38,8 @@ file, convert the column label to a footnote with the question.}
 this parameter overwrites \code{use_questions}.}
 }
 \value{
-a \code{beta_table} object. Use \link{write_xlsx} to write to an excel file.
-See \link{beta_table} for more information.
+a \code{xlr_table} object. Use \link{write_xlsx} to write to an excel file.
+See \link{xlr_table} for more information.
 }
 \description{
 This function can take one or two multiple response responses and generate
@@ -68,7 +68,7 @@ This is how popular survey platforms such as Qualtrics output this data type. If
 your data is long, you will need to pivot the data before hand, we recommend
 using \link[tidyr]{pivot_wider}.
 
-By default this function converts \link[haven]{labelled} to a \link{beta_vector}
+By default this function converts \link[haven]{labelled} to a \link{xlr_vector}
 by default (and underlying it is a \code{character()} type).
 
 This function and its family (\link{build_table}, \link{build_qtable}) is designed to
@@ -83,7 +83,7 @@ See \link[haven]{labelled} and \link[haven]{read_sav} if you would like more
 details on the importing type.
 }
 \examples{
-library(BETAexcel)
+library(xlr)
 library(dplyr)
 
 # You can use this function to calculate the number of people that have

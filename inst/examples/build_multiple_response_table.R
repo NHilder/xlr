@@ -1,4 +1,4 @@
-library(BETAexcel)
+library(xlr)
 library(dplyr)
 
 # You can use this function to calculate the number of people that have

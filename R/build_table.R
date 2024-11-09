@@ -18,8 +18,8 @@
 #' @param footnote a character vector. Optional parameter to pass a custom
 #' footnote to the question, this parameter overwrites `use_questions`.
 #'
-#' @return a `beta_table` object. Use [write_xlsx] to write to an excel file.
-#' See [beta_table] for more information.
+#' @return a `xlr_table` object. Use [write_xlsx] to write to an excel file.
+#' See [xlr_table] for more information.
 #'
 #' @details
 #' This function and its family ([build_mtable], [build_qtable]) is designed to
@@ -30,7 +30,7 @@
 #' read in data with `haven::read_sav` it imports data with the questions,
 #' labels for the response options etc.
 #'
-#' By default this function converts \link[haven]{labelled} to a [beta_vector]
+#' By default this function converts \link[haven]{labelled} to a [xlr_vector]
 #' by default (and underlying it is a `character()` type).
 #'
 #' See \link[haven]{labelled} and \link[haven]{read_sav} if you would like more
@@ -96,15 +96,15 @@ build_table <- function(
     group_by(across(!!enquo(cols))) |>
     # uses the weight if it is not null, if NULL, it get's ignored
     tally(wt = {{wt}}, name = "N") |>
-    mutate(Percent = beta_percent(N/sum(N))) |>
+    mutate(Percent = xlr_percent(N/sum(N))) |>
     ungroup() |>
-    beta_table(table_title,
+    xlr_table(table_title,
                footnote)
 
   # Now we apply some formatting depending if wts are applied, if the are
   # we can gaurentee N is an integer, if not we treat it as a double to 1 dp
   if (quo_is_null(wt_quo))
-    mutate(final_table, N = beta_integer(N))
+    mutate(final_table, N = xlr_integer(N))
   else
-    mutate(final_table, N = beta_double(N, dp = 1))
+    mutate(final_table, N = xlr_double(N, dp = 1))
 }
