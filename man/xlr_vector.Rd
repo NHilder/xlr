@@ -37,7 +37,7 @@ can easily be outputted to excel in the correct format.
 }
 \details{
 While you can use it with \code{integer}, and \code{double} types and specifying the
-associated Excel format, we recommend using \link{xlr_integer}, \link{xlr_double},
+associated Excel format, we recommend using \link{xlr_integer}, \link{xlr_numeric},
 or \link{xlr_percent} types instead.
 }
 \examples{
@@ -63,5 +63,5 @@ iris |>
                                              xlr_format(text_style = "italic")))
 }
 \seealso{
-\code{\link[=xlr_percent]{xlr_percent()}}, \code{\link[=xlr_integer]{xlr_integer()}}, \code{\link[=xlr_double]{xlr_double()}}
+\code{\link[=xlr_percent]{xlr_percent()}}, \code{\link[=xlr_integer]{xlr_integer()}}, \code{\link[=xlr_numeric]{xlr_numeric()}}
 }

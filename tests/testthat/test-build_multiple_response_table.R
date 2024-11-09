@@ -489,8 +489,8 @@ test_that("build_mtable works with weights in the simplest case",{
   expected_output <-
     data.frame(
       enjoy_fruit = c("Apple", "Banana", "Pear"),
-      N = xlr_double(c(0.7, 0.7, 0.9), dp = 1),
-      N_group = xlr_double(c(1.2, 1.2, 1.2), dp = 1)
+      N = xlr_numeric(c(0.7, 0.7, 0.9), dp = 1),
+      N_group = xlr_numeric(c(1.2, 1.2, 1.2), dp = 1)
       ) |>
     mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
     xlr_table()
@@ -512,8 +512,8 @@ test_that("build_mtable works with weights in the simplest case and NA",{
   expected_output <-
     data.frame(
       enjoy_fruit = c("Apple", "Banana", "Pear", NA),
-      N = xlr_double(c(0.7, 0.7, 0.9, 0.4), dp = 1),
-      N_group = xlr_double(c(1.6, 1.6, 1.6, 1.6), dp = 1)
+      N = xlr_numeric(c(0.7, 0.7, 0.9, 0.4), dp = 1),
+      N_group = xlr_numeric(c(1.6, 1.6, 1.6, 1.6), dp = 1)
     ) |>
     mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
     xlr_table()
@@ -540,9 +540,9 @@ test_that("build_mtable works with weights, one multiple response col,
                           "c", "c"),
       enjoy_fruit = c("Apple", "Banana",
                     "Pear", "Banana", "Pear", "Apple", "Banana", "Pear"),
-      N = xlr_double(c(0.4, 0.2, 0.4, 0.2, 0.2, 0.3,
+      N = xlr_numeric(c(0.4, 0.2, 0.4, 0.2, 0.2, 0.3,
                         0.3, 0.3), dp = 1),
-      N_group = xlr_double(c(0.4, 0.4, 0.4, 0.2, 0.2,
+      N_group = xlr_numeric(c(0.4, 0.4, 0.4, 0.2, 0.2,
                               0.6, 0.6, 0.6), dp = 1)
     ) |>
     mutate(Percent = xlr_percent(vec_cast(N,double())/N_group)) |>
@@ -567,9 +567,9 @@ test_that("build_mtable works with weights, two multiple response col",{
                       "Banana", "Banana", "Banana", "Pear", "Pear", "Pear"),
       enjoy_veg = c("Carrot", "Potato", "Tomato",
                     "Carrot", "Potato", "Tomato", "Carrot", "Potato", "Tomato"),
-      N = xlr_double(c(0.5, 0.5, 0.5, 0.5, 0.7, 0.6,
+      N = xlr_numeric(c(0.5, 0.5, 0.5, 0.5, 0.7, 0.6,
                         0.7, 0.7, 0.6), dp = 1),
-      N_enjoy_fruit = xlr_double(c(0.7, 0.7, 0.7, 0.7,
+      N_enjoy_fruit = xlr_numeric(c(0.7, 0.7, 0.7, 0.7,
                               0.7, 0.7, 0.9, 0.9, 0.9), dp = 1)
     ) |>
     mutate(Percent = xlr_percent(vec_cast(N,double())/N_enjoy_fruit)) |>
@@ -604,10 +604,10 @@ test_that("build_mtable works with weights, two multiple response col,
                     "Potato", "Tomato", "Carrot", "Potato", "Tomato", "Carrot", "Potato",
                     "Tomato", "Carrot", "Potato", "Tomato", "Carrot", "Potato", "Tomato",
                     "Carrot", "Potato", "Tomato", "Carrot", "Potato", "Tomato"),
-      N = xlr_double(c(0.2, 0.2, 0.2, 0.2, 0.2, 0.2,
+      N = xlr_numeric(c(0.2, 0.2, 0.2, 0.2, 0.2, 0.2,
                         0.2, 0.2, 0.2, 0.2, 0.1, 0.2, 0.2, 0.1, 0.3, 0.3, 0.3, 0.3, 0.3,
                         0.3, 0.3, 0.3, 0.3), dp = 1),
-      N_group = xlr_double(c(0.4, 0.4, 0.4, 0.2, 0.2,
+      N_group = xlr_numeric(c(0.4, 0.4, 0.4, 0.2, 0.2,
                               0.4, 0.4, 0.4, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3, 0.3,
                               0.3, 0.3, 0.3, 0.3, 0.3), dp = 1)
     ) |>

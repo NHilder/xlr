@@ -221,8 +221,8 @@ build_mtable <- function(
         mutate(final_table, N = xlr_integer(N))
     else
       mutate(final_table,
-             N = xlr_double(N, dp = 1),
-             N_group = xlr_double(N_group, dp = 1))
+             N = xlr_numeric(N, dp = 1),
+             N_group = xlr_numeric(N_group, dp = 1))
   } else{
 
     mcol_1 <- mcols[1]
@@ -324,8 +324,8 @@ build_mtable <- function(
         mutate(final_table, N = xlr_integer(N))
       else
         mutate(final_table,
-               N = xlr_double(N, dp = 1),
-               "{group_col_name_quo}" := xlr_double({{ group_col_name_quo }},dp = 1))
+               N = xlr_numeric(N, dp = 1),
+               "{group_col_name_quo}" := xlr_numeric({{ group_col_name_quo }},dp = 1))
   }
   final_table
 }

@@ -5,7 +5,7 @@
 #' can easily be outputted to excel in the correct format.
 #'
 #' While you can use it with `integer`, and `double` types and specifying the
-#' associated Excel format, we recommend using [xlr_integer], [xlr_double],
+#' associated Excel format, we recommend using [xlr_integer], [xlr_numeric],
 #' or [xlr_percent] types instead.
 #'
 #' @param x A vector
@@ -20,7 +20,7 @@
 #'
 #' @return An S3 vector of class `xlr_vector`
 #'
-#' @seealso [xlr_percent()], [xlr_integer()], [xlr_double()]
+#' @seealso [xlr_percent()], [xlr_integer()], [xlr_numeric()]
 #'
 #' @example inst/examples/xlr_vector.R
 #'

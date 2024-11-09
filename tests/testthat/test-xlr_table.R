@@ -12,13 +12,13 @@ test_that("xlr_table() does not lose xlr_types if they exist already", {
 
   x <- data.frame(b_int = xlr_integer(1:100,xlr_format(font_size=11)),
                   b_pct = xlr_percent(1:100/100),
-                  b_dbl = xlr_double(1:100),
+                  b_dbl = xlr_numeric(1:100),
                   d_vctr = xlr_vector(as.character(1:100)))
   x_xlr <- xlr_table(x)
 
   expect_s3_class(x_xlr$b_int,"xlr_integer")
   expect_s3_class(x_xlr$b_pct,"xlr_percent")
-  expect_s3_class(x_xlr$b_dbl,"xlr_double")
+  expect_s3_class(x_xlr$b_dbl,"xlr_numeric")
   expect_s3_class(x_xlr$d_vctr,"xlr_vector")
 })
 
@@ -36,8 +36,8 @@ test_that("xlr_table() converts types appropriately", {
   x_xlr <- xlr_table(x)
 
   expect_s3_class(x_xlr$test_int,"xlr_integer")
-  expect_s3_class(x_xlr$test_dbl,"xlr_double")
-  expect_s3_class(x_xlr$test_num,"xlr_double")
+  expect_s3_class(x_xlr$test_dbl,"xlr_numeric")
+  expect_s3_class(x_xlr$test_num,"xlr_numeric")
   expect_s3_class(x_xlr$test_char,"xlr_vector")
   expect_s3_class(x_xlr$test_factor,"xlr_vector")
 })
@@ -46,7 +46,7 @@ test_that("xlr_table() prints correctly", {
 
   x <- data.frame(b_int = xlr_integer(1:100,xlr_format(font_size=11)),
                   b_pct = xlr_percent(1:100/100),
-                  b_dbl = xlr_double(1:100),
+                  b_dbl = xlr_numeric(1:100),
                   d_vctr = xlr_vector(as.character(1:100)))
   x_xlr <- xlr_table(x)
 
@@ -62,7 +62,7 @@ test_that("is_xlr_table() correctly identifies the class", {
 
   x <- data.frame(b_int = xlr_integer(1:100,xlr_format(font_size=11)),
                   b_pct = xlr_percent(1:100/100),
-                  b_dbl = xlr_double(1:100),
+                  b_dbl = xlr_numeric(1:100),
                   d_vctr = xlr_vector(as.character(1:100)))
   x_xlr <- xlr_table(x)
 
@@ -76,7 +76,7 @@ test_that("as_xlr_table() correctly converts the class", {
 
   x <- data.frame(b_int = xlr_integer(1:100,xlr_format(font_size=11)),
                   b_pct = xlr_percent(1:100/100),
-                  b_dbl = xlr_double(1:100),
+                  b_dbl = xlr_numeric(1:100),
                   d_vctr = xlr_vector(as.character(1:100)))
 
   expect_s3_class(as_xlr_table(x),"xlr_table")
@@ -92,7 +92,7 @@ test_that("xlr_table and dplyr verbs are compatiable", {
 
   x <- data.frame(b_int = xlr_integer(1:100,xlr_format(font_size=11)),
                   b_pct = xlr_percent(1:100/100),
-                  b_dbl = xlr_double(1:100),
+                  b_dbl = xlr_numeric(1:100),
                   d_vctr = xlr_vector(as.character(1:100)),
                   test_num = as.double(1:100),
                   test_char = as.character(1:100),
@@ -102,7 +102,7 @@ test_that("xlr_table and dplyr verbs are compatiable", {
 
   x <- xlr_table(x)
 
-  expect_s3_class(dplyr::mutate(x,test_num=as_xlr_double(test_num)),"xlr_table")
+  expect_s3_class(dplyr::mutate(x,test_num=as_xlr_numeric(test_num)),"xlr_table")
   expect_s3_class(dplyr::arrange(x,dplyr::desc(b_dbl)),"xlr_table")
   expect_s3_class(dplyr::filter(x,b_int != 2L),"xlr_table")
   expect_s3_class(dplyr::select(x,b_int),"xlr_table")
@@ -115,7 +115,7 @@ test_that("xlr_table and dplyr verbs are compatiable", {
 test_that("update_theme() updates the theme correctly",{
   x <- data.frame(b_int = xlr_integer(1:100,xlr_format(font_size=11)),
                   b_pct = xlr_percent(1:100/100),
-                  b_dbl = xlr_double(1:100),
+                  b_dbl = xlr_numeric(1:100),
                   d_vctr = xlr_vector(as.character(1:100)),
                   test_num = as.double(1:100),
                   test_char = as.character(1:100),

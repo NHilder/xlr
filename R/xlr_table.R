@@ -85,7 +85,7 @@ as_xlr_table.data.frame <- function(x,
 #' you write you `xlr_table` to excel with [write_xlsx()].
 #'
 #' If you want to change the style of the *columns* in the data, you should convert them
-#' to a [xlr_vector], [xlr_double], [xlr_integer] or [xlr_percent] type if they are
+#' to a [xlr_vector], [xlr_numeric], [xlr_integer] or [xlr_percent] type if they are
 #' not already, and then update the [xlr_format] attribute, by setting
 #' the `style` parameter.
 #'
@@ -209,7 +209,7 @@ new_xlr_table <- function(x,
 #' @noRd
 convert_to_xlr_types <- function(x) {
   # save the xlr_type information
-  if (is_xlr_double(x) || is_xlr_percent(x) ||
+  if (is_xlr_numeric(x) || is_xlr_percent(x) ||
       is_xlr_integer(x) || is_xlr_vector(x)) {
     return(x)
   }
@@ -223,7 +223,7 @@ convert_to_xlr_types <- function(x) {
     x
     # convert to xlr_types if it is a general type
     x <- switch(typeof(x),
-                "double" = xlr_double(x),
+                "double" = xlr_numeric(x),
                 "integer" = xlr_integer(x),
                 xlr_vector(x))
     return(x)

@@ -77,7 +77,7 @@ test_that("convert_xlr_type_to_R() works correctly",{
 
   x <- data.frame(c1 = 1:10,
                   c2 = xlr_percent(1:10/100),
-                  c3 = xlr_double(1:10),
+                  c3 = xlr_numeric(1:10),
                   c4 = xlr_integer(1:10),
                   c5 = xlr_vector(rep("a",10)),
                   c6 = rep("a",10))
@@ -151,19 +151,26 @@ test_that("column_to_style() handles xlr_percent() correctly",{
                xlr_format_to_openxlsx_format(xlr_format(),"0.00%"))
 })
 
-test_that("column_to_style() handles xlr_double() correctly",{
-  expect_equal(column_to_style(xlr_double(1:10,0)),
+test_that("column_to_style() handles xlr_numeric() correctly",{
+  expect_equal(column_to_style(xlr_numeric(1:10,0)),
                xlr_format_to_openxlsx_format(xlr_format(),"0"))
-  expect_equal(column_to_style(xlr_double(1:10,2)),
+  expect_equal(column_to_style(xlr_numeric(1:10,2)),
                xlr_format_to_openxlsx_format(xlr_format(),"0.00"))
 })
 
+test_that("column_to_style() handles xlr_numeric() and scientific notation correctly",{
+  expect_equal(column_to_style(xlr_numeric(1:10,0,scientific = TRUE)),
+               xlr_format_to_openxlsx_format(xlr_format(),"0E+00"))
+  expect_equal(column_to_style(xlr_numeric(1:10,2,scientific = TRUE)),
+               xlr_format_to_openxlsx_format(xlr_format(),"0.00E+00"))
+  expect_equal(column_to_style(xlr_numeric(1:10,3,scientific = TRUE)),
+               xlr_format_to_openxlsx_format(xlr_format(),"0.000E+00"))
+})
 
 test_that("column_to_style() handles xlr_integer() correctly",{
   expect_equal(column_to_style(xlr_integer(1:10)),
                xlr_format_to_openxlsx_format(xlr_format(),"0"))
 })
-
 
 test_that("column_to_style() handles xlr_vector() correctly",{
   expect_equal(column_to_style(xlr_vector(rep("a",10))),
@@ -195,7 +202,7 @@ test_that("create_column_widths() test that the column width is good", {
 
   expect_equal(nrow(col_data),2)
   expect_equal(col_data[["index"]],c(12,13))
-  expect_equal(col_data[["cell_width"]],c(25,30))
+  expect_equal(col_data[["cell_width"]],c(30,30))
 })
 
 
@@ -491,11 +498,12 @@ test_that("data_to_worksheet() generates data correctly",{
     mtcars |>
     mutate(mpg = mpg,
            cyl = as.integer(cyl),
-           disp = xlr_double(disp, dp = 0),
+           disp = xlr_numeric(disp, dp = 0),
            hp = xlr_vector(hp),
-           drat = xlr_double(drat, dp = 4),
+           drat = xlr_numeric(drat, dp = 4),
            wt = xlr_percent(wt,dp =2),
-           vs = rep("test",nrow(mtcars))) |>
+           vs = rep("test",nrow(mtcars)),
+           scientific = xlr_numeric(qsec,scientific = TRUE)) |>
     suppressWarnings()
 
   wb <- createWorkbook()
@@ -536,9 +544,9 @@ test_that("data_to_worksheet() adds data for an excel data table option",{
     mtcars |>
     mutate(mpg = mpg,
            cyl = as.integer(cyl),
-           disp = xlr_double(disp, dp = 0),
+           disp = xlr_numeric(disp, dp = 0),
            hp = xlr_vector(hp),
-           drat = xlr_double(drat, dp = 4),
+           drat = xlr_numeric(drat, dp = 4),
            wt = xlr_percent(wt,dp =2),
            vs = rep("test",nrow(mtcars))) |>
     suppressWarnings()
@@ -575,9 +583,9 @@ test_that("data_to_worksheet() can change the data table names",{
     mtcars |>
     mutate(mpg = mpg,
            cyl = as.integer(cyl),
-           disp = xlr_double(disp, dp = 0),
+           disp = xlr_numeric(disp, dp = 0),
            hp = xlr_vector(hp),
-           drat = xlr_double(drat, dp = 4),
+           drat = xlr_numeric(drat, dp = 4),
            wt = xlr_percent(wt,dp =2),
            vs = rep("test",nrow(mtcars))) |>
     suppressWarnings()
@@ -621,9 +629,9 @@ test_that("xlr_table_to_sheet() works", {
     mtcars |>
     mutate(mpg = mpg,
            cyl = as.integer(cyl),
-           disp = xlr_double(disp, dp = 0),
+           disp = xlr_numeric(disp, dp = 0),
            hp = xlr_vector(hp),
-           drat = xlr_double(drat, dp = 4),
+           drat = xlr_numeric(drat, dp = 4),
            wt = xlr_percent(wt,dp =2),
            vs = rep("test",nrow(mtcars)),
            `This is a very long title what does it look` = rep("This is some text",nrow(mtcars))) |>
@@ -709,9 +717,9 @@ test_that("dataframe_to_sheet() works", {
     mtcars |>
     mutate(mpg = mpg,
            cyl = as.integer(cyl),
-           disp = xlr_double(disp, dp = 0),
+           disp = xlr_numeric(disp, dp = 0),
            hp = xlr_vector(hp),
-           drat = xlr_double(drat, dp = 4),
+           drat = xlr_numeric(drat, dp = 4),
            wt = xlr_percent(wt,dp =2),
            vs = rep("test",nrow(mtcars)),
            `This is a very long title what does it look` = rep("This is some text",nrow(mtcars))) |>

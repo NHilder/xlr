@@ -17,7 +17,7 @@
 #'
 #' @example inst/examples/xlr_percent.R
 #'
-#' @seealso [xlr_vector()], [xlr_integer()], [xlr_double()]
+#' @seealso [xlr_vector()], [xlr_integer()], [xlr_numeric()]
 #'
 #' @export
 xlr_percent <- function(x = double(),
@@ -53,7 +53,7 @@ validate_xlr_percent <- function(x = double(),
 
 
 #' Constructor of percent
-#' @inheritParams xlr_double
+#' @inheritParams xlr_numeric
 #' @param call the calling environment
 new_xlr_percent <- function(x = double(),
                              dp = 0L,

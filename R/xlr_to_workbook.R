@@ -558,7 +558,7 @@ create_column_widths <- function(x){
     mutate("col_width" := nchar(c_name),
            cell_width = case_when(
              col_width > 40 ~ 30,
-             col_width > 9 ~ col_width - 5,
+             col_width > 9 ~ col_width,
              TRUE ~ NA
            )) |>
     filter(!is.na(cell_width))
@@ -689,13 +689,7 @@ data_to_worksheet <- function(x,
 convert_xlr_type_to_R <- function(x,
                                    call = caller_env()){
   x |>
-    lapply(\(x){
-        if (is_xlr_percent(x)) return(vec_cast(x,double()))
-        else if (is_xlr_double(x)) return(vec_cast(x,double()))
-        else if (is_xlr_integer(x)) return(vec_cast(x,integer()))
-        else if(is_xlr_vector(x)) return(get_xlr_vector_data(x))
-        else return(x)
-      }) |>
+    lapply(\(x) vec_data(x)) |>
     as.data.frame(check.names = FALSE)
 }
 
@@ -710,8 +704,13 @@ column_to_style <- function(col){
   else if(is_xlr_integer(col) || is.integer(col)){
     column_cell_format <- "0"
   }
-  else if(is_xlr_double(col)){
-    column_cell_format <- generate_dp(pull_dp(col))
+  else if(is_xlr_numeric(col)){
+    # Two different formats: One for scientific, one standard
+    if (pull_attr(col, "scientific")){
+      column_cell_format <- paste0(generate_dp(pull_dp(col)),"E+00")
+    } else{
+      column_cell_format <- generate_dp(pull_dp(col))
+    }
   }
   else if(is_xlr_vector(col)){
     # Lets actually pull out the underlying data and call it again
@@ -729,7 +728,6 @@ column_to_style <- function(col){
   else{
     column_cell_format <- "GENERAL"
   }
-
   # now lets pull out the xlr format information if it exists,
   # if it doesn't, we generate an empty xlr_format
   format_data <- pull_style(col)

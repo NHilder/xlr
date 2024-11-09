@@ -22,7 +22,7 @@ methods::setOldClass(c("xlr_integer","vctrs_vctr"))
 #'
 #' @example inst/examples/xlr_integer.R
 #'
-#' @seealso [xlr_vector()], [xlr_percent()], [xlr_double()]
+#' @seealso [xlr_vector()], [xlr_percent()], [xlr_numeric()]
 #'
 #' @export
 xlr_integer <- function(x = integer(),

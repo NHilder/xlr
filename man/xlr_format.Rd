@@ -130,7 +130,7 @@ bf <- xlr_format(font_size = 11,
                   font = "helvetica")
 # The main use of xlr_format is to change the format of a vector of
 # a xlr type
-bd <- xlr_double(1:200,
+bd <- xlr_numeric(1:200,
                   dp = 1,
                   style = bf)
 # You can also use it to change the styles of an xlr_table, this only

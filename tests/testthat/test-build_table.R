@@ -43,7 +43,7 @@ test_that("build_table works with weights as expected", {
   df <-create_block_question_df()
 
   output <- data.frame(gender = c("f","m"),
-                       N = xlr_double(c(1.6,1.6),
+                       N = xlr_numeric(c(1.6,1.6),
                                        1),
                        Percent = xlr_percent(c(.5,.5))) |>
     xlr_table()
@@ -58,7 +58,7 @@ test_that("build_table works with integer weights as expected", {
     mutate(weight = as.integer(weight * 100))
 
   output <- data.frame(gender = c("f","m"),
-                       N = xlr_double(c(160,160),
+                       N = xlr_numeric(c(160,160),
                                        1),
                        Percent = xlr_percent(c(.5,.5))) |>
     xlr_table()

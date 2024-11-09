@@ -343,7 +343,7 @@ xlr types are defined to help with the formatting of columns when
 they are output to Excel. There are four difference types defined in
 xlr:
 
--   `xlr_double()` to format doubles neatly.
+-   `xlr_numeric()` to format doubles neatly.
 
 -   `xlr_integer()` to format integer data neatly.
 
@@ -359,7 +359,7 @@ currently does not change how the data looks in console. You can change
 the font size, colour, text position etc. with `xlr_format()`. See
 `?xlr_format` for the full range of options.
 
-For `xlr_double()` and `xlr_percent()` you can also set the number of
+For `xlr_numeric()` and `xlr_percent()` you can also set the number of
 decimal places through setting `dp=x`.
 
 ### Updating/Formatting columns
@@ -371,13 +371,13 @@ or base R by setting the column with new formatting options:
 table <- xlr_table(mtcars, "A clever title", "A useful footnote")
              
 # Lets update the format of the mpg column so that it displays using 0 decimal places
-table$mpg <- xlr_double(table$mpg, dp = 0)
+table$mpg <- xlr_numeric(table$mpg, dp = 0)
 
 # You can also use mutate to achieve the same thing, this is useful for
 # updating multiple columns either by using across or in a single statement
 table <- table |>
   dplyr::mutate(
-    mpg = xlr_double(mpg, dp = 0),
+    mpg = xlr_numeric(mpg, dp = 0),
     # convert columns that are integers to xlr_integer type
     across(vs:carb, ~ xlr_integer(.x))
   )

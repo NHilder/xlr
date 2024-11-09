@@ -34,7 +34,7 @@ you write you \code{xlr_table} to excel with \code{\link[=write_xlsx]{write_xlsx
 }
 \details{
 If you want to change the style of the \emph{columns} in the data, you should convert them
-to a \link{xlr_vector}, \link{xlr_double}, \link{xlr_integer} or \link{xlr_percent} type if they are
+to a \link{xlr_vector}, \link{xlr_numeric}, \link{xlr_integer} or \link{xlr_percent} type if they are
 not already, and then update the \link{xlr_format} attribute, by setting
 the \code{style} parameter.
 }

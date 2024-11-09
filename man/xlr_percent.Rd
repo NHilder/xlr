@@ -65,5 +65,5 @@ df |>
   dplyr::mutate(col_xlr_percent = as_xlr_percent(col_str,2))
 }
 \seealso{
-\code{\link[=xlr_vector]{xlr_vector()}}, \code{\link[=xlr_integer]{xlr_integer()}}, \code{\link[=xlr_double]{xlr_double()}}
+\code{\link[=xlr_vector]{xlr_vector()}}, \code{\link[=xlr_integer]{xlr_integer()}}, \code{\link[=xlr_numeric]{xlr_numeric()}}
 }

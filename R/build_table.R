@@ -106,5 +106,5 @@ build_table <- function(
   if (quo_is_null(wt_quo))
     mutate(final_table, N = xlr_integer(N))
   else
-    mutate(final_table, N = xlr_double(N, dp = 1))
+    mutate(final_table, N = xlr_numeric(N, dp = 1))
 }
