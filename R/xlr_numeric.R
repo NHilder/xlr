@@ -15,7 +15,7 @@ methods::setOldClass(c("xlr_numeric","vctrs_vctr"))
 #'  * For `as_xlr_numeric()` : a vector
 #' @param dp the number of decimal places to print
 #' @param scientific logical. Whether to format the numeric using scientific notation.
-#' @param style Additional styling options for the vector. See [xlr_format] for more details.
+#' @param style Additional styling options for the vector. See [xlr_format_numeric] for more details.
 #'
 #' @return An S3 vector of class `xlr_numeric`
 #'
@@ -27,7 +27,7 @@ methods::setOldClass(c("xlr_numeric","vctrs_vctr"))
 xlr_numeric <- function(x = numeric(),
                         dp = 2L,
                         scientific = FALSE,
-                        style = xlr_format()){
+                        style = xlr_format_numeric()){
 
   # first we try and cast everything to the right type
   x <- vec_cast(x, numeric())
@@ -44,7 +44,7 @@ xlr_numeric <- function(x = numeric(),
 
 validate_xlr_numeric <- function(x = double(),
                                  dp = integer(),
-                                 style = xlr_format(),
+                                 style = xlr_format_numeric(),
                                  call = caller_env()){
   if (dp < 0){
     cli_abort("'dp' must be greater than zero not equal to {dp}.",
@@ -62,7 +62,7 @@ validate_xlr_numeric <- function(x = double(),
 new_xlr_numeric <- function(x = double(),
                             dp = 0L,
                             scientific = FALSE,
-                            style = xlr_format(),
+                            style = xlr_format_numeric(),
                             call = caller_env()) {
 
   type_abort(x,is_double,1.1,call = call)
@@ -71,7 +71,7 @@ new_xlr_numeric <- function(x = double(),
   vec_check_size(dp,size = 1L,call = call)
 
   type_abort(scientific,is_logical,FALSE,call = call)
-  type_abort(style,is_xlr_format,xlr_format(),call = call)
+  type_abort(style,is_xlr_format,xlr_format_numeric(),call = call)
 
   # finally we create our vector
   new_vctr(x,
@@ -96,7 +96,7 @@ is_xlr_numeric <- function(x) {
 as_xlr_numeric <- function(x,
                            dp = 0L,
                            scientific = FALSE,
-                           style = xlr_format()){
+                           style = xlr_format_numeric()){
   UseMethod("as_xlr_numeric")
 }
 
@@ -104,7 +104,7 @@ as_xlr_numeric <- function(x,
 as_xlr_numeric.default <- function(x,
                                    dp = 0L,
                                    scientific = FALSE,
-                                   style = xlr_format()){
+                                   style = xlr_format_numeric()){
   vec_cast(x,xlr_numeric(dp = dp,
                          scientific = scientific,
                          style = style))
@@ -114,7 +114,7 @@ as_xlr_numeric.default <- function(x,
 as_xlr_numeric.character <- function(x,
                                      dp = 0L,
                                      scientific = FALSE,
-                                     style = xlr_format()){
+                                     style = xlr_format_numeric()){
   # if R can work it out, cast it to a xlr_numeric with default settings
   value <- as.double(x)
   xlr_numeric(value,

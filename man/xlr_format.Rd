@@ -2,6 +2,7 @@
 % Please edit documentation in R/xlr_format.R
 \name{xlr_format}
 \alias{xlr_format}
+\alias{xlr_format_numeric}
 \title{Specify formatting options for \verb{xlr_*} types}
 \usage{
 xlr_format(
@@ -15,6 +16,22 @@ xlr_format(
   background_colour = NULL,
   halign = "left",
   valign = "top",
+  wrap_text = FALSE,
+  text_rotation = 0L,
+  indent = 0L
+)
+
+xlr_format_numeric(
+  font_size = 11,
+  font_colour = "black",
+  font = "calibri",
+  text_style = NULL,
+  border = NULL,
+  border_colour = "black",
+  border_style = "thin",
+  background_colour = NULL,
+  halign = "right",
+  valign = "bottom",
   wrap_text = FALSE,
   text_rotation = 0L,
   indent = 0L
@@ -64,7 +81,8 @@ sides specified in \code{border}. The list of styles are \code{"none"}, \code{"t
 }
 \description{
 This function is a utility to work with \code{openxlxs}'s \link[openxlsx]{createStyle}, and work
-with styles between them.
+with styles between them. \code{\link[=xlr_format_numeric]{xlr_format_numeric()}} is an alias for \code{\link[=xlr_format]{xlr_format()}} but with different
+default values.
 }
 \details{
 \subsection{Text styling}{

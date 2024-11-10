@@ -146,30 +146,30 @@ test_that("column_to_style() handles double() correctly",{
 
 test_that("column_to_style() handles xlr_percent() correctly",{
   expect_equal(column_to_style(xlr_percent(1:10/100)),
-             xlr_format_to_openxlsx_format(xlr_format(),"0%"))
+             xlr_format_to_openxlsx_format(xlr_format_numeric(),"0%"))
   expect_equal(column_to_style(xlr_percent(1:10/100,2)),
-               xlr_format_to_openxlsx_format(xlr_format(),"0.00%"))
+               xlr_format_to_openxlsx_format(xlr_format_numeric(),"0.00%"))
 })
 
 test_that("column_to_style() handles xlr_numeric() correctly",{
   expect_equal(column_to_style(xlr_numeric(1:10,0)),
-               xlr_format_to_openxlsx_format(xlr_format(),"0"))
+               xlr_format_to_openxlsx_format(xlr_format_numeric(),"0"))
   expect_equal(column_to_style(xlr_numeric(1:10,2)),
-               xlr_format_to_openxlsx_format(xlr_format(),"0.00"))
+               xlr_format_to_openxlsx_format(xlr_format_numeric(),"0.00"))
 })
 
 test_that("column_to_style() handles xlr_numeric() and scientific notation correctly",{
   expect_equal(column_to_style(xlr_numeric(1:10,0,scientific = TRUE)),
-               xlr_format_to_openxlsx_format(xlr_format(),"0E+00"))
+               xlr_format_to_openxlsx_format(xlr_format_numeric(),"0E+00"))
   expect_equal(column_to_style(xlr_numeric(1:10,2,scientific = TRUE)),
-               xlr_format_to_openxlsx_format(xlr_format(),"0.00E+00"))
+               xlr_format_to_openxlsx_format(xlr_format_numeric(),"0.00E+00"))
   expect_equal(column_to_style(xlr_numeric(1:10,3,scientific = TRUE)),
-               xlr_format_to_openxlsx_format(xlr_format(),"0.000E+00"))
+               xlr_format_to_openxlsx_format(xlr_format_numeric(),"0.000E+00"))
 })
 
 test_that("column_to_style() handles xlr_integer() correctly",{
   expect_equal(column_to_style(xlr_integer(1:10)),
-               xlr_format_to_openxlsx_format(xlr_format(),"0"))
+               xlr_format_to_openxlsx_format(xlr_format_numeric(),"0"))
 })
 
 test_that("column_to_style() handles xlr_vector() correctly",{

@@ -6,11 +6,16 @@
 \alias{as_xlr_numeric}
 \title{\code{xlr_numeric} vector}
 \usage{
-xlr_numeric(x = numeric(), dp = 2L, scientific = FALSE, style = xlr_format())
+xlr_numeric(
+  x = numeric(),
+  dp = 2L,
+  scientific = FALSE,
+  style = xlr_format_numeric()
+)
 
 is_xlr_numeric(x)
 
-as_xlr_numeric(x, dp = 0L, scientific = FALSE, style = xlr_format())
+as_xlr_numeric(x, dp = 0L, scientific = FALSE, style = xlr_format_numeric())
 }
 \arguments{
 \item{x}{\itemize{
@@ -23,7 +28,7 @@ as_xlr_numeric(x, dp = 0L, scientific = FALSE, style = xlr_format())
 
 \item{scientific}{logical. Whether to format the numeric using scientific notation.}
 
-\item{style}{Additional styling options for the vector. See \link{xlr_format} for more details.}
+\item{style}{Additional styling options for the vector. See \link{xlr_format_numeric} for more details.}
 }
 \value{
 An S3 vector of class \code{xlr_numeric}

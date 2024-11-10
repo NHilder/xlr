@@ -6,11 +6,11 @@
 \alias{as_xlr_percent}
 \title{\code{xlr_percent} vector}
 \usage{
-xlr_percent(x = double(), dp = 0L, style = xlr_format())
+xlr_percent(x = double(), dp = 0L, style = xlr_format_numeric())
 
 is_xlr_percent(x)
 
-as_xlr_percent(x, dp = 0L, style = xlr_format())
+as_xlr_percent(x, dp = 0L, style = xlr_format_numeric())
 }
 \arguments{
 \item{x}{\itemize{
@@ -22,7 +22,7 @@ vector, the data must be in the format \code{"XXX.YYY...\%"}.
 
 \item{dp}{the number of decimal places to print}
 
-\item{style}{Additional styling options for the vector. See \link{xlr_format} for more details.}
+\item{style}{Additional styling options for the vector. See \link{xlr_format_numeric} for more details.}
 }
 \value{
 An S3 vector of class \code{xlr_percent}

@@ -7,7 +7,7 @@ test_that("xlr_integer() empty intialisation works correctly", {
   # it should be length zero
   expect_true(length(xlr_integer())==0)
   # it should have the default attributes
-  expect_equal(pull_style(xlr_integer()),xlr_format())
+  expect_equal(pull_style(xlr_integer()),xlr_format_numeric())
 })
 
 test_that("xlr_integer() initialisation works", {

@@ -12,7 +12,7 @@
 #'  * For `as_xlr_percent()` : a numeric or character vector. For a character
 #'  vector, the data must be in the format `"XXX.YYY...%"`.
 #' @param dp the number of decimal places to print
-#' @param style Additional styling options for the vector. See [xlr_format] for more details.
+#' @param style Additional styling options for the vector. See [xlr_format_numeric] for more details.
 #'
 #' @return An S3 vector of class `xlr_percent`
 #'
@@ -23,7 +23,7 @@
 #' @export
 xlr_percent <- function(x = double(),
                           dp = 0L,
-                          style = xlr_format()){
+                          style = xlr_format_numeric()){
 
   # first we try and cast everything to the right type
   x <- vec_cast(x, double())
@@ -39,7 +39,7 @@ xlr_percent <- function(x = double(),
 
 validate_xlr_percent <- function(x = double(),
                                   dp = integer(),
-                                  style = xlr_format(),
+                                  style = xlr_format_numeric(),
                                   call = caller_env()){
   # optionally check if percent is bounded by [-1,1]
 
@@ -58,13 +58,13 @@ validate_xlr_percent <- function(x = double(),
 #' @param call the calling environment
 new_xlr_percent <- function(x = double(),
                              dp = 0L,
-                             style = xlr_format(),
+                             style = xlr_format_numeric(),
                              call = caller_env()) {
   type_abort(x,is_double,1.1,call = call)
   type_abort(dp,is_scalar_integer,1L,call = call)
   # check it is non empty
   vec_check_size(dp,size = 1L,call = call)
-  type_abort(style,is_xlr_format,xlr_format(),call = call)
+  type_abort(style,is_xlr_format,xlr_format_numeric(),call = call)
 
   # finally we create our vector
   new_vctr(x,
@@ -87,14 +87,14 @@ is_xlr_percent <- function(x) {
 #' @rdname xlr_percent
 as_xlr_percent <- function(x,
                        dp = 0L,
-                       style = xlr_format()){
+                       style = xlr_format_numeric()){
   UseMethod("as_xlr_percent")
 }
 
 #' @export
 as_xlr_percent.default <- function(x,
                                dp = 0L,
-                               style = xlr_format()){
+                               style = xlr_format_numeric()){
   vec_cast(x,xlr_percent(dp = dp,
                      style = style))
 }
@@ -102,7 +102,7 @@ as_xlr_percent.default <- function(x,
 #' @export
 as_xlr_percent.character <- function(x,
                                  dp = 0L,
-                                 style = xlr_format()){
+                                 style = xlr_format_numeric()){
   # this needs fixing
   value <- as.numeric(gsub(" *% *$","",x)) / 100
   xlr_percent(value,

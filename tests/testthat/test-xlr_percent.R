@@ -8,7 +8,7 @@ test_that("xlr_percent() empty intialisation works correctly", {
   expect_true(length(xlr_percent())==0)
   # it should have the default attributes
   expect_equal(pull_dp(xlr_percent()),0)
-  expect_equal(pull_style(xlr_percent()),xlr_format())
+  expect_equal(pull_style(xlr_percent()),xlr_format_numeric())
 })
 
 test_that("xlr_percent() initialisation works", {

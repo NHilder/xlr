@@ -16,7 +16,7 @@ methods::setOldClass(c("xlr_integer","vctrs_vctr"))
 #'  * For `xlr_integer()`: A numeric vector
 #'  * For `is_xlr_integer()`: An object to test
 #'  * For `as_xlr_integer()` : a vector
-#' @param style Additional styling options for the vector. See [xlr_format] for more details.
+#' @param style Additional styling options for the vector. See [xlr_format_numeric] for more details.
 #'
 #' @return An S3 vector of class `xlr_integer`
 #'
@@ -26,7 +26,7 @@ methods::setOldClass(c("xlr_integer","vctrs_vctr"))
 #'
 #' @export
 xlr_integer <- function(x = integer(),
-                         style = xlr_format()){
+                         style = xlr_format_numeric()){
 
   # first we try and cast everything to the right type
   x <- vec_cast(x, integer())
@@ -39,7 +39,7 @@ xlr_integer <- function(x = integer(),
 
 
 validate_xlr_integer <- function(x = integer(),
-                                  style = xlr_format(),
+                                  style = xlr_format_numeric(),
                                   call = caller_env()){
 
 }
@@ -49,10 +49,10 @@ validate_xlr_integer <- function(x = integer(),
 #' @inheritParams xlr_integer
 #' @param call the calling environment
 new_xlr_integer <- function(x = integer(),
-                             style = xlr_format(),
+                             style = xlr_format_numeric(),
                              call = caller_env()) {
   type_abort(x,is_integer,1L,call = call)
-  type_abort(style,is_xlr_format,xlr_format(),call = call)
+  type_abort(style,is_xlr_format,xlr_format_numeric(),call = call)
 
   # finally we create our vector
   new_vctr(x,
@@ -70,19 +70,19 @@ is_xlr_integer <- function(x) {
 #' @export
 #' @rdname xlr_integer
 as_xlr_integer <- function(x,
-                            style = xlr_format()){
+                            style = xlr_format_numeric()){
   UseMethod("as_xlr_integer")
 }
 
 #' @export
 as_xlr_integer.default <- function(x,
-                                    style = xlr_format()){
+                                    style = xlr_format_numeric()){
   vec_cast(x,xlr_integer(style = style))
 }
 
 #' @export
 as_xlr_integer.character <- function(x,
-                                      style = xlr_format()){
+                                      style = xlr_format_numeric()){
   # if R can work it out, cast it to a xlr_integer with default settings
   value <- as.integer(x)
   xlr_integer(value, style = style)

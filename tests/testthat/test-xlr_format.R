@@ -221,5 +221,19 @@ test_that("print.xlr_format looks correct", {
   expect_snapshot(print(xlr_format(border = c("right","left"))))
 })
 
+test_that("xlr_format_numeric initialisation works and creates a xlr_format", {
+  # only the correct arguments
+  expect_s3_class(xlr_format_numeric(),'xlr_format')
+})
 
+test_that("xlr_format_numeric default values different", {
+  # only the correct arguments
+  expect_false(xlr_format_numeric() == xlr_format())
+})
+
+test_that("xlr_format_numeric default values are correct", {
+  # only the correct arguments
+  expect_equal(xlr_format_numeric() |> pull_attr("halign"),"right")
+  expect_equal(xlr_format_numeric() |> pull_attr("valign"),"bottom")
+})
 

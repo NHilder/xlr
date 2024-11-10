@@ -8,7 +8,7 @@ new_xlr_numeric(
   x = double(),
   dp = 0L,
   scientific = FALSE,
-  style = xlr_format(),
+  style = xlr_format_numeric(),
   call = caller_env()
 )
 }
@@ -23,7 +23,7 @@ new_xlr_numeric(
 
 \item{scientific}{logical. Whether to format the numeric using scientific notation.}
 
-\item{style}{Additional styling options for the vector. See \link{xlr_format} for more details.}
+\item{style}{Additional styling options for the vector. See \link{xlr_format_numeric} for more details.}
 
 \item{call}{the calling environment}
 }

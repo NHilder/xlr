@@ -1,7 +1,8 @@
 #' @title Specify formatting options for `xlr_*` types
 #' @description
 #' This function is a utility to work with `openxlxs`'s \link[openxlsx]{createStyle}, and work
-#' with styles between them.
+#' with styles between them. [xlr_format_numeric()] is an alias for [xlr_format()] but with different
+#' default values.
 #'
 #' @param font_size A numeric. The font size, must be greater than 0.
 #' @param font_colour String. The colour of text in the cell. Must be one of `colours()`
@@ -121,6 +122,39 @@ xlr_format <- function(font_size = 11,
 
   # construct a new object
   new_xlr_format(
+    font_size = font_size,
+    font_colour = font_colour,
+    font = font,
+    text_style = text_style,
+    border = border,
+    border_colour = border_colour,
+    border_style = border_style,
+    background_colour = background_colour,
+    halign = halign,
+    valign = valign,
+    wrap_text = wrap_text,
+    text_rotation = text_rotation,
+    indent = indent
+  )
+}
+
+#' @export
+#' @rdname xlr_format
+xlr_format_numeric <-function(font_size = 11,
+                              font_colour = "black",
+                              font = "calibri",
+                              text_style = NULL,
+                              border = NULL,
+                              border_colour = "black",
+                              border_style = "thin",
+                              background_colour = NULL,
+                              halign = "right",
+                              valign = "bottom",
+                              wrap_text = FALSE,
+                              text_rotation = 0L,
+                              indent = 0L){
+
+  xlr_format(
     font_size = font_size,
     font_colour = font_colour,
     font = font,
@@ -456,4 +490,5 @@ custom_equality <- function(e1,e2){
   }
 
 }
+
 

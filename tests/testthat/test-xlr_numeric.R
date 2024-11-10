@@ -5,7 +5,7 @@ test_that("xlr_numeric() empty intialisation works correctly", {
   expect_true(length(xlr_numeric())==0)
   # it should have the default attributes
   expect_equal(pull_dp(xlr_numeric()),2)
-  expect_equal(pull_style(xlr_numeric()),xlr_format())
+  expect_equal(pull_style(xlr_numeric()),xlr_format_numeric())
 })
 
 test_that("xlr_numeric() initialisation works", {

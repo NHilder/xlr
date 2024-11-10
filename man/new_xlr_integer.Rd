@@ -4,7 +4,11 @@
 \alias{new_xlr_integer}
 \title{Constructor of xlr_integer}
 \usage{
-new_xlr_integer(x = integer(), style = xlr_format(), call = caller_env())
+new_xlr_integer(
+  x = integer(),
+  style = xlr_format_numeric(),
+  call = caller_env()
+)
 }
 \arguments{
 \item{x}{A numeric vector
@@ -14,7 +18,7 @@ new_xlr_integer(x = integer(), style = xlr_format(), call = caller_env())
 \item For \code{as_xlr_integer()} : a vector
 }}
 
-\item{style}{Additional styling options for the vector. See \link{xlr_format} for more details.}
+\item{style}{Additional styling options for the vector. See \link{xlr_format_numeric} for more details.}
 
 \item{call}{the calling environment}
 }
