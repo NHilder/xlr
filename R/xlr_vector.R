@@ -91,33 +91,130 @@ as_xlr_vector.default <- function(x,
                                    excel_format = "GENERAL",
                                    style = xlr_format()){
   xlr_vector(x,
-              excel_format = excel_format,
-              style = style)
+            excel_format = excel_format,
+            style = style)
+}
+#' @importFrom pillar pillar_shaft
+#' @export
+pillar_shaft.xlr_vector <- function(x, ...) {
+  # lets first pull out the vector style data
+  style <- pull_style(x)
+  data <- vec_data(x)
+  out <- format(data,
+                justify = attr(style,which = "halign"))
+  pillar::new_pillar_shaft_simple(out,
+                                  align = attr(style,which = "halign"),
+                                  min_width = 10,
+                                  width = 50)
 }
 
-
 #' @export
-print.xlr_vector <- function(x, ...){
-  x <- get_xlr_vector_data(x)
-  print(x)
-  # (silently) return x
-  invisible(x)
+format.xlr_vector <- function(x,...){
+  format(vec_data(x))
 }
 
 # Defines a nice shortening of the name the tibble uses
-
 #' @export
 vec_ptype_abbr.xlr_vector <- function(x,...){
-  "b_vctr"
+  "x_vctr"
 }
 
-#' Get the data from a xlr_vector
-#' @param x a xlr_vector
-#' @return the contents of vector x
-#'
+#' Define generics needed by vctrs to have a well maintained class
 #' @export
-get_xlr_vector_data <- function(x){
-  type_abort(x,is_xlr_vector,xlr_vector())
-  attributes(x) <- NULL
-  x
+vec_ptype2.xlr_vector.xlr_vector <- function(x,y,...){
+  if (pull_style(x) != pull_style(y)){
+    cli_warn('Attribute {.var style} does not match, taking the attributes from the left-hand side.')
+  }
+  if (attr(x,which = "excel_format") != attr(y,which = "excel_format")){
+    cli_warn('Attribute {.var excel_format} does not match, taking the attributes from the left-hand side.')
+  }
+  new_xlr_vector(x,
+                 excel_format = attr(x,which = "excel_format"),
+                 style = pull_style(x))
+}
+#' @export
+vec_cast.xlr_vector.xlr_vector <- function(x,to,...){
+  new_xlr_vector(vec_data(x),
+                  style = pull_style(to))
+}
+
+#' Define generics needed by vctrs to have a well maintained class
+#' Define for character
+#' @export
+vec_ptype2.character.xlr_vector <- function(x,y,...) x
+#' @export
+vec_ptype2.xlr_vector.character <- function(x,y,...) y
+#' @export
+vec_cast.character.xlr_vector <- function(x,to,...){
+  vec_data(x) |>
+    as.character()
+}
+#' @export
+vec_ptype2.numeric.xlr_vector <- function(x,y,...) x
+#' @export
+vec_ptype2.xlr_vector.numeric <- function(x,y,...){
+  if(!is.numeric(vec_data(x))){
+    cli_abort("Can't combime `x` <xlr_vector> and `y` {.type y}, `x` must contain numeric data!")
+  }
+  y
+}
+#' @export
+vec_cast.numeric.xlr_vector <- function(x,to,...){
+  if(!is.numeric(vec_data(x))){
+    cli_abort(c("!" = "Can't convert `x` <xlr_vector> to {.type {to}}, `x` must contain numeric data!",
+                "i" = "You may want to convert your <xlr_vector> to a native R type with `as_base_r()`."))
+  }
+  vec_cast(vec_data(x), to)
+}
+
+#' @export
+vec_ptype2.double.xlr_vector <- function(x,y,...) x
+#' @export
+vec_ptype2.xlr_vector.double <- function(x,y,...){
+  if(!is.numeric(vec_data(x))){
+    cli_abort("Can't combime `x` <xlr_vector> and `y` {.type y}, `x` must contain numeric data!")
+  }
+  y
+}
+#' @export
+vec_cast.double.xlr_vector <- function(x,to,...){
+  if(!is.numeric(vec_data(x))){
+    cli_abort(c("!" = "Can't convert `x` <xlr_vector> to {.type {to}}, `x` must contain numeric data!",
+                "i" = "You may want to convert your <xlr_vector> to a native R type with `as_base_r()`."))
+  }
+  vec_cast(vec_data(x), to)
+}
+#' @export
+vec_ptype2.integer.xlr_vector <- function(x,y,...) x
+#' @export
+vec_ptype2.xlr_vector.integer <- function(x,y,...){
+  if(!is.numeric(vec_data(x))){
+    cli_abort("Can't combime `x` <xlr_vector> and `y` {.type y}, `x` must contain numeric data!")
+  }
+  y
+}
+#' @export
+vec_cast.integer.xlr_vector <- function(x,to,...){
+  if(!is.numeric(vec_data(x))){
+    cli_abort(c("!" = "Can't convert `x` <xlr_vector> to {.type {to}}, `x` must contain numeric data!",
+                "i" = "You may want to convert your <xlr_vector> to a native R type with `as_base_r()`."))
+  }
+  vec_cast(vec_data(x), to)
+}
+#' @export
+vec_ptype2.complex.xlr_vector <- function(x,y,...) x
+#' @export
+vec_ptype2.xlr_vector.complex <- function(x,y,...){
+  if(!is.numeric(vec_data(x)) & !is.complex(vec_data(x))){
+    cli_abort("Can't combime <xlr_vector> which has {.type {vec_data(x)}} type, <xlr_vector> must contain numeric data!")
+  }
+  y
+}
+#' @export
+vec_cast.complex.xlr_vector <- function(x,to,...){
+  if(!is.numeric(vec_data(x)) & !is.complex(vec_data(x))){
+    cli_abort(c("!" = "Can't convert `x` <xlr_vector> to {.type {to}}, `x` must contain complex data!",
+                "i" = "You may want to convert your <xlr_vector> to a native R type with `as_base_r()`."))
+  }
+  vec_cast(vec_data(x), to)
 }
