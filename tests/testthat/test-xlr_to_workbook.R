@@ -495,16 +495,17 @@ test_that("add_TOC_to_workbook() adds the sheet names and titles from an existin
 
 test_that("data_to_worksheet() generates data correctly",{
   test_df <-
-    mtcars |>
-    mutate(mpg = mpg,
-           cyl = as.integer(cyl),
-           disp = xlr_numeric(disp, dp = 0),
-           hp = xlr_vector(hp),
-           drat = xlr_numeric(drat, dp = 4),
-           wt = xlr_percent(wt,dp =2),
-           vs = rep("test",nrow(mtcars)),
-           scientific = xlr_numeric(qsec,scientific = TRUE)) |>
-    suppressWarnings()
+    data.frame(test_r_numeric = mtcars$mpg,
+               test_r_integer = as.integer(mtcars$cyl),
+               test_xlr_numeric = xlr_numeric(mtcars$disp, dp = 0),
+               test_xlr_vector = xlr_vector(mtcars$hp),
+               test_xlr_numeric = xlr_numeric(mtcars$drat, dp = 4),
+               test_xlr_percent = xlr_percent(mtcars$wt,dp =2),
+               test_r_char = rep("test",nrow(mtcars)),
+               test_xlr_scientific = xlr_numeric(mtcars$qsec,scientific = TRUE),
+               test_r_factor = factor(rep(c("a","b"),16)),
+               test_r_complex = rep(1+1i, nrow(mtcars))
+    )
 
   wb <- createWorkbook()
   addWorksheet(wb,"Test 1")
@@ -538,19 +539,20 @@ test_that("data_to_worksheet() gives an error if a sheet doesn't exist.",{
 })
 
 
-test_that("data_to_worksheet() adds data for an excel data table option",{
+test_that("data_to_worksheet() adds data correctly, we check all types",{
 
   test_df <-
-    mtcars |>
-    mutate(mpg = mpg,
-           cyl = as.integer(cyl),
-           disp = xlr_numeric(disp, dp = 0),
-           hp = xlr_vector(hp),
-           drat = xlr_numeric(drat, dp = 4),
-           wt = xlr_percent(wt,dp =2),
-           vs = rep("test",nrow(mtcars)),
-           scientific = xlr_numeric(qsec,scientific = TRUE)) |>
-    suppressWarnings()
+    data.frame(test_r_numeric = mtcars$mpg,
+           test_r_integer = as.integer(mtcars$cyl),
+           test_xlr_numeric = xlr_numeric(mtcars$disp, dp = 0),
+           test_xlr_vector = xlr_vector(mtcars$hp),
+           test_xlr_numeric = xlr_numeric(mtcars$drat, dp = 4),
+           test_xlr_percent = xlr_percent(mtcars$wt,dp =2),
+           test_r_char = rep("test",nrow(mtcars)),
+           test_xlr_scientific = xlr_numeric(mtcars$qsec,scientific = TRUE),
+           test_r_factor = factor(rep(c("a","b"),16)),
+           test_r_complex = rep(1+1i, nrow(mtcars))
+           )
 
   wb <- createWorkbook()
   addWorksheet(wb,"Test 1")
@@ -581,15 +583,17 @@ test_that("data_to_worksheet() adds data for an excel data table option",{
 
 test_that("data_to_worksheet() can change the data table names",{
   test_df <-
-    mtcars |>
-    mutate(mpg = mpg,
-           cyl = as.integer(cyl),
-           disp = xlr_numeric(disp, dp = 0),
-           hp = xlr_vector(hp),
-           drat = xlr_numeric(drat, dp = 4),
-           wt = xlr_percent(wt,dp =2),
-           vs = rep("test",nrow(mtcars))) |>
-    suppressWarnings()
+    data.frame(test_r_numeric = mtcars$mpg,
+               test_r_integer = as.integer(mtcars$cyl),
+               test_xlr_numeric = xlr_numeric(mtcars$disp, dp = 0),
+               test_xlr_vector = xlr_vector(mtcars$hp),
+               test_xlr_numeric = xlr_numeric(mtcars$drat, dp = 4),
+               test_xlr_percent = xlr_percent(mtcars$wt,dp =2),
+               test_r_char = rep("test",nrow(mtcars)),
+               test_xlr_scientific = xlr_numeric(mtcars$qsec,scientific = TRUE),
+               test_r_factor = factor(rep(c("a","b"),16)),
+               test_r_complex = rep(1+1i, nrow(mtcars))
+    )
 
   wb <- createWorkbook()
   addWorksheet(wb,"Test 1")
