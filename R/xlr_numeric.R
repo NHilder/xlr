@@ -162,7 +162,7 @@ format.xlr_numeric <- function(x, ...){
 
 #' @export
 vec_ptype_abbr.xlr_numeric <- function(x,...){
-  "b_dbl"
+  "x_dbl"
 }
 
 # now define some casting

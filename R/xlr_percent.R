@@ -128,7 +128,7 @@ format.xlr_percent <- function(x, ...){
 
 #' @export
 vec_ptype_abbr.xlr_percent <- function(x,...){
-  "pct"
+  "x_pct"
 }
 
 

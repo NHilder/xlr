@@ -107,7 +107,7 @@ format.xlr_integer <- function(x, ...){
 
 #' @export
 vec_ptype_abbr.xlr_integer <- function(x,...){
-  "b_int"
+  "x_int"
 }
 
 # now define some casting--------------------------------------------
