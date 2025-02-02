@@ -685,11 +685,6 @@ data_to_worksheet <- function(x,
   }
 }
 
-#' Check if it is an xlr vector type
-is_xlr_type <- function(x){
-  is_xlr_integer(x) | is_xlr_percent(x) | is_xlr_numeric(x) | is_xlr_vector(x)
-}
-
 convert_xlr_type_to_R <- function(x,
                                    call = caller_env()){
   # Lets only convert xlr types, if not we skip the column

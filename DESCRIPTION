@@ -31,6 +31,7 @@ Collate:
   build_question_block_table.R
   table_utils.R
   data.R
+  is_xlr_type.R
 Suggests: 
     knitr,
     rmarkdown,

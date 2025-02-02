@@ -119,7 +119,7 @@ vec_ptype_abbr.xlr_vector <- function(x,...){
   "x_vctr"
 }
 
-#' Define generics needed by vctrs to have a well maintained class
+# Define generics needed by vctrs to have a well maintained class
 #' @export
 vec_ptype2.xlr_vector.xlr_vector <- function(x,y,...){
   if (pull_style(x) != pull_style(y)){
@@ -138,8 +138,8 @@ vec_cast.xlr_vector.xlr_vector <- function(x,to,...){
                   style = pull_style(to))
 }
 
-#' Define generics needed by vctrs to have a well maintained class
-#' Define for character
+# Define generics needed by vctrs to have a well maintained class
+# Define for character
 #' @export
 vec_ptype2.character.xlr_vector <- function(x,y,...) x
 #' @export
