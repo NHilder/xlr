@@ -65,6 +65,30 @@ test_that("xlr_vector.format prints all the types (we don't put rules on it)",{
   expect_output(print(suppressWarnings(xlr_vector(1L))))
 })
 
+test_that("Strings longer than 50 are reduced, when needed to",{
+  greater_10 <- paste0(rep("a",60),collapse = "")
+  greater_10 <- xlr_vector(rep(greater_10,10))
+  test <- xlr_table(data.frame("a" = rep(1,10),
+                               "greater_10_1" = greater_10,
+                               "greater_10_2" = greater_10,
+                               "greater_10_3" = greater_10,
+                               "greater_10_4" = greater_10))
+  expect_snapshot(test)
+})
+
+test_that("Strings are at a minimum 10 elements",{
+  over_10 <- paste0(rep("a",100),collapse = "")
+  over_10 <- xlr_vector(rep(over_10,10))
+
+  under_10 <- paste0(rep("a",8),collapse = "")
+  under_10 <- xlr_vector(rep(under_10,10))
+
+  test <- xlr_table(data.frame("a" = rep(1,10),
+
+                               under_10,over_10,under_10,over_10))
+  expect_snapshot(test)
+})
+
 test_that("Implicit conversion works for two xlr_vectors",{
   expect_silent(c(xlr_vector("a"),xlr_vector("a")))
   # Expect we get a warning when the attributes differ
@@ -111,4 +135,5 @@ test_that("Explicit conversion works for xlr_vector to integer",{
   expect_equal(xlr_vector(1) |> as.integer(),as.integer(1))
   expect_equal(vec_cast(xlr_vector(1),as.integer(1)),as.integer(1))
 })
+
 

@@ -105,7 +105,9 @@ pillar_shaft.xlr_vector <- function(x, ...) {
   pillar::new_pillar_shaft_simple(out,
                                   align = attr(style,which = "halign"),
                                   min_width = 10,
-                                  width = 50)
+                                  width = 50,
+                                  shorten = "back"
+                                  )
 }
 
 #' @export
