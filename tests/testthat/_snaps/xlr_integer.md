@@ -18,7 +18,7 @@
     Output
       # A tibble: 100 x 1
             test
-         <b_int>
+         <x_int>
        1       0
        2       1
        3       2

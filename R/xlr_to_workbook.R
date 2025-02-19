@@ -644,8 +644,7 @@ data_to_worksheet <- function(x,
   error_if_sheet_not_exists(wb,sheet_name,call = call)
 
   # also convert all the xlr_types to their basic type
-  df <- convert_xlr_type_to_R(x,
-                               call)
+  df <- convert_xlr_type_to_R(x, call)
   # now lets add the data
   if (!excel_data_table){
     writeData(wb,
@@ -688,8 +687,15 @@ data_to_worksheet <- function(x,
 
 convert_xlr_type_to_R <- function(x,
                                    call = caller_env()){
+  # Lets only convert xlr types, if not we skip the column
   x |>
-    lapply(\(x) vec_data(x)) |>
+    lapply(function(x){
+        if(is_xlr_type(x)){
+          y <- as_base_r(x)
+          return(y)
+        }
+        x
+    }) |>
     as.data.frame(check.names = FALSE)
 }
 
@@ -714,7 +720,7 @@ column_to_style <- function(col){
   }
   else if(is_xlr_vector(col)){
     # Lets actually pull out the underlying data and call it again
-    col <- get_xlr_vector_data(col)
+    col <- as_base_r(col)
     # we return early, with a sneaky recursive call
     return(column_to_style(col))
   }

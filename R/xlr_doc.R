@@ -8,6 +8,7 @@ NULL
 
 #' @import openxlsx
 #' @import rlang
+#' @importFrom vctrs vec_cast
 #' @importFrom tibble is_tibble tibble as_tibble
 #'
 #' @importFrom dplyr arrange count distinct filter mutate relocate rename
