@@ -136,4 +136,3 @@ test_that("Explicit conversion works for xlr_vector to integer",{
   expect_equal(vec_cast(xlr_vector(1),as.integer(1)),as.integer(1))
 })
 
-

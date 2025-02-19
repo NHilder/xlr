@@ -506,7 +506,6 @@ test_that("data_to_worksheet() generates data correctly",{
                test_r_factor = factor(rep(c("a","b"),16)),
                test_r_complex = rep(1+1i, nrow(mtcars))
     )
-
   wb <- createWorkbook()
   addWorksheet(wb,"Test 1")
   data_to_worksheet(test_df,wb,"Test 1")
