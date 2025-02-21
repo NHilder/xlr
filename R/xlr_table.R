@@ -210,7 +210,7 @@ new_xlr_table <- function(x,
 #'
 #' @noRd
 convert_to_xlr_types <- function(x) {
-  # save the xlr_type information
+
   if (is_xlr_numeric(x) || is_xlr_percent(x) ||
       is_xlr_integer(x) || is_xlr_vector(x)) {
     return(x)
@@ -220,16 +220,10 @@ convert_to_xlr_types <- function(x) {
     x <- xlr_vector(as.character(x))
     return(x)
   }
-  else{
-    # first we need to work out if something is a
-    x
-    # convert to xlr_types if it is a general type
-    x <- switch(typeof(x),
-                "double" = xlr_numeric(x),
-                "integer" = xlr_integer(x),
-                xlr_vector(x))
-    return(x)
-  }
+  else if (inherits(x,"Date") || inherits(x,"POSIXt")) return(x)
+  else if (is.integer(x)) return(xlr_integer(x))
+  else if (is.numeric(x)) return(xlr_numeric(x))
+  else return(xlr_vector(x))
 }
 
 

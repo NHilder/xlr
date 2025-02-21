@@ -135,3 +135,36 @@ test_that("update_theme() updates the theme correctly",{
   expect_equal(pull_column_heading_format(x), xlr_format(font_size=88,
                                                           font_colour = "red"))
 })
+
+test_that("convert_to_xlr_types does not change xlr_types",{
+  expect_equal(convert_to_xlr_types(xlr_numeric(1:100/100)),xlr_numeric(1:100/100))
+  expect_equal(convert_to_xlr_types(xlr_percent(1:100/100)),xlr_percent(1:100/100))
+  expect_equal(convert_to_xlr_types(xlr_integer(1:100)),xlr_integer(1:100))
+  expect_equal(convert_to_xlr_types(xlr_vector(rep("A",100))),xlr_vector(rep("A",100)))
+})
+
+test_that("convert_to_xlr_types converts numerics, integers, and factors correctly",{
+  expect_true(convert_to_xlr_types(c(1:100/100)) |>
+                is_xlr_numeric())
+  expect_true(convert_to_xlr_types(1L:100L) |>
+                is_xlr_integer())
+  expect_true(convert_to_xlr_types(factor(c("a","b","c","c"))) |>
+                is_xlr_vector())
+})
+
+test_that("convert_to_xlr_types does not convert date",{
+  # check it works with the base R dates
+  expect_equal(convert_to_xlr_types(as.Date(c("2023-01-01","2023-01-01"))),
+               as.Date(c("2023-01-01","2023-01-01")))
+  expect_equal(convert_to_xlr_types(as.POSIXct(c("2023-01-01","2023-01-01"))),
+               as.POSIXct(c("2023-01-01","2023-01-01")))
+  expect_equal(convert_to_xlr_types(as.POSIXlt(c("2023-01-01","2023-01-01"))),
+               as.POSIXlt(c("2023-01-01","2023-01-01")))
+
+  # check it works with lubridate dates
+  expect_equal(convert_to_xlr_types(lubridate::as_date(c("2023-01-01","2023-01-01"))),
+               lubridate::as_date(c("2023-01-01","2023-01-01")))
+  expect_equal(convert_to_xlr_types(lubridate::as_datetime(c("2023-01-01","2023-01-01"))),
+               lubridate::as_datetime(c("2023-01-01","2023-01-01")))
+})
+
