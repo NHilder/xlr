@@ -9,6 +9,9 @@ is_xlr_format(x)
 \arguments{
 \item{x}{An object to test}
 }
+\value{
+a logical.
+}
 \description{
 Test if an object is a \code{xlr_format}
 }

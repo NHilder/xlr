@@ -26,8 +26,9 @@ as_xlr_integer(x, style = xlr_format_numeric())
 An S3 vector of class \code{xlr_integer}
 }
 \description{
-This creates a double vector that represent doubles nicely, so that it is
-both printed nicely, and can easily be outputted to excel in the correct format
+This creates an integer vector that will be printed neatly and can easily be
+exported to Excel using it's native format.You can
+convert a vector back to its base type with \code{\link[=as_base_r]{as_base_r()}}.
 }
 \details{
 Internally, \code{xlr_integer} uses \code{vec_cast} to convert numeric types

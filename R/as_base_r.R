@@ -1,7 +1,7 @@
 
 #' Convert xlr types to their base R type
 #'
-#' `as_base_r_type` converts xlr objects, [xlr_table], [xlr_numeric], [xlr_integer], [xlr_percent], and
+#' `as_base_r` converts xlr objects, [xlr_table], [xlr_numeric], [xlr_integer], [xlr_percent], and
 #' [xlr_format] to their base R type.
 #'
 #' @param x a xlr object

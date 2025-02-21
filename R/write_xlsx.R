@@ -23,6 +23,8 @@
 #' @param excel_data_table logical. Whether to save the data as an Excel table
 #' in the worksheet. These are more accessible than data in the sheet.
 #'
+#' @return None
+#'
 #' @export
 #'
 #' @example inst/examples/write_xlsx.R

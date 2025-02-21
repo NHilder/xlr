@@ -220,7 +220,7 @@ convert_to_xlr_types <- function(x) {
     x <- xlr_vector(as.character(x))
     return(x)
   }
-  else if (inherits(x,"Date") || inherits(x,"POSIXt")) return(x)
+  else if (is(x,"Date") || is(x,"POSIXt")) return(x)
   else if (is.integer(x)) return(xlr_integer(x))
   else if (is.numeric(x)) return(xlr_numeric(x))
   else return(xlr_vector(x))

@@ -2,9 +2,9 @@
 
 #' `xlr_percent` vector
 #'
-#' This creates a double vector that represent percentages, so that it is
-#' both printed nicely, and can easily be outputted to excel in the correct format. You can
-#' convert a vector back to its base type with [as_base_r()].
+#' This creates a numeric vector that will be printed as a percentage and
+#' exported to Excel using it's native format.You can convert a vector back to
+#' its base type with [as_base_r()].
 #'
 #' @param x
 #'  * For `xlr_percent()`: A numeric vector

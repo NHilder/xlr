@@ -33,6 +33,8 @@
 #' 90.
 #' @param indent Integer. The number of indent positions, must be an integer between 0 and 250.
 #'
+#' @return a `xlr_format` S3 class.
+#'
 #' @details
 #' ## Text styling
 #' For text styling you can pass either one of the options or options in a
@@ -176,6 +178,7 @@ xlr_format_numeric <-function(font_size = 11,
 #'
 #' @export
 #'
+#' @return a logical.
 #' @example inst/examples/xlr_format_utils.R
 is_xlr_format <- function(x) inherits(x,"xlr_format")
 

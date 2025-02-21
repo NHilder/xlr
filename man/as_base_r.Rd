@@ -13,7 +13,7 @@ as_base_r(x)
 The base type of the base R object.
 }
 \description{
-\code{as_base_r_type} converts xlr objects, \link{xlr_table}, \link{xlr_numeric}, \link{xlr_integer}, \link{xlr_percent}, and
+\code{as_base_r} converts xlr objects, \link{xlr_table}, \link{xlr_numeric}, \link{xlr_integer}, \link{xlr_percent}, and
 \link{xlr_format} to their base R type.
 }
 \details{

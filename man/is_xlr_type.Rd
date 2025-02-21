@@ -2,16 +2,18 @@
 % Please edit documentation in R/is_xlr_type.R
 \name{is_xlr_type}
 \alias{is_xlr_type}
-\title{Check if a variable is an xlr type}
+\title{Check if a variable is an xlr type
+This function tests whether an R variable has a xlr type.}
 \usage{
 is_xlr_type(x)
 }
 \arguments{
 \item{x}{a variable you wish to test}
 }
+\value{
+a logical.
+}
 \description{
 Check if a variable is an xlr type
-}
-\details{
 This function tests whether an R variable has a xlr type.
 }

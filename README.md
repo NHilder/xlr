@@ -36,6 +36,11 @@ You can install the development version of xlr from
 pak::pak("NHilder/xlr")
 ```
 
+You can install the *release* version of xlr via CRAN using:
+``` r
+install.packages("xlr")
+```
+
 ## Example
 
 This is a example of how to create a two-way table, fix the formatting

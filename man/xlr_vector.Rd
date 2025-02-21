@@ -31,9 +31,10 @@ more details.}
 An S3 vector of class \code{xlr_vector}
 }
 \description{
-A general container for including additional styling options with a vector.
-It adds extra  formatting attribute so that it is
-can easily be outputted to excel in the correct format.
+A general container for including additional styling options within a vector
+so that it can easily be exported to excel. This vector type should be used
+for characters, factors, Booleans, complex numbers, etc. It does
+not support dates.
 }
 \details{
 While you can use it with \code{integer}, and \code{double} types and specifying the

@@ -41,6 +41,9 @@ file.}
 \item{excel_data_table}{logical. Whether to save the data as an Excel table
 in the worksheet. These are more accessible than data in the sheet.}
 }
+\value{
+None
+}
 \description{
 This function writes \code{xlr_table}, \code{data.frame}, or \code{tibble} to an .xlsx
 (Excel file). Like \link[openxlsx]{write.xlsx} you can also write a \code{list} of

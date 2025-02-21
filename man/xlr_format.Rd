@@ -79,6 +79,9 @@ sides specified in \code{border}. The list of styles are \code{"none"}, \code{"t
 
 \item{indent}{Integer. The number of indent positions, must be an integer between 0 and 250.}
 }
+\value{
+a \code{xlr_format} S3 class.
+}
 \description{
 This function is a utility to work with \code{openxlxs}'s \link[openxlsx]{createStyle}, and work
 with styles between them. \code{\link[=xlr_format_numeric]{xlr_format_numeric()}} is an alias for \code{\link[=xlr_format]{xlr_format()}} but with different

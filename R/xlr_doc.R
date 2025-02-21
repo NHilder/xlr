@@ -26,7 +26,7 @@ NULL
 #'
 #' @importFrom haven as_factor
 #'
-#' @importFrom methods setOldClass
+#' @importFrom methods setOldClass is
 #'
 #' @importFrom pillar tbl_sum tbl_format_footer
 #'
