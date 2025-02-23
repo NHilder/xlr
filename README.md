@@ -4,6 +4,8 @@
 # xlr or ‘Exceller’
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/NHilder/xlr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/NHilder/xlr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 # xlr
