@@ -1,0 +1,497 @@
+---
+title: Getting started with xlr
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with xlr}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r, include = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(xlr)
+# delete the example files if they exist already
+if (file.exists("example.xlsx")) file.remove("example.xlsx")
+if (file.exists("example2.xlsx")) file.remove("example2.xlsx")
+options(tibble.print_min = 4L, tibble.print_max = 4L)
+set.seed(123456)
+```
+
+xlr is designed to help with the analysis of survey data and
+conduct modelling, and then export this information to Excel in an easy
+and consistent way.
+
+It is designed to help people with little R experience analyse survey
+data quickly and easily. This includes functions to quickly analyse
+multiple-response questions and block questions.
+
+This package also provides a simple and easy to use interface with
+Excel, building on the excellent work of the [openxlsx] package. It is
+designed with ease of use in mind, at the expense of some functionality
+of `openxlsx`.
+
+This package relies extensively on the
+[tidyverse](https://www.tidyverse.org/) and so we use many of the same
+terms and concepts here.
+
+There are three aspects to this package:
+
+1.  Functions to help with the analysis of survey complex survey data.
+
+2.  Functions to help export this data to Excel.
+
+3.  New `R` types to support consistent formatting in Excel.
+
+## Data: clothes_opinions
+
+To explore how to analyse complex data we'll use the dataset
+`clothes_opinions`. This dataset contains fake survey data with peoples
+opinions on clothes as well as a series of demographic characteristics.
+It is documented in `?clothes_opinions`.
+
+```{r setup}
+dim(clothes_opinions)
+clothes_opinions
+```
+
+`clothes_opinions` is a `tibble` a adapted type of `data.frame`. You can
+learn more about tibbles at
+[https://tibble.tidyverse.org](https://tibble.tidyverse.org/).
+
+It was designed to mimic data initially saved as a `.sav` file and
+imported with `haven::import_spss()`. Data with this form can easily be
+exported from major survey platforms such as
+[Qualtrics](https://www.qualtrics.com/), and includes useful information
+such as question labels which xlr functions can utilise
+automatically.
+
+## Analysing survey data
+
+There are three main functions to analyse survey data:
+
+-   `build_table()` which creates 1, 2, 3, ... -way tables.
+
+-   `build_mtable()` which creates 1, 2, 3, ... -way tables for multiple
+    response questions.
+
+-   `build_qtable()` which creates 1, 2, 3, ... -way tables for a
+    **block** of questions.
+
+We will start by introducing `xlr_table()` and go through all of its
+functionality. This functionality is similar for `build_mtable()` and
+`build_qtable()`.
+
+### build_table()
+
+This function provides roughly the same functionality as base R's
+`table()` except it provides a lot more support for easy use. Like all
+functions in this package, we follow the convention of the first
+argument is the data.frame (or tibble) that you want to work on. The
+second argument are the columns we want to build a table with, and the
+remainder are options for `build_table()`.
+
+Let's first calculate the number of people of each gender in
+`clothes_opinions`:
+
+```{R}
+clothes_opinions |>
+  build_table(gender2)
+```
+
+You can see that we have outputted a table which shows the number of
+people and the percentage of each gender in our data set.
+
+You can easily create two or three way tables by passing additional
+columns to the `cols` argument:
+
+```{R}
+clothes_opinions |> 
+  build_table(c(age_group, gender2),
+              table_title = "Gender by age make up of clothing opinion data")
+
+clothes_opinions |> 
+  build_table(c(age_group, gender2, Q1_1),
+              table_title = "Responses to Q1_1 by age and gender")
+```
+
+The `cols` argument uses **tidy selections** to select the columns we
+want to make a table with. See
+[\<tidy-select\>](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html)
+for more details on the selectors. This should be familiar for people
+who use dplyr verbs.
+
+The data returns has a **long format** by default. Currently wide table
+table is unsupported but may be included in a future update.
+
+#### Introduction to xlr_table()
+
+You can also see that it has a special type `xlr_table()`. This is a S3
+class defined by xlr to help output the data to Excel. It contains
+the table data, a table title and a footnote, as well as hidden data to
+help format the table in Excel. You can learn more about `xlr_table()`
+in the vignette `to do`.
+
+You can directly pass a title and a footnote to `build_table()` by
+passing them as arguments to `build_table()`:
+
+```{R}
+clothes_opinions |>
+  build_table(gender2,
+              table_title = "Gender make up of clothing opinion data",
+              footnote = "This shows that the data has a representative sample.")
+```
+
+#### Labels in xlr
+
+Now if you were paying close attention, you may have noticed that
+`clothes_opinions$gender2` went from being `haven_labelled` to a
+`xlr_vector()`. A `xlr_vector` is a wrapper around other types (see
+below for more details), and the base type is `character()`. All
+`build_*` functions will convert this data automatically, as well as
+pull information on the labels. See `haven`'s documentation for more
+details about the labelled type:
+<https://haven.tidyverse.org/reference/labelled.html>.
+
+Additionally, if your data is labelled, you can pull out the question
+label metadata automatically and include it in the footnote by
+specifying `use_questions = TRUE`. Columns that don't have a label are
+ignored.
+
+```{R}
+clothes_opinions |>
+  build_table(c(age_group, gender2),
+              table_title = "Gender by age make up of clothing opinion data",
+              use_question = TRUE)
+```
+
+#### Weights
+
+Weights are supported, you only need to pass the column name for the
+weights to the `wt` argument:
+
+```{R}
+clothes_opinions |>
+  build_table(c(age_group, gender2),
+              table_title = "Gender by age make up of clothing opinion data (weighted)",
+              wt = weight)
+```
+
+#### Missing data
+
+`build_table()` uses only complete cases by default, that is for one of
+the columns we are if a row includes a single `NA` it is removed from
+the table calculation. To include `NA` values set `use_NA = TRUE`. This
+will mean that **ALL** `NA`'s will be included in the calculation of the
+table:
+
+```{R}
+clothes_opinions |>
+  build_table(c(group, age_group),
+              table_title = "Survey group by age make up of clothing opinion data",
+              use_NA = TRUE)
+```
+
+If you would like to include the `NA` values of only one or some of the
+columns we recommend using `dplyr::filter()` as demonstrated below.
+
+```{R}
+clothes_opinions |>
+  # remove all the rows where group is missing
+  dplyr::filter(!is.na(group)) |>
+  # by setting use_NA to true we keep the NA's from the age_group column
+  build_table(c(group, age_group),
+              table_title = "Survey group by age make up of clothing opinion data",
+              use_NA = TRUE)
+```
+
+### build_mtable()
+
+This function is design to analyse multiple response questions in survey
+data. To do so the data must be **wide data** with *one* response per
+column (and the remaining responses NA). This is how Qualtrics exports
+this data by default. The format is shown below:
+
+```{R}
+clothes_opinions |>
+  dplyr::select(starts_with("Q2"))
+```
+
+To create a table using the `mcol` argument to specify the mutliple
+response columns you would like to create a table with:
+
+```{R}
+clothes_opinions |>
+  build_mtable("Q2")
+```
+
+The output `N` count is the number of people that responded to each
+multiple response option, the `N_group` is the total number of people
+that responded to this question. The `Percent` is the percentage of
+people that responded to each of the options. As you can respond to
+multiple options this percentage will likely not add up to 100.
+
+Note, internally `build_mtable()` uses `tidyselect::starts_with()` to
+select the columns that you would like to build a table with, because of
+this you need to pass a string to `mcol`.
+
+You can cut your multiple response column by other data by passing
+columns to the `cols` argument. As with `build_table()` it uses
+`<tidy-eval>` to select the columns.
+
+```{R}
+clothes_opinions |>
+  build_mtable(mcol = "Q2",
+               cols = age_group)
+```
+
+The `N_group` for this question is the number of people in each age
+group that responded to the multiple response question.
+
+It is common that a mulitple response column will include an *other*
+response in a survey. This column needs to be removed *before* you
+analyse the data with `build_mtable()`. We recommend using
+`dplyr::select` as demonstrated below:
+
+```{R}
+clothes_opinions |>
+  dplyr::select(-Q3_other) |>
+  build_mtable(mcol = "Q3",
+               cols = age_group)
+```
+
+As above you can see the `build_mtable()` automatically converts haven
+labelled data to a `xlr_vector()`.
+
+#### Multiple multiple response columns
+
+You can pass up to **two** multiple response columns to
+`build_mtable()`, any more and we recommend filtering before hand.
+
+```{R}
+clothes_opinions |>
+  dplyr::select(-Q3_other) |>
+  build_mtable(mcol = c("Q2","Q3"))
+```
+
+The `N_group` is the number of people in each age_group that responded
+to one of the options in age_group. `N` is the number of people that
+responded to the multiple response question in each group.
+
+### build_qtable()
+
+This function is designed to help analyse a block of questions. A block
+of questions is where all the responses use the same scale (it is
+usually a matrix question). The data should have the form:
+
+```{R}
+clothes_opinions |>
+  dplyr::select(starts_with("Q1"))
+```
+
+To analyse a question block, you need to pass a `<tidy-eval>` selection to the
+function to select all columns in the question block. See we pass the same statement
+we made in the select statement above.
+
+```{R}
+clothes_opinions |>
+  build_qtable(starts_with("Q1"))
+
+# You can also select the columns directly
+clothes_opinions |>
+  build_qtable(c(Q1_1,Q1_2,Q1_3,Q1_4))
+```
+
+
+You can cut all the columns in the question block by another column(s)
+by specifying the `cols` argument. As with `build_table()` it uses
+`<tidy-eval>` to select the columns.
+
+```{R}
+clothes_opinions |>
+  build_qtable(starts_with("Q1"),
+               gender2)
+```
+
+## xlr_table(), xlr types and writing to Excel
+
+A key part of the xlr is to export data to Excel in an easy, and
+user friendly way. The workhorse function in this scenario is
+`xlr_table()`, and if you like the default options is meant to be the
+function that you will mostly use.
+
+A `xlr_table()` is a `tibble::tibble()` with an optional title, and
+footnote, as well as a number of formatting options.
+
+```{R}
+clothes_opinions |>
+  xlr_table("This is a title",
+             "this is a footnote with extra information")
+```
+
+When you call `xlr_table()` it converts the elements of your table to
+different `xlr` types.
+
+### Types
+
+xlr types are defined to help with the formatting of columns when
+they are output to Excel. There are four difference types defined in
+xlr:
+
+-   `xlr_numeric()` to format doubles neatly.
+
+-   `xlr_integer()` to format integer data neatly.
+
+-   `xlr_percent()` to format numeric data as a percentage.
+
+-   `xlr_vector()` a general type to format data nicely without
+    specific rules.
+
+All of the above variables contain the argument `xlr_format` which only
+takes a `xlr_format()` object. `xlr_format()` allows you to control
+different formatting options when the data is outputted to Excel, it
+currently does not change how the data looks in console. You can change
+the font size, colour, text position etc. with `xlr_format()`. See
+`?xlr_format` for the full range of options.
+
+For `xlr_numeric()` and `xlr_percent()` you can also set the number of
+decimal places through setting `dp=x`.
+
+### Updating/Formatting columns
+
+You can update the format of individual columns by using `dplyr::mutate`
+or base R by setting the column with new formatting options:
+
+```{R}
+table <- xlr_table(mtcars, "A clever title", "A useful footnote")
+             
+# Lets update the format of the mpg column so that it displays using 0 decimal places
+table$mpg <- xlr_numeric(table$mpg, dp = 0)
+
+# You can also use mutate to achieve the same thing, this is useful for
+# updating multiple columns either by using across or in a single statement
+table <- table |>
+  dplyr::mutate(
+    mpg = xlr_numeric(mpg, dp = 0),
+    # convert columns that are integers to xlr_integer type
+    across(vs:carb, ~ xlr_integer(.x))
+  )
+```
+
+### dplyr verbs
+
+The `xlr_table()` type is implemented to work with most `dplyr` verbs
+to make working with the data as seamless as possible. To find out more
+see `?xlr_and_dplyr`.
+
+## Writing data to Excel
+
+xlr makes writing data to Excel easy using the `write_xlsx()`
+function. This function takes either a `xlr_table`, `tibble` or
+`data.frame`. Note when you output a single object you need to specify
+
+```{R}
+write_xlsx(mtcars,
+           file = "example.xlsx",
+           sheet_name = "example_sheet")
+```
+
+The output looks like this in Excel:
+
+![Example of exporting a data.frame with write_xlsx, it shows a simple
+table in Excel.](img/data.frame_example.png)
+
+When you output a `xlr_table` with this function additional formatting
+will be applied to the data as well as the title and a footnote.
+
+```{R}
+write_xlsx(table,
+           file = "example.xlsx",
+           sheet_name = "example_sheet")
+```
+
+The output looks like this in Excel:
+
+![Example of using a xlr_table with write_xlsx, the table now has a
+table, footnote and formatting!](img/xlr_table_example.png)
+
+To update this formatting you either need to update the styles of the
+columns using the above, or if you want to modify the style of the table
+use `update_theme`. You can modify the the format of the title,
+footnote, column heading or table body. The below example shows how to
+update title colour to be red and the underlined:
+
+```{R}
+table <- update_theme(table,
+                      title_format = xlr_format(font_colour = "red",
+                                                 text_style = "underline"))
+write_xlsx(table,
+           file = "example.xlsx",
+           sheet_name = "example_sheet")
+```
+
+The output looks like this:
+
+![Example of update theme in use, the title is red and
+underlined](img/update_theme_example.png)
+
+See `?update_theme` for more details.
+
+Like `openxlsx::write.xlsx()` you can also pass a list of What is
+particularly useful about this function is that it can output a `list`
+of `xlr_table`'s (or tibbles or data.frames) to Excel. This is useful
+if you are working survey data as you usually generate a long list of
+tables in a list.
+
+If you have a `list` of tables, set `TOC = TRUE` in order to generate a
+table of contents from the table data.
+
+# Putting it all together
+
+Example of how you can use xlr to analyse a survey is below:
+
+```{R}
+output_list <- list()
+
+output_list[["gender"]] <- build_table(clothes_opinions,
+                                       gender2,
+                                       "Gender in clothes opinions survey")
+
+
+output_list[["gender age"]] <- build_table(clothes_opinions,
+                                       c(gender2, age_group),
+                                       "Gender by age in clothes opinions survey")
+
+output_list[["gender age"]] <- build_table(clothes_opinions,
+                                       c(gender2, age_group),
+                                       "Gender by age in clothes opinions survey")
+
+output_list[["opinions"]] <- build_qtable(clothes_opinions,
+                                        starts_with("Q1"),
+                                       table_title = "Opinions on different clothing items")
+
+# Sometimes it is neater to use the pipe operator on the data
+# This also allows auto completion in RStudio for variable names
+output_list[["opinions gender"]] <- 
+  clothes_opinions |>
+    build_qtable(starts_with("Q1"),
+                  gender2,
+                 table_title = "Opinions on different clothing items by gender2",
+                 use_questions = TRUE)
+
+# now output the data, we turn on the option to generate a table of contents
+write_xlsx(output_list,
+           file = "example2.xlsx",
+           TOC = TRUE)
+```
+
+```{r, include = FALSE, message = FALSE}
+# delete the example files if they exist already
+if (file.exists("example.xlsx")) file.remove("example.xlsx")
+if (file.exists("example2.xlsx")) file.remove("example2.xlsx")
+```

@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+inst/doc
+docs
+.DS_Store
+example.xlsx
+.Rdata
+.httr-oauth
+.quarto

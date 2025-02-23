@@ -1,0 +1,63 @@
+Package: xlr
+Title: Create Table Summaries and Export Neat Tables to Excel 
+Version: 1.0.0
+Authors@R: 
+    person(given = "Nicholas",
+           family = "Hilderson",
+           role = c("aut", "cre", "cph"),
+           email = "nhilderson.code@gmail.com"
+           )
+Description: A high-level interface for creating and exporting summary tables to
+    Excel. Built on 'dplyr' and 'openxlsx', it provides tools for generating
+    one-way to n-way tables, and summarizing multiple response questions 
+    and question blocks. Tables are exported with native Excel formatting, 
+    including titles, footnotes, and basic styling options.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Collate:
+  as_base_r.R
+  xlr_table.R
+  xlr_to_workbook.R
+  build_multiple_response_table.R
+  build_table.R
+  write_xlsx.R
+  xlr_numeric.R
+  xlr_integer.R
+  xlr_vector.R
+  xlr_percent.R
+  xlr_format.R
+  openxlsx_utils.R
+  xlr_doc.R
+  error_utils.R
+  create_table_of_contents.R
+  build_question_block_table.R
+  table_utils.R
+  data.R
+  is_xlr_type.R
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    data.table,
+    lubridate
+Config/testthat/edition: 3
+Imports:
+  rlang,
+  vctrs (>= 0.6.0),
+  haven,
+  openxlsx,
+  methods,
+  cli,
+  dplyr,
+  tibble,
+  pillar,
+  tidyr,
+  tidyselect
+Depends: 
+    R (>= 4.1.0)
+LazyData: true
+VignetteBuilder: knitr
+URL: https://nhilder.github.io/xlr/, https://github.com/NHilder/xlr
+BugReports: https://github.com/NHilder/xlr/issues
