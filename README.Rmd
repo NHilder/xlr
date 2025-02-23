@@ -35,6 +35,10 @@ of functions.
 It is currently experimental and subject to change based on peoples feedback.
 
 ## Installation
+``` r
+# To install via CRAN
+install.packages("xlr")
+```
 
 You can install the development version of xlr from [GitHub](https://github.com/) with:
 

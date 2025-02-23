@@ -29,8 +29,9 @@ It is currently experimental and subject to change based on peoples
 feedback.
 
 ## Installation
+
 ``` r
-# To install the package via CRAN
+# To install via CRAN
 install.packages("xlr")
 ```
 
@@ -41,8 +42,6 @@ You can install the development version of xlr from
 # install.packages("pak")
 pak::pak("NHilder/xlr")
 ```
-
-You can install the 
 
 ## Example
 
@@ -84,6 +83,7 @@ two_way_table <- two_way_table |>
 write_xlsx(two_way_table,
            "example.xlsx",
            "an example")
+#> ℹ Appending file: 'example.xlsx'
 ```
 
 Check out the vignettes for more information on how to use the package.
