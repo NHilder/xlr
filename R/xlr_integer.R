@@ -49,6 +49,7 @@ validate_xlr_integer <- function(x = integer(),
 #' Constructor of xlr_integer
 #' @inheritParams xlr_integer
 #' @param call the calling environment
+#' @noRd
 new_xlr_integer <- function(x = integer(),
                              style = xlr_format_numeric(),
                              call = caller_env()) {

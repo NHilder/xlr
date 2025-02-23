@@ -57,6 +57,7 @@ validate_xlr_vector <- function(
 #' Constructor of xlr_vector
 #' @inheritParams xlr_vector
 #' @param call the calling environment
+#' @noRd
 new_xlr_vector <- function(x = vector(),
                             excel_format = "GENERAL",
                             style = xlr_format(),

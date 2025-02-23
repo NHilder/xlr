@@ -56,6 +56,7 @@ validate_xlr_percent <- function(x = double(),
 #' Constructor of percent
 #' @inheritParams xlr_numeric
 #' @param call the calling environment
+#' @noRd
 new_xlr_percent <- function(x = double(),
                              dp = 0L,
                              style = xlr_format_numeric(),

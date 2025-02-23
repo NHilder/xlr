@@ -442,14 +442,13 @@ underlined](img/update_theme_example.png)
 
 See `?update_theme` for more details.
 
-Like `openxlsx::write.xlsx()` you can also pass a list of What is
-particularly useful about this function is that it can output a `list`
-of `xlr_table`'s (or tibbles or data.frames) to Excel. This is useful
-if you are working survey data as you usually generate a long list of
-tables in a list.
+### `write_xlsx()` and `list()`
 
-If you have a `list` of tables, set `TOC = TRUE` in order to generate a
-table of contents from the table data.
+Like `openxlsx::write.xlsx()` you can also pass a **named list** to `write_xlsx()`
+and these will be automatically created as sheets in the Excel file.  If you have
+a `list()` of tables, set `TOC = TRUE` in order to generate a
+table of contents for the Excel file. This is particularly useful when you have
+a large number of tables.
 
 # Putting it all together
 

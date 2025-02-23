@@ -63,6 +63,7 @@ validate_xlr_numeric <- function(x = double(),
 #' Constructor of xlr_numeric
 #' @inheritParams xlr_numeric
 #' @param call the calling environment
+#' @noRd
 new_xlr_numeric <- function(x = double(),
                             dp = 0L,
                             scientific = FALSE,

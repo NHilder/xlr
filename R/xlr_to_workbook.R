@@ -701,6 +701,8 @@ convert_xlr_type_to_R <- function(x,
 
 #' convert a column into a format
 #' @param col is a column from a data.frame
+#'
+#' @noRd
 column_to_style <- function(col){
   # first we have rules for all the xlr types (and integers)
 
