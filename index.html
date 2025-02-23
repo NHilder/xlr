@@ -63,8 +63,11 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of xlr from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># To install via CRAN</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"xlr"</span><span class="op">)</span></span></code></pre></div>
+<p>You can install the development version of xlr from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"NHilder/xlr"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -72,7 +75,7 @@
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>This is a example of how to create a two-way table, fix the formatting for that table, and then export that table to Excel.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nhilder.github.io/xlr/">xlr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -106,7 +109,8 @@
 <span><span class="co"># write the data to an xlsx file</span></span>
 <span><span class="fu"><a href="reference/write_xlsx.html">write_xlsx</a></span><span class="op">(</span><span class="va">two_way_table</span>,</span>
 <span>           <span class="st">"example.xlsx"</span>,</span>
-<span>           <span class="st">"an example"</span><span class="op">)</span></span></code></pre></div>
+<span>           <span class="st">"an example"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ℹ Appending file: 'example.xlsx'</span></span></code></pre></div>
 <p>Check out the vignettes for more information on how to use the package.</p>
 </div>
 </div>
