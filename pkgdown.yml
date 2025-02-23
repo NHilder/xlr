@@ -3,7 +3,7 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   xlr: xlr.html
-last_built: 2025-02-23T06:17Z
+last_built: 2025-02-23T06:30Z
 urls:
   reference: https://nhilder.github.io/xlr/reference
   article: https://nhilder.github.io/xlr/articles
