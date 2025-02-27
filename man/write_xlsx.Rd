@@ -2,7 +2,7 @@
 % Please edit documentation in R/write_xlsx.R
 \name{write_xlsx}
 \alias{write_xlsx}
-\title{Write a \code{xlr_table}, \code{data.frame}, or \code{tibble} to an .xlsx (Excel) file}
+\title{Write a \code{xlr_table}, \code{data.frame}, or \code{tibble} to an .xlsx (\code{Excel}) file}
 \usage{
 write_xlsx(
   x,
@@ -38,7 +38,7 @@ contents to an existing file, use \code{\link[=create_table_of_contents]{create_
 \item{overwrite_sheets}{logical. Whether to overwrite existing sheets in a
 file.}
 
-\item{excel_data_table}{logical. Whether to save the data as an Excel table
+\item{excel_data_table}{logical. Whether to save the data as an \code{Excel} table
 in the worksheet. These are more accessible than data in the sheet.}
 }
 \value{
@@ -46,10 +46,10 @@ None
 }
 \description{
 This function writes \code{xlr_table}, \code{data.frame}, or \code{tibble} to an .xlsx
-(Excel file). Like \link[openxlsx]{write.xlsx} you can also write a \code{list} of
+(\code{Excel} file). Like \link[openxlsx]{write.xlsx} you can also write a \code{list} of
 \code{xlr_table}'s, \code{data.frame}'s, and \code{tibbles}'s to the one file.
 The main use of this function is that it uses the formatting in a \code{xlr_table}
-when it writes to the Excel sheet. See \link{xlr_table} for more information.
+when it writes to the \code{Excel} sheet. See \link{xlr_table} for more information.
 }
 \examples{
 library(xlr)

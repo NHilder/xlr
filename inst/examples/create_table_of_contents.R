@@ -6,7 +6,7 @@ table_list <- list("Sheet name 1" = mtcars,
 output_file <- "example_file.xlsx"
 
 \dontrun{
-# using write xlsx we create an excel document
+# using write xlsx we create an `Excel` document
 # You could use xlr::write_xlsx to create a table of
 # contents automatically.
 write.xlsx(table_list,

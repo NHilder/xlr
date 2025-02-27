@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_table_of_contents.R
 \name{create_table_of_contents}
 \alias{create_table_of_contents}
-\title{Adds a table of contents to an .xlsx (Excel) file}
+\title{Adds a table of contents to an .xlsx (\code{Excel}) file}
 \usage{
 create_table_of_contents(
   file,
@@ -20,7 +20,7 @@ create_table_of_contents(
 \item{overwrite}{logical. When \code{TRUE} overwrite the file, if \code{FALSE} it will
 not overwrite the file.}
 
-\item{pull_titles}{when \code{TRUE} take the titles from the excel sheets, and add
+\item{pull_titles}{when \code{TRUE} take the titles from the \code{Excel} sheets, and add
 them to the description in the TOC_sheet_name.}
 
 \item{TOC_sheet_name}{string. the sheet name for the table of contents.}
@@ -29,8 +29,8 @@ them to the description in the TOC_sheet_name.}
 Returns a logical or error if writing the file succeeded.
 }
 \description{
-This function adds a table of contents to an Excel file by reading the
-information from the Excel sheet in, and then using that data to create
+This function adds a table of contents to an \code{Excel} file by reading the
+information from the \code{Excel} sheet in, and then using that data to create
 the table of contents. It guesses what the information is, see details below.
 }
 \details{
@@ -48,7 +48,7 @@ table_list <- list("Sheet name 1" = mtcars,
 output_file <- "example_file.xlsx"
 
 \dontrun{
-# using write xlsx we create an excel document
+# using write xlsx we create an `Excel` document
 # You could use xlr::write_xlsx to create a table of
 # contents automatically.
 write.xlsx(table_list,

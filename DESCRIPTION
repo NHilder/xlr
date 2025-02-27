@@ -1,5 +1,5 @@
 Package: xlr
-Title: Create Table Summaries and Export Neat Tables to Excel 
+Title: Create Table Summaries and Export Neat Tables to `Excel` 
 Version: 1.0.0
 Authors@R: 
     person(given = "Nicholas",
@@ -8,10 +8,10 @@ Authors@R:
            email = "nhilderson.code@gmail.com"
            )
 Description: A high-level interface for creating and exporting summary tables to
-    Excel. Built on 'dplyr' and 'openxlsx', it provides tools for generating
-    one-way to n-way tables, and summarizing multiple response questions 
-    and question blocks. Tables are exported with native Excel formatting, 
-    including titles, footnotes, and basic styling options.
+  `Excel`. Built on 'dplyr' and 'openxlsx', it provides tools for generating
+  one-way to n-way tables, and summarizing multiple response questions 
+  and question blocks. Tables are exported with native `Excel` formatting, 
+  including titles, footnotes, and basic styling options.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

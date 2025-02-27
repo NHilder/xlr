@@ -1,12 +1,12 @@
 #' `xlr_vector` vector
 #'
 #' A general container for including additional styling options within a vector
-#' so that it can easily be exported to excel. This vector type should be used
+#' so that it can easily be exported to `Excel`. This vector type should be used
 #' for characters, factors, Booleans, complex numbers, etc. It does
 #' not support dates.
 #'
 #' While you can use it with `integer`, and `double` types and specifying the
-#' associated Excel format, we recommend using [xlr_integer], [xlr_numeric],
+#' associated `Excel` format, we recommend using [xlr_integer], [xlr_numeric],
 #' or [xlr_percent] types instead.
 #'
 #' You can convert a vector back to its base type with [as_base_r()].
@@ -15,7 +15,7 @@
 #'  * For `xlr_vector()`: A vector
 #'  * For `is_xlr_vector()`: An object to test
 #'  * For `as_xlr_vector()` : a vector
-#' @param excel_format a character, the excel cell format, not validated. See
+#' @param excel_format a character, the `Excel` cell format, not validated. See
 #' \link[openxlsx]{createStyle} argument numFmt for more details on what
 #' you can specify.
 #' @param style Additional styling options for the vector. See [xlr_format] for

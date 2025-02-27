@@ -20,7 +20,7 @@ as_xlr_vector(x, excel_format = "GENERAL", style = xlr_format())
 \item For \code{as_xlr_vector()} : a vector
 }}
 
-\item{excel_format}{a character, the excel cell format, not validated. See
+\item{excel_format}{a character, the \code{Excel} cell format, not validated. See
 \link[openxlsx]{createStyle} argument numFmt for more details on what
 you can specify.}
 
@@ -32,13 +32,13 @@ An S3 vector of class \code{xlr_vector}
 }
 \description{
 A general container for including additional styling options within a vector
-so that it can easily be exported to excel. This vector type should be used
+so that it can easily be exported to \code{Excel}. This vector type should be used
 for characters, factors, Booleans, complex numbers, etc. It does
 not support dates.
 }
 \details{
 While you can use it with \code{integer}, and \code{double} types and specifying the
-associated Excel format, we recommend using \link{xlr_integer}, \link{xlr_numeric},
+associated \code{Excel} format, we recommend using \link{xlr_integer}, \link{xlr_numeric},
 or \link{xlr_percent} types instead.
 
 You can convert a vector back to its base type with \code{\link[=as_base_r]{as_base_r()}}.
@@ -46,18 +46,18 @@ You can convert a vector back to its base type with \code{\link[=as_base_r]{as_b
 \examples{
 library(xlr)
 # Create a xlr_vector object, this is used so we can add styling to an existing
-# vector so that it prints nicely in excel
+# vector so that it prints nicely in `Excel`
 #
 # Note currently the style will not change the style in the console
 x <- xlr_vector(1:100,
                  excel_format = "00.0##",
                  style = xlr_format(font_size = 8))
 
-# You can also use it so that dates are nicely printed in excel
+# You can also use it so that dates are nicely printed in `Excel`
 dates <- c("02/27/92", "02/27/92", "01/14/92", "02/28/92", "02/01/92")
 dates <- as.Date(dates, "\%m/\%d/\%y")
 x <- xlr_vector(dates,
-                 # Print it as a long date in excel
+                 # Print it as a long date in `Excel`
                  excel_format = "LONGDATE")
 # You can convert existing data to a xlr_vectors using dplyr verbs
 iris |>

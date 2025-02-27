@@ -30,7 +30,7 @@ Returns a \link{xlr_table} object.
 \description{
 This function allows you to update the underlying styling for your \link{xlr_table}.
 This changes how the titles, footnotes, columns, and body objects look when
-you write you \code{xlr_table} to excel with \code{\link[=write_xlsx]{write_xlsx()}}.
+you write you \code{xlr_table} to \code{Excel} with \code{\link[=write_xlsx]{write_xlsx()}}.
 }
 \details{
 If you want to change the style of the \emph{columns} in the data, you should convert them
@@ -45,7 +45,7 @@ bt <- xlr_table(mtcars,
                  "A title",
                  "A footnote")
 # now we want to update the title
-# This changes what it look likes when we print it to excel
+# This changes what it look likes when we print it to `Excel`
 bt <- update_theme(bt,
                    xlr_format(font_size = 12,
                                text_style = c("bold","underline")))

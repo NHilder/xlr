@@ -24,7 +24,7 @@ set.seed(123456)
 ```
 
 xlr is designed to help with the analysis of survey data and
-conduct modelling, and then export this information to Excel in an easy
+conduct modelling, and then export this information to `Excel` in an easy
 and consistent way.
 
 It is designed to help people with little R experience analyse survey
@@ -32,7 +32,7 @@ data quickly and easily. This includes functions to quickly analyse
 multiple-response questions and block questions.
 
 This package also provides a simple and easy to use interface with
-Excel, building on the excellent work of the [openxlsx] package. It is
+`Excel`, building on the excellent work of the [openxlsx] package. It is
 designed with ease of use in mind, at the expense of some functionality
 of `openxlsx`.
 
@@ -44,9 +44,9 @@ There are three aspects to this package:
 
 1.  Functions to help with the analysis of survey complex survey data.
 
-2.  Functions to help export this data to Excel.
+2.  Functions to help export this data to `Excel`.
 
-3.  New `R` types to support consistent formatting in Excel.
+3.  New `R` types to support consistent formatting in `Excel`.
 
 ## Data: clothes_opinions
 
@@ -132,9 +132,9 @@ table is unsupported but may be included in a future update.
 #### Introduction to xlr_table()
 
 You can also see that it has a special type `xlr_table()`. This is a S3
-class defined by xlr to help output the data to Excel. It contains
+class defined by xlr to help output the data to `Excel`. It contains
 the table data, a table title and a footnote, as well as hidden data to
-help format the table in Excel. You can learn more about `xlr_table()`
+help format the table in `Excel`. You can learn more about `xlr_table()`
 in the vignette `to do`.
 
 You can directly pass a title and a footnote to `build_table()` by
@@ -318,9 +318,9 @@ clothes_opinions |>
                gender2)
 ```
 
-## xlr_table(), xlr types and writing to Excel
+## xlr_table(), xlr types and writing to `Excel`
 
-A key part of the xlr is to export data to Excel in an easy, and
+A key part of the xlr is to export data to `Excel` in an easy, and
 user friendly way. The workhorse function in this scenario is
 `xlr_table()`, and if you like the default options is meant to be the
 function that you will mostly use.
@@ -340,7 +340,7 @@ different `xlr` types.
 ### Types
 
 xlr types are defined to help with the formatting of columns when
-they are output to Excel. There are four difference types defined in
+they are output to `Excel`. There are four difference types defined in
 xlr:
 
 -   `xlr_numeric()` to format doubles neatly.
@@ -354,7 +354,7 @@ xlr:
 
 All of the above variables contain the argument `xlr_format` which only
 takes a `xlr_format()` object. `xlr_format()` allows you to control
-different formatting options when the data is outputted to Excel, it
+different formatting options when the data is outputted to `Excel`, it
 currently does not change how the data looks in console. You can change
 the font size, colour, text position etc. with `xlr_format()`. See
 `?xlr_format` for the full range of options.
@@ -389,9 +389,9 @@ The `xlr_table()` type is implemented to work with most `dplyr` verbs
 to make working with the data as seamless as possible. To find out more
 see `?xlr_and_dplyr`.
 
-## Writing data to Excel
+## Writing data to `Excel`
 
-xlr makes writing data to Excel easy using the `write_xlsx()`
+xlr makes writing data to `Excel` easy using the `write_xlsx()`
 function. This function takes either a `xlr_table`, `tibble` or
 `data.frame`. Note when you output a single object you need to specify
 
@@ -401,10 +401,10 @@ write_xlsx(mtcars,
            sheet_name = "example_sheet")
 ```
 
-The output looks like this in Excel:
+The output looks like this in `Excel`:
 
 ![Example of exporting a data.frame with write_xlsx, it shows a simple
-table in Excel.](img/data.frame_example.png)
+table in `Excel`.](img/data.frame_example.png)
 
 When you output a `xlr_table` with this function additional formatting
 will be applied to the data as well as the title and a footnote.
@@ -415,7 +415,7 @@ write_xlsx(table,
            sheet_name = "example_sheet")
 ```
 
-The output looks like this in Excel:
+The output looks like this in `Excel`:
 
 ![Example of using a xlr_table with write_xlsx, the table now has a
 table, footnote and formatting!](img/xlr_table_example.png)
@@ -445,9 +445,9 @@ See `?update_theme` for more details.
 ### `write_xlsx()` and `list()`
 
 Like `openxlsx::write.xlsx()` you can also pass a **named list** to `write_xlsx()`
-and these will be automatically created as sheets in the Excel file.  If you have
+and these will be automatically created as sheets in the `Excel` file.  If you have
 a `list()` of tables, set `TOC = TRUE` in order to generate a
-table of contents for the Excel file. This is particularly useful when you have
+table of contents for the `Excel` file. This is particularly useful when you have
 a large number of tables.
 
 # Putting it all together

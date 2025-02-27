@@ -3,7 +3,7 @@
 #' `xlr_percent` vector
 #'
 #' This creates a numeric vector that will be printed as a percentage and
-#' exported to Excel using it's native format.You can convert a vector back to
+#' exported to `Excel` using it's native format.You can convert a vector back to
 #' its base type with [as_base_r()].
 #'
 #' @param x
@@ -47,7 +47,7 @@ validate_xlr_percent <- function(x = double(),
     cli_abort("'dp' must be greater than zero not equal to {dp}.",
           call = call)
   } else if (dp > 12){
-    cli_abort("'dp' must be less than or equal to 12 not equal to {dp}. Risk loss of precision when exporting to Microsoft Excel.",
+    cli_abort("'dp' must be less than or equal to 12 not equal to {dp}. Risk loss of precision when exporting to Microsoft `Excel`.",
           call = call)
   }
 }

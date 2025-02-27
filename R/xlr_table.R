@@ -5,7 +5,7 @@
 #' @description
 #' Create a `xlr_table` S3 object. This is used to create an object that stores
 #' formatting information, as well as a title and footnote. This objects makes it
-#' easy to convert to an Excel sheet, using [write_xlsx()].
+#' easy to convert to an `Excel` sheet, using [write_xlsx()].
 #' To edit underlying formatting options use [update_theme()].
 #'
 #' A number of `dplyr` methods have been implemented for `xlr_table`, these
@@ -84,7 +84,7 @@ as_xlr_table.data.frame <- function(x,
 #'
 #' This function allows you to update the underlying styling for your [xlr_table].
 #' This changes how the titles, footnotes, columns, and body objects look when
-#' you write you `xlr_table` to excel with [write_xlsx()].
+#' you write you `xlr_table` to `Excel` with [write_xlsx()].
 #'
 #' If you want to change the style of the *columns* in the data, you should convert them
 #' to a [xlr_vector], [xlr_numeric], [xlr_integer] or [xlr_percent] type if they are

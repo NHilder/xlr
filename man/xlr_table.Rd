@@ -30,7 +30,7 @@ a \code{xlr_table} S3 class
 \description{
 Create a \code{xlr_table} S3 object. This is used to create an object that stores
 formatting information, as well as a title and footnote. This objects makes it
-easy to convert to an Excel sheet, using \code{\link[=write_xlsx]{write_xlsx()}}.
+easy to convert to an \code{Excel} sheet, using \code{\link[=write_xlsx]{write_xlsx()}}.
 To edit underlying formatting options use \code{\link[=update_theme]{update_theme()}}.
 
 A number of \code{dplyr} methods have been implemented for \code{xlr_table}, these

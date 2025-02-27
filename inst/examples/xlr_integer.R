@@ -4,7 +4,7 @@ x <- xlr_integer(2)
 # This will print nicely
 x
 # You can change the styling, which affects how it looks when we save it as an
-# excel document
+# `Excel` document
 x <- xlr_integer(x, style = xlr_format(font_size = 9, font_colour = "red"))
 x
 # We can also define a vector of integers

@@ -18,7 +18,7 @@
 #' @param footnote a character vector. Optional parameter to pass a custom
 #' footnote to the question, this parameter overwrites `use_questions`.
 #'
-#' @return a `xlr_table` object. Use [write_xlsx] to write to an excel file.
+#' @return a `xlr_table` object. Use [write_xlsx] to write to an `Excel` file.
 #' See [xlr_table] for more information.
 #'
 #' @details

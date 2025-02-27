@@ -1,11 +1,11 @@
 
-#' Write a `xlr_table`, `data.frame`, or `tibble` to an .xlsx (Excel) file
+#' Write a `xlr_table`, `data.frame`, or `tibble` to an .xlsx (`Excel`) file
 #'
 #' This function writes `xlr_table`, `data.frame`, or `tibble` to an .xlsx
-#' (Excel file). Like \link[openxlsx]{write.xlsx} you can also write a `list` of
+#' (`Excel` file). Like \link[openxlsx]{write.xlsx} you can also write a `list` of
 #' `xlr_table`'s, `data.frame`'s, and `tibbles`'s to the one file.
 #' The main use of this function is that it uses the formatting in a `xlr_table`
-#' when it writes to the Excel sheet. See [xlr_table] for more information.
+#' when it writes to the `Excel` sheet. See [xlr_table] for more information.
 #'
 #' @param x a single or `list` of types `xlr_table`, `data.frame`, or `tibble`.
 #' @param file character. A valid file path.
@@ -20,7 +20,7 @@
 #' @param TOC_title character. To specify the table of contents title (optional).
 #' @param overwrite_sheets logical. Whether to overwrite existing sheets in a
 #' file.
-#' @param excel_data_table logical. Whether to save the data as an Excel table
+#' @param excel_data_table logical. Whether to save the data as an `Excel` table
 #' in the worksheet. These are more accessible than data in the sheet.
 #'
 #' @return None

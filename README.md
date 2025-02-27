@@ -11,16 +11,16 @@
 # xlr
 
 xlr is designed to help build summary tables with complex survey data,
-and export data to Excel. It includes functions to easily make
+and export data to `Excel`. It includes functions to easily make
 cross-tabulations, work with multiple response data, and question
 blocks. It supports labelled data that can be generated from the popular
 survey platform Qualtrics.
 
-It makes exporting data from Excel easier. It is a easier to use wrapper
+It makes exporting data from `Excel` easier. It is a easier to use wrapper
 around [openxlsx](https://ycphs.github.io/openxlsx/). It supports tables
-with footnotes, headers, and generating table of contents in Excel
+with footnotes, headers, and generating table of contents in `Excel`
 documents. It is not fully featured, but designed to be used when you
-are moving either statistical summaries or tables from R into Excel.
+are moving either statistical summaries or tables from R into `Excel`.
 
 This package is designed to work seamlessly with
 [tidyverse](https://www.tidyverse.org/) family of functions.
@@ -46,7 +46,7 @@ pak::pak("NHilder/xlr")
 ## Example
 
 This is a example of how to create a two-way table, fix the formatting
-for that table, and then export that table to Excel.
+for that table, and then export that table to `Excel`.
 
 ``` r
 library(xlr)

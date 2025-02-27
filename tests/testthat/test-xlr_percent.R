@@ -37,7 +37,7 @@ test_that("xlr_percent() that dp is always a positive integer", {
   expect_silent(xlr_percent(1,dp=0))
   expect_error(xlr_percent(1,dp=0.1))
   expect_error(xlr_percent(1,dp=0.0001))
-  # excel only can maintain up to 15 significant figures
+  # `Excel` only can maintain up to 15 significant figures
   # this is a bit of an edge case but only allow up to
   # 15-3 = 12 decimal places
   expect_error(xlr_percent(1,dp=110000))
