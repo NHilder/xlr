@@ -1,3 +1,6 @@
+\dontshow{
+oldWd <- setwd(tempdir())
+}
 library(xlr)
 library(openxlsx)
 table_list <- list("Sheet name 1" = mtcars,
@@ -5,7 +8,6 @@ table_list <- list("Sheet name 1" = mtcars,
 
 output_file <- "example_file.xlsx"
 
-\dontrun{
 # using write xlsx we create an `Excel` document
 # You could use xlr::write_xlsx to create a table of
 # contents automatically.
@@ -17,4 +19,8 @@ create_table_of_contents(output_file,
                          "A workbook with example tables",
                          # it only makes sense to pull titles when
                          # the first cell has a text description
-                         pull_titles = FALSE)}
+                         pull_titles = FALSE)
+\dontshow{
+  # restore wd
+  setwd(oldWd)
+}

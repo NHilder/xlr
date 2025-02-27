@@ -1,3 +1,6 @@
+\dontshow{
+  oldWd <- setwd(tempdir())
+}
 library(xlr)
 # set up a basic table
 bt <- xlr_table(mtcars,
@@ -8,7 +11,12 @@ bt <- xlr_table(mtcars,
 bt <- update_theme(bt,
                    xlr_format(font_size = 12,
                                text_style = c("bold","underline")))
-\dontrun{
+# To see the change you must write to an Excel file
 write_xlsx(bt,
            "example.xlsx",
-           "Test")}
+           "Test")
+
+\dontshow{
+  # restore wd
+  setwd(oldWd)
+}
