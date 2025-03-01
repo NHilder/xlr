@@ -27,7 +27,7 @@ An S3 vector of class \code{xlr_integer}
 }
 \description{
 This creates an integer vector that will be printed neatly and can easily be
-exported to Excel using it's native format.You can
+exported to \code{Excel} using it's native format.You can
 convert a vector back to its base type with \code{\link[=as_base_r]{as_base_r()}}.
 }
 \details{
@@ -42,7 +42,7 @@ x <- xlr_integer(2)
 # This will print nicely
 x
 # You can change the styling, which affects how it looks when we save it as an
-# excel document
+# `Excel` document
 x <- xlr_integer(x, style = xlr_format(font_size = 9, font_colour = "red"))
 x
 # We can also define a vector of integers

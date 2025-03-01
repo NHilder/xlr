@@ -18,7 +18,7 @@ df <- data.frame(col_1 = c(0,0.2,0.33,0.43251))
 df |>
   dplyr::mutate(col_pct = as_xlr_percent(col_1))
 # You can also change the styling of a xlr_percent column, this is only relevant
-# if you print it to excel with write_xlsx
+# if you print it to `Excel` with write_xlsx
 df |>
   dplyr::mutate(col_pct = xlr_percent(col_1,
                                   dp = 2,

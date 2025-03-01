@@ -518,7 +518,7 @@ test_that("data_to_worksheet() generates data correctly",{
   expect_true(equal_workbook_sheets(wb,wb_test))
   expect_true(equal_workbook_data(wb,wb_test))
 
-  # We skip saving the output on cran because it requires excel-----------------
+  # We skip saving the output on cran because it requires `Excel`-----------------
   skip_on_cran()
 
   # This is a like a snapshot test, we look whether the data is what we think
@@ -568,7 +568,7 @@ test_that("data_to_worksheet() adds data correctly, we check all types",{
   expect_true(equal_workbook_sheets(wb,wb_test))
   expect_true(equal_workbook_data(wb,wb_test))
 
-  # We skip saving the output on cran because it requires excel-----------------
+  # We skip saving the output on cran because it requires `Excel`-----------------
   skip_on_cran()
 
   # This is a like a snapshot test, we look whether the data is what we think
@@ -600,11 +600,11 @@ test_that("data_to_worksheet() can change the data table names",{
                     wb,
                     "Test 1",
                     excel_data_table = TRUE,
-                    # Look at if we are able to change the excel table name
+                    # Look at if we are able to change the `Excel` table name
                     excel_table_name = "table_test_")
   # We haven't skipped the test, checking if it worked
   expect_true(TRUE)
-  # We skip saving the output on cran because it requires excel-----------------
+  # We skip saving the output on cran because it requires `Excel`-----------------
   skip_on_cran()
   # This is a like a snapshot test, we look whether the data is what we think
   # it should be

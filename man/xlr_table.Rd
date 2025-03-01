@@ -30,7 +30,7 @@ a \code{xlr_table} S3 class
 \description{
 Create a \code{xlr_table} S3 object. This is used to create an object that stores
 formatting information, as well as a title and footnote. This objects makes it
-easy to convert to an Excel sheet, using \code{\link[=write_xlsx]{write_xlsx()}}.
+easy to convert to an \code{Excel} sheet, using \code{\link[=write_xlsx]{write_xlsx()}}.
 To edit underlying formatting options use \code{\link[=update_theme]{update_theme()}}.
 
 A number of \code{dplyr} methods have been implemented for \code{xlr_table}, these
@@ -43,6 +43,10 @@ as this would require the implementation of a new class.
 You can convert a table back to a data.frame with base type with \code{\link[=as_base_r]{as_base_r()}}.
 }
 \examples{
+\dontshow{
+  oldWd <- setwd(tempdir())
+}
+
 library(xlr)
 library(dplyr)
 # Create a xlr_table, we set the footnotes and the title
@@ -63,11 +67,15 @@ x |>
 x <- x |>
   # make the font bigger
   update_theme(title_format = xlr_format(font_size = 14))
-\dontrun{
-  write_xlsx(x,
+# you must write it in order to see the formatting changes
+write_xlsx(x,
              "example.xlsx",
              "A example sheet",
              TOC = FALSE)
+
+\dontshow{
+  # restore wd
+  setwd(oldWd)
 }
 }
 \seealso{

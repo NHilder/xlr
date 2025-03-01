@@ -41,7 +41,7 @@ file, convert the column label to a footnote with the question.}
 footnote to the question, this parameter overwrites \code{use_questions}.}
 }
 \value{
-a \code{xlr_table} object. Use \link{write_xlsx} to write to an excel file.
+a \code{xlr_table} object. Use \link{write_xlsx} to write to an \code{Excel} file.
 See \link{xlr_table} for more information.
 }
 \description{

@@ -13,7 +13,7 @@ bd <- xlr_numeric(1:200,
                   dp = 1,
                   style = bf)
 # You can also use it to change the styles of an xlr_table, this only
-# affect the format in excel
+# affect the format in `Excel`
 bt <- xlr_table(mtcars, "A clever title", "A useful footnote")
 bt <- bt |>
       update_theme(footnote_format = xlr_format(font_size = 7))

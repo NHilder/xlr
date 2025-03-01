@@ -10,7 +10,7 @@
 #' the document. Works only when you pass a `list` to `x`. To add a table of
 #' contents to an existing file, use [create_table_of_contents].
 #' @param TOC_title a character with the table of contents title (optional.
-#' @param excel_data_table logical. Whether to save the data as an Excel table
+#' @param excel_data_table logical. Whether to save the data as an `Excel` table
 #' in the worksheet. These are more accessible than data in the sheet.
 #' @param call the calling environment (see \link[rlang]{caller_env}).
 #'
@@ -659,7 +659,7 @@ data_to_worksheet <- function(x,
     }
     # next any spaces need to be replaced
     excel_table_name <- gsub("([[:punct:]]|[[:space:]])+","_",excel_table_name)
-    # this writes to a table in excel, this is more accessible
+    # this writes to a table in `Excel`, this is more accessible
     writeDataTable(wb,
                   sheet_name,
                   df,
@@ -701,6 +701,8 @@ convert_xlr_type_to_R <- function(x,
 
 #' convert a column into a format
 #' @param col is a column from a data.frame
+#'
+#' @noRd
 column_to_style <- function(col){
   # first we have rules for all the xlr types (and integers)
 
@@ -746,7 +748,7 @@ column_to_style <- function(col){
 
 }
 
-#' Return the excel formatted number of dp
+#' Return the `Excel` formatted number of dp
 #'
 #' @param dp integer, the number of decimal places
 #' @param call the caller environment
@@ -805,7 +807,7 @@ xlr_format_to_openxlsx_format <- function(x,
     textRotation = text_rotation,
     indent = indent,
 
-    # excel extra's
+    # `Excel` extra's
     locked = NULL,
     hidden = NULL
   )

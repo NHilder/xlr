@@ -1,15 +1,15 @@
 
-#' Adds a table of contents to an .xlsx (Excel) file
+#' Adds a table of contents to an .xlsx (`Excel`) file
 #'
-#' This function adds a table of contents to an Excel file by reading the
-#' information from the Excel sheet in, and then using that data to create
+#' This function adds a table of contents to an `Excel` file by reading the
+#' information from the `Excel` sheet in, and then using that data to create
 #' the table of contents. It guesses what the information is, see details below.
 #'
 #' @param file the file name.
 #' @param title the title for the table.
 #' @param overwrite logical. When `TRUE` overwrite the file, if `FALSE` it will
 #'   not overwrite the file.
-#' @param pull_titles when `TRUE` take the titles from the excel sheets, and add
+#' @param pull_titles when `TRUE` take the titles from the `Excel` sheets, and add
 #' them to the description in the TOC_sheet_name.
 #' @param TOC_sheet_name string. the sheet name for the table of contents.
 #' @return Returns a logical or error if writing the file succeeded.

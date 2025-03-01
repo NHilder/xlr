@@ -35,7 +35,7 @@ An S3 vector of class \code{xlr_numeric}
 }
 \description{
 This creates an numeric vector that will be printed neatly and can easily be
-exported to Excel using it's native format. You can
+exported to \code{Excel} using it's native format. You can
 convert a vector back to its base type with \code{\link[=as_base_r]{as_base_r()}}.
 }
 \details{

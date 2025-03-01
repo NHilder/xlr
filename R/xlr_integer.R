@@ -6,7 +6,7 @@ methods::setOldClass(c("xlr_integer","vctrs_vctr"))
 #' `xlr_integer` vector
 #'
 #' This creates an integer vector that will be printed neatly and can easily be
-#' exported to Excel using it's native format.You can
+#' exported to `Excel` using it's native format.You can
 #' convert a vector back to its base type with [as_base_r()].
 #'
 #' Internally, `xlr_integer` uses `vec_cast` to convert numeric types
@@ -49,6 +49,7 @@ validate_xlr_integer <- function(x = integer(),
 #' Constructor of xlr_integer
 #' @inheritParams xlr_integer
 #' @param call the calling environment
+#' @noRd
 new_xlr_integer <- function(x = integer(),
                              style = xlr_format_numeric(),
                              call = caller_env()) {
