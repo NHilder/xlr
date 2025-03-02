@@ -1,4 +1,9 @@
 ## Resubmission
+This the second resubmission. In this version I have:
+
+* Changed the title so that `excel` is now lower case.
+
+## Resubmission
 This is a resubmission. In this version I have:
 
 * Changed the title and description so that `Excel` is in single quotes. Note, this
