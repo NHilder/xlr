@@ -1,3 +1,7 @@
+# xlr 1.0.2
+- CRAN re-submission:
+    - Fixed title to follows CRAN's standards
+    
 # xlr 1.0.1
 
 -   CRAN re-submission. Fix issues:

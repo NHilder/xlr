@@ -1,6 +1,6 @@
 Package: xlr
 Title: Create Table Summaries and Export Neat Tables to `excel` 
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: 
     person(given = "Nicholas",
            family = "Hilderson",
