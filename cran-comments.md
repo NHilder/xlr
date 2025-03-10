@@ -1,3 +1,9 @@
+## Resubmission v3
+This the third resubmission. In this version I have:
+
+* Fixed title to follows CRAN's standards (moved from back-ticks to single
+    quotes), e.g. `Excel` to 'Excel'! Sorry for the multiple submissions! 
+
 ## Resubmission
 This the second resubmission. In this version I have:
 
