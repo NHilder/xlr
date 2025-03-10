@@ -1,3 +1,5 @@
+# xlr (development version)
+
 # xlr 1.0.3
 - CRAN re-submission:
     - Fixed title  and description to follows CRAN's standards (moved from 
