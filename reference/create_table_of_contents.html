@@ -11,7 +11,7 @@ the table of contents. It guesses what the information is, see details below."><
 
     <a class="navbar-brand me-2" href="../index.html">xlr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,14 +33,14 @@ the table of contents. It guesses what the information is, see details below."><
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Adds a table of contents to an .xlsx (Excel) file</h1>
+      <h1>Adds a table of contents to an .xlsx (<code>Excel</code>) file</h1>
       <small class="dont-index">Source: <a href="https://github.com/NHilder/xlr/blob/main/R/create_table_of_contents.R" class="external-link"><code>R/create_table_of_contents.R</code></a></small>
       <div class="d-none name"><code>create_table_of_contents.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
-    <p>This function adds a table of contents to an Excel file by reading the
-information from the Excel sheet in, and then using that data to create
+    <p>This function adds a table of contents to an <code>Excel</code> file by reading the
+information from the <code>Excel</code> sheet in, and then using that data to create
 the table of contents. It guesses what the information is, see details below.</p>
     </div>
 
@@ -73,7 +73,7 @@ not overwrite the file.</p></dd>
 
 
 <dt id="arg-pull-titles">pull_titles<a class="anchor" aria-label="anchor" href="#arg-pull-titles"></a></dt>
-<dd><p>when <code>TRUE</code> take the titles from the excel sheets, and add
+<dd><p>when <code>TRUE</code> take the titles from the <code>Excel</code> sheets, and add
 them to the description in the TOC_sheet_name.</p></dd>
 
 
@@ -102,8 +102,7 @@ chooses this as this is the default location of titles when you write a
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">output_file</span> <span class="op">&lt;-</span> <span class="st">"example_file.xlsx"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># using write xlsx we create an excel document</span></span></span>
+<span class="r-in"><span><span class="co"># using write xlsx we create an `Excel` document</span></span></span>
 <span class="r-in"><span><span class="co"># You could use xlr::write_xlsx to create a table of</span></span></span>
 <span class="r-in"><span><span class="co"># contents automatically.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html" class="external-link">write.xlsx</a></span><span class="op">(</span><span class="va">table_list</span>,</span></span>
@@ -114,7 +113,7 @@ chooses this as this is the default location of titles when you write a
 <span class="r-in"><span>                         <span class="st">"A workbook with example tables"</span>,</span></span>
 <span class="r-in"><span>                         <span class="co"># it only makes sense to pull titles when</span></span></span>
 <span class="r-in"><span>                         <span class="co"># the first cell has a text description</span></span></span>
-<span class="r-in"><span>                         pull_titles <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span>                         pull_titles <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

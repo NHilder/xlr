@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">xlr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,24 +61,25 @@
     
     
 <p>xlr is designed to help with the analysis of survey data and conduct
-modelling, and then export this information to Excel in an easy and
-consistent way.</p>
+modelling, and then export this information to <code>Excel</code> in an
+easy and consistent way.</p>
 <p>It is designed to help people with little R experience analyse survey
 data quickly and easily. This includes functions to quickly analyse
 multiple-response questions and block questions.</p>
 <p>This package also provides a simple and easy to use interface with
-Excel, building on the excellent work of the [openxlsx] package. It is
-designed with ease of use in mind, at the expense of some functionality
-of <code>openxlsx</code>.</p>
+<code>Excel</code>, building on the excellent work of the [openxlsx]
+package. It is designed with ease of use in mind, at the expense of some
+functionality of <code>openxlsx</code>.</p>
 <p>This package relies extensively on the <a href="https://www.tidyverse.org/" class="external-link">tidyverse</a> and so we use many of
 the same terms and concepts here.</p>
 <p>There are three aspects to this package:</p>
 <ol style="list-style-type: decimal">
 <li><p>Functions to help with the analysis of survey complex survey
 data.</p></li>
-<li><p>Functions to help export this data to Excel.</p></li>
+<li><p>Functions to help export this data to
+<code>Excel</code>.</p></li>
 <li><p>New <code>R</code> types to support consistent formatting in
-Excel.</p></li>
+<code>Excel</code>.</p></li>
 </ol>
 <div class="section level3">
 <h3 id="data-clothes_opinions">Data: clothes_opinions<a class="anchor" aria-label="anchor" href="#data-clothes_opinions"></a>
@@ -188,10 +189,11 @@ future update.</p>
 <h5 id="introduction-to-xlr_table">Introduction to xlr_table()<a class="anchor" aria-label="anchor" href="#introduction-to-xlr_table"></a>
 </h5>
 <p>You can also see that it has a special type <code><a href="../reference/xlr_table.html">xlr_table()</a></code>.
-This is a S3 class defined by xlr to help output the data to Excel. It
-contains the table data, a table title and a footnote, as well as hidden
-data to help format the table in Excel. You can learn more about
-<code><a href="../reference/xlr_table.html">xlr_table()</a></code> in the vignette <code>to do</code>.</p>
+This is a S3 class defined by xlr to help output the data to
+<code>Excel</code>. It contains the table data, a table title and a
+footnote, as well as hidden data to help format the table in
+<code>Excel</code>. You can learn more about <code><a href="../reference/xlr_table.html">xlr_table()</a></code> in
+the vignette <code>to do</code>.</p>
 <p>You can directly pass a title and a footnote to
 <code><a href="../reference/build_table.html">build_table()</a></code> by passing them as arguments to
 <code><a href="../reference/build_table.html">build_table()</a></code>:</p>
@@ -477,10 +479,10 @@ select the columns.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="xlr_table-xlr-types-and-writing-to-excel">xlr_table(), xlr types and writing to Excel<a class="anchor" aria-label="anchor" href="#xlr_table-xlr-types-and-writing-to-excel"></a>
+<h3 id="xlr_table-xlr-types-and-writing-to-excel">xlr_table(), xlr types and writing to <code>Excel</code><a class="anchor" aria-label="anchor" href="#xlr_table-xlr-types-and-writing-to-excel"></a>
 </h3>
-<p>A key part of the xlr is to export data to Excel in an easy, and user
-friendly way. The workhorse function in this scenario is
+<p>A key part of the xlr is to export data to <code>Excel</code> in an
+easy, and user friendly way. The workhorse function in this scenario is
 <code><a href="../reference/xlr_table.html">xlr_table()</a></code>, and if you like the default options is meant
 to be the function that you will mostly use.</p>
 <p>A <code><a href="../reference/xlr_table.html">xlr_table()</a></code> is a <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble()</a></code> with an
@@ -510,8 +512,8 @@ your table to different <code>xlr</code> types.</p>
 <h4 id="types">Types<a class="anchor" aria-label="anchor" href="#types"></a>
 </h4>
 <p>xlr types are defined to help with the formatting of columns when
-they are output to Excel. There are four difference types defined in
-xlr:</p>
+they are output to <code>Excel</code>. There are four difference types
+defined in xlr:</p>
 <ul>
 <li><p><code><a href="../reference/xlr_numeric.html">xlr_numeric()</a></code> to format doubles neatly.</p></li>
 <li><p><code><a href="../reference/xlr_integer.html">xlr_integer()</a></code> to format integer data
@@ -524,10 +526,11 @@ without specific rules.</p></li>
 <p>All of the above variables contain the argument
 <code>xlr_format</code> which only takes a <code><a href="../reference/xlr_format.html">xlr_format()</a></code>
 object. <code><a href="../reference/xlr_format.html">xlr_format()</a></code> allows you to control different
-formatting options when the data is outputted to Excel, it currently
-does not change how the data looks in console. You can change the font
-size, colour, text position etc. with <code><a href="../reference/xlr_format.html">xlr_format()</a></code>. See
-<code><a href="../reference/xlr_format.html">?xlr_format</a></code> for the full range of options.</p>
+formatting options when the data is outputted to <code>Excel</code>, it
+currently does not change how the data looks in console. You can change
+the font size, colour, text position etc. with
+<code><a href="../reference/xlr_format.html">xlr_format()</a></code>. See <code><a href="../reference/xlr_format.html">?xlr_format</a></code> for the full
+range of options.</p>
 <p>For <code><a href="../reference/xlr_numeric.html">xlr_numeric()</a></code> and <code><a href="../reference/xlr_percent.html">xlr_percent()</a></code> you can
 also set the number of decimal places through setting
 <code>dp=x</code>.</p>
@@ -562,9 +565,9 @@ possible. To find out more see <code><a href="../reference/xlr_and_dplyr.html">?
 </div>
 </div>
 <div class="section level3">
-<h3 id="writing-data-to-excel">Writing data to Excel<a class="anchor" aria-label="anchor" href="#writing-data-to-excel"></a>
+<h3 id="writing-data-to-excel">Writing data to <code>Excel</code><a class="anchor" aria-label="anchor" href="#writing-data-to-excel"></a>
 </h3>
-<p>xlr makes writing data to Excel easy using the
+<p>xlr makes writing data to <code>Excel</code> easy using the
 <code><a href="../reference/write_xlsx.html">write_xlsx()</a></code> function. This function takes either a
 <code>xlr_table</code>, <code>tibble</code> or <code>data.frame</code>.
 Note when you output a single object you need to specify</p>
@@ -572,10 +575,10 @@ Note when you output a single object you need to specify</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/write_xlsx.html">write_xlsx</a></span><span class="op">(</span><span class="va">mtcars</span>,</span>
 <span>           file <span class="op">=</span> <span class="st">"example.xlsx"</span>,</span>
 <span>           sheet_name <span class="op">=</span> <span class="st">"example_sheet"</span><span class="op">)</span></span></code></pre></div>
-<p>The output looks like this in Excel:</p>
+<p>The output looks like this in <code>Excel</code>:</p>
 <div class="float">
 <img src="img%2Fdata.frame_example.png" alt="Example of exporting a data.frame with write_xlsx, it shows a simple table in Excel."><div class="figcaption">Example of exporting a data.frame with
-write_xlsx, it shows a simple table in Excel.</div>
+write_xlsx, it shows a simple table in <code>Excel</code>.</div>
 </div>
 <p>When you output a <code>xlr_table</code> with this function
 additional formatting will be applied to the data as well as the title
@@ -585,7 +588,7 @@ and a footnote.</p>
 <span>           file <span class="op">=</span> <span class="st">"example.xlsx"</span>,</span>
 <span>           sheet_name <span class="op">=</span> <span class="st">"example_sheet"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Appending file: <span style="color: #0000BB;">example.xlsx</span></span></span></code></pre></div>
-<p>The output looks like this in Excel:</p>
+<p>The output looks like this in <code>Excel</code>:</p>
 <div class="float">
 <img src="img%2Fxlr_table_example.png" alt="Example of using a xlr_table with write_xlsx, the table now has a table, footnote and formatting!"><div class="figcaption">Example of using a xlr_table with write_xlsx,
 the table now has a table, footnote and formatting!</div>
@@ -609,14 +612,17 @@ how to update title colour to be red and the underlined:</p>
 and underlined</div>
 </div>
 <p>See <code><a href="../reference/update_theme.html">?update_theme</a></code> for more details.</p>
-<p>Like <code><a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html" class="external-link">openxlsx::write.xlsx()</a></code> you can also pass a list of
-What is particularly useful about this function is that it can output a
-<code>list</code> of <code>xlr_table</code>’s (or tibbles or
-data.frames) to Excel. This is useful if you are working survey data as
-you usually generate a long list of tables in a list.</p>
-<p>If you have a <code>list</code> of tables, set
-<code>TOC = TRUE</code> in order to generate a table of contents from
-the table data.</p>
+<div class="section level4">
+<h4 id="write_xlsx-and-list">
+<code>write_xlsx()</code> and <code>list()</code><a class="anchor" aria-label="anchor" href="#write_xlsx-and-list"></a>
+</h4>
+<p>Like <code><a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html" class="external-link">openxlsx::write.xlsx()</a></code> you can also pass a
+<strong>named list</strong> to <code><a href="../reference/write_xlsx.html">write_xlsx()</a></code> and these will
+be automatically created as sheets in the <code>Excel</code> file. If
+you have a <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> of tables, set <code>TOC = TRUE</code> in
+order to generate a table of contents for the <code>Excel</code> file.
+This is particularly useful when you have a large number of tables.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="putting-it-all-together">Putting it all together<a class="anchor" aria-label="anchor" href="#putting-it-all-together"></a>

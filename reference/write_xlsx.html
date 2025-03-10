@@ -15,7 +15,7 @@ when it writes to the Excel sheet. See xlr_table for more information."></head><
 
     <a class="navbar-brand me-2" href="../index.html">xlr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,17 +37,17 @@ when it writes to the Excel sheet. See xlr_table for more information."></head><
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Write a <code>xlr_table</code>, <code>data.frame</code>, or <code>tibble</code> to an .xlsx (Excel) file</h1>
+      <h1>Write a <code>xlr_table</code>, <code>data.frame</code>, or <code>tibble</code> to an .xlsx (<code>Excel</code>) file</h1>
       <small class="dont-index">Source: <a href="https://github.com/NHilder/xlr/blob/main/R/write_xlsx.R" class="external-link"><code>R/write_xlsx.R</code></a></small>
       <div class="d-none name"><code>write_xlsx.Rd</code></div>
     </div>
 
     <div class="ref-description section level2">
     <p>This function writes <code>xlr_table</code>, <code>data.frame</code>, or <code>tibble</code> to an .xlsx
-(Excel file). Like <a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html" class="external-link">write.xlsx</a> you can also write a <code>list</code> of
+(<code>Excel</code> file). Like <a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html" class="external-link">write.xlsx</a> you can also write a <code>list</code> of
 <code>xlr_table</code>'s, <code>data.frame</code>'s, and <code>tibbles</code>'s to the one file.
 The main use of this function is that it uses the formatting in a <code>xlr_table</code>
-when it writes to the Excel sheet. See <a href="xlr_table.html">xlr_table</a> for more information.</p>
+when it writes to the <code>Excel</code> sheet. See <a href="xlr_table.html">xlr_table</a> for more information.</p>
     </div>
 
     <div class="section level2">
@@ -107,7 +107,7 @@ file.</p></dd>
 
 
 <dt id="arg-excel-data-table">excel_data_table<a class="anchor" aria-label="anchor" href="#arg-excel-data-table"></a></dt>
-<dd><p>logical. Whether to save the data as an Excel table
+<dd><p>logical. Whether to save the data as an <code>Excel</code> table
 in the worksheet. These are more accessible than data in the sheet.</p></dd>
 
 </dl></div>
@@ -123,14 +123,16 @@ in the worksheet. These are more accessible than data in the sheet.</p></dd>
 <span class="r-in"><span><span class="co"># we can write a data.frame or tibble with write_xlsx</span></span></span>
 <span class="r-in"><span><span class="va">example_tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>example <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">write_xlsx</span><span class="op">(</span><span class="va">mtcars</span>,</span></span>
-<span class="r-in"><span>           <span class="st">"example_file.xlsx"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>           <span class="st">"example_file.xlsx"</span>,</span></span>
+<span class="r-in"><span>           sheet_name <span class="op">=</span> <span class="st">"Example sheet"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Appending file: <span style="color: #0000BB;">example_file.xlsx</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># you must specify a sheet name</span></span></span>
 <span class="r-in"><span><span class="fu">write_xlsx</span><span class="op">(</span><span class="va">example_tibble</span>,</span></span>
 <span class="r-in"><span>           <span class="st">"example_file.xlsx"</span>,</span></span>
-<span class="r-in"><span>           sheet_name <span class="op">=</span> <span class="st">"Example sheet"</span><span class="op">)</span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span>           sheet_name <span class="op">=</span> <span class="st">"Example sheet"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Appending file: <span style="color: #0000BB;">example_file.xlsx</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># You can write a xlr_table.</span></span></span>
 <span class="r-in"><span><span class="co"># When you write a xlr_table you can specify the formatting as well as titles</span></span></span>
@@ -139,10 +141,10 @@ in the worksheet. These are more accessible than data in the sheet.</p></dd>
 <span class="r-in"><span>                                 <span class="st">"This is a title"</span>,</span></span>
 <span class="r-in"><span>                                 <span class="st">"This is a footnote"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">write_xlsx</span><span class="op">(</span><span class="va">example_xlr_table</span>,</span></span>
 <span class="r-in"><span>           <span class="st">"example_file.xlsx"</span>,</span></span>
-<span class="r-in"><span>           <span class="st">"Example sheet"</span><span class="op">)</span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span>           <span class="st">"Example sheet"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Appending file: <span style="color: #0000BB;">example_file.xlsx</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># like openxlsx, you can also pass a list</span></span></span>
 <span class="r-in"><span><span class="va">table_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Sheet name 1"</span> <span class="op">=</span> <span class="fu"><a href="xlr_table.html">xlr_table</a></span><span class="op">(</span><span class="va">mtcars</span>,</span></span>
@@ -152,9 +154,9 @@ in the worksheet. These are more accessible than data in the sheet.</p></dd>
 <span class="r-in"><span>                                              <span class="st">"This is a title too"</span>,</span></span>
 <span class="r-in"><span>                                              <span class="st">"This is a footnote as well"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">write_xlsx</span><span class="op">(</span><span class="va">table_list</span>,</span></span>
-<span class="r-in"><span>           <span class="st">"example_file.xlsx"</span><span class="op">)</span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span>           <span class="st">"example_file.xlsx"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Appending file: <span style="color: #0000BB;">example_file.xlsx</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

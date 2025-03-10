@@ -27,7 +27,7 @@ You can convert a table back to a data.frame with base type with as_base_r()."><
 
     <a class="navbar-brand me-2" href="../index.html">xlr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +57,7 @@ You can convert a table back to a data.frame with base type with as_base_r()."><
     <div class="ref-description section level2">
     <p>Create a <code>xlr_table</code> S3 object. This is used to create an object that stores
 formatting information, as well as a title and footnote. This objects makes it
-easy to convert to an Excel sheet, using <code><a href="write_xlsx.html">write_xlsx()</a></code>.
+easy to convert to an <code>Excel</code> sheet, using <code><a href="write_xlsx.html">write_xlsx()</a></code>.
 To edit underlying formatting options use <code><a href="update_theme.html">update_theme()</a></code>.</p>
 <p>A number of <code>dplyr</code> methods have been implemented for <code>xlr_table</code>, these
 include <code>mutate</code>, <code>summarise</code>, <code>select</code>, etc. This means you can use these
@@ -107,7 +107,8 @@ as this would require the implementation of a new class.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nhilder.github.io/xlr/">xlr</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nhilder.github.io/xlr/">xlr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Create a xlr_table, we set the footnotes and the title</span></span></span>
 <span class="r-in"><span><span class="co"># It converts to the xlr types by default</span></span></span>
@@ -168,12 +169,13 @@ as this would require the implementation of a new class.</p>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="co"># make the font bigger</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="update_theme.html">update_theme</a></span><span class="op">(</span>title_format <span class="op">=</span> <span class="fu"><a href="xlr_format.html">xlr_format</a></span><span class="op">(</span>font_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="write_xlsx.html">write_xlsx</a></span><span class="op">(</span><span class="va">x</span>,</span></span>
+<span class="r-in"><span><span class="co"># you must write it in order to see the formatting changes</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="write_xlsx.html">write_xlsx</a></span><span class="op">(</span><span class="va">x</span>,</span></span>
 <span class="r-in"><span>             <span class="st">"example.xlsx"</span>,</span></span>
 <span class="r-in"><span>             <span class="st">"A example sheet"</span>,</span></span>
 <span class="r-in"><span>             TOC <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Appending file: <span style="color: #0000BB;">example.xlsx</span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
