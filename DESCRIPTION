@@ -15,7 +15,7 @@ Description: A high-level interface for creating and exporting summary tables to
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Collate:
   as_base_r.R
   xlr_table.R

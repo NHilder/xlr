@@ -190,10 +190,10 @@ build_qtable <- function(
   # now pivot longer so we can put everything in the one table
   long_data <-
     x_selected |>
-    # remove the NA"s if we need too
-    remove_NA_opt(use_NA) |>
     pivot_longer(cols = {{block_cols}},
-                 names_to = "Question Block")
+                 names_to = "Question Block") |>
+  # remove the NA"s if we need too
+  remove_NA_opt(use_NA)
 
   # now we have the long data we need calculate the summary table
   # and pivot it wider
