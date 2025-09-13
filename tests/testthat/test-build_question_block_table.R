@@ -274,7 +274,7 @@ test_that("use_questions pulls out the column names (the questions) as expected"
   })
 
 
-test_that("build_qtable removes only NA responses in a question block, retaining valid responses", {
+test_that("build_qtable removes NA for each question, instead of the entire observation if it contains a NA ", {
   # Create a sample data frame for a question block (Q1 with sub-questions Q1_a, Q1_b, Q1_c)
   test_data <- data.frame(
     ID = 1:5,  # Respondent IDs
