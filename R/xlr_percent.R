@@ -241,3 +241,16 @@ vec_arith.numeric.xlr_percent <- function(op, x, y, ...){
     stop_incompatible_op(op,x,y)
   )
 }
+
+#-------------------------------------------------------------------------------
+#' @export
+vec_math.xlr_percent <- function(f, x, ...){
+  vec_math_base(f, x, ...) |>
+    xlr_percent(dp = pull_dp(x),style = pull_style(x))
+}
+
+#' @export
+median.xlr_percent <- function(x, na.rm = FALSE, ....){
+  median(vec_data(x), na.rm = na.rm)|>
+    xlr_percent(dp = pull_dp(x),style = pull_style(x))
+}
