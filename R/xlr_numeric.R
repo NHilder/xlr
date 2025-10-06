@@ -83,7 +83,8 @@ new_xlr_numeric <- function(x = double(),
            dp = dp,
            scientific = scientific,
            style = style,
-           class = "xlr_numeric")
+           class = "xlr_numeric",
+           inherit_base_type = TRUE)
 }
 
 
@@ -167,16 +168,14 @@ format.xlr_numeric <- function(x, ...){
 
 #' @export
 vec_ptype_abbr.xlr_numeric <- function(x,...){
-  "x_dbl"
+  "x_num"
 }
 
 # now define some casting
 
 #' @export
 vec_ptype2.xlr_numeric.xlr_numeric <- function(x,y,...){
-  if (pull_dp(x) != pull_dp(y) ||
-      pull_style(x) != pull_style(y) ||
-      pull_attr(x,"scientific") != pull_attr(y,"scientific")){
+  if (!identical(attributes(x),attributes(y))){
     rlang::warn('Percent attributes ("dp", or "style) do not match, taking the attributes from the left-hand side.')
   }
   # come back an implement what happens with size and face
@@ -218,20 +217,14 @@ vec_ptype2.xlr_numeric.integer <- function(x,y,...) x
 #' @export
 vec_ptype2.integer.xlr_numeric <- function(x,y,...) y
 #' @export
-vec_cast.xlr_numeric.integer <- function(x,to,...) xlr_numeric(x, pull_dp(to),
+vec_cast.xlr_numeric.integer <- function(x,to,...)
+  xlr_numeric(x, pull_dp(to),
                                                                pull_attr(to,"scientific"),
                                                                pull_style(to))
 #' @export
 vec_cast.integer.xlr_numeric <- function(x,to,...){
   vec_cast(vec_data(x),integer())
 }
-
-
-
-#-----------
-# Now we define arithmetic
-# The first two functions are boiler plate
-#
 
 #' @export
 #' @method vec_arith xlr_numeric
@@ -248,9 +241,7 @@ vec_arith.xlr_numeric.default <- function(op, x, y, ...){
 #' @export
 #' @method vec_arith.xlr_numeric xlr_numeric
 vec_arith.xlr_numeric.xlr_numeric <- function(op, x, y, ...){
-  if (pull_dp(x) != pull_dp(y) ||
-      pull_style(x) != pull_style(y) ||
-      pull_attr(x,"scientific") != pull_attr(y,"scientific")){
+  if (!identical(attributes(x),attributes(y))){
     rlang::warn('Percent attributes ("dp", or "style") do not match, taking the attributes from the left-hand side.')
   }
   new_xlr_numeric(vec_arith_base(op,x,y),
@@ -259,7 +250,6 @@ vec_arith.xlr_numeric.xlr_numeric <- function(op, x, y, ...){
 }
 
 # next we define a list of generics for arithmetic
-
 #' @export
 #' @method vec_arith.xlr_numeric numeric
 vec_arith.xlr_numeric.numeric <- function(op, x, y, ...){

@@ -33,7 +33,7 @@
     Output
       # A tibble: 100 x 1
             test
-         <x_dbl>
+         <x_num>
        1    0.00
        2    0.01
        3    0.02
@@ -89,7 +89,7 @@
     Output
       # A tibble: 100 x 1
                test
-            <x_dbl>
+            <x_num>
        1 0.0000e+00
        2 1.0000e-02
        3 2.0000e-02
