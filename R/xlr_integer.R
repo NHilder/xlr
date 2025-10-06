@@ -174,10 +174,10 @@ vec_arith.xlr_integer.xlr_integer <- function(op, x, y, ...){
   }
   switch(
     op,
-    "+" = ,
-    "-" = ,
-    "*" = ,
-    "^" = ,
+    "+" =,
+    "-" =,
+    "*" =,
+    "^" =,
     "%/%" = ,
     "%%" = new_xlr_integer(vec_cast(vec_arith_base(op,x,y),integer()),
                             style = pull_style(x)),
@@ -197,4 +197,30 @@ vec_arith.xlr_integer.numeric <- function(op, x, y, ...){
 #' @method vec_arith.numeric xlr_integer
 vec_arith.numeric.xlr_integer <- function(op, x, y, ...){
   vec_arith_base(op,x,y)
+}
+
+
+#-------------------------------------------------------------------------------
+#' @export
+vec_math.xlr_integer <- function(f, x, ...){
+  out <- vec_math_base(f, x, ...)
+
+  if (is_logical(out)){
+    return(out)
+  }
+  int_out <- xlr_integer(out,style = pull_style(x))
+  # need to convert the write type depending on the function
+  switch(
+    f,
+    "sum" = int_out,
+    "prod" = int_out,
+    "abs" = int_out,
+    xlr_numeric(out,style = pull_style(x))
+  )
+}
+
+#' @export
+median.xlr_integer <- function(x, na.rm = FALSE, ....){
+  median(vec_data(x), na.rm = na.rm) |>
+    xlr_numeric(style = pull_style(x))
 }

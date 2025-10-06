@@ -245,7 +245,6 @@ vec_arith.xlr_numeric.default <- function(op, x, y, ...){
 }
 
 # next we define a list of generics for arithmetic
-
 #' @export
 #' @method vec_arith.xlr_numeric xlr_numeric
 vec_arith.xlr_numeric.xlr_numeric <- function(op, x, y, ...){
@@ -254,7 +253,6 @@ vec_arith.xlr_numeric.xlr_numeric <- function(op, x, y, ...){
       pull_attr(x,"scientific") != pull_attr(y,"scientific")){
     rlang::warn('Percent attributes ("dp", or "style") do not match, taking the attributes from the left-hand side.')
   }
-
   new_xlr_numeric(vec_arith_base(op,x,y),
                   dp = pull_dp(x),
                   style = pull_style(x))
@@ -265,7 +263,6 @@ vec_arith.xlr_numeric.xlr_numeric <- function(op, x, y, ...){
 #' @export
 #' @method vec_arith.xlr_numeric numeric
 vec_arith.xlr_numeric.numeric <- function(op, x, y, ...){
-
   new_xlr_numeric(vec_arith_base(op,x,y),
                   dp = pull_dp(x),
                   scientific = pull_attr(x,'scientific'),
@@ -281,4 +278,20 @@ vec_arith.numeric.xlr_numeric <- function(op, x, y, ...){
                   dp = pull_dp(y),
                   scientific = pull_attr(y,'scientific'),
                   style = pull_style(y))
+}
+
+#' @export
+vec_math.xlr_numeric <- function(f, x, ...){
+  vec_math_base(f, x, ...) |>
+    xlr_numeric(dp = pull_dp(x),
+                scientific = pull_attr(y,'scientific'),
+                style = pull_style(x))
+}
+
+#' @export
+median.xlr_numeric <- function(x, na.rm = FALSE, ....){
+  median(vec_data(x), na.rm = na.rm) |>
+    xlr_numeric(dp = pull_dp(x),
+                scientific = pull_attr(y,'scientific'),
+                style = pull_style(x))
 }
