@@ -242,6 +242,6 @@ test_that("vec_arith.xlr_percent.xlr_percent raises an error when things don't m
 
 test_that("we can create a ggplot silently",{
   df <- mtcars
-  df$test <- df$mpg
+  df$test <- xlr_percent(df$mpg)
   expect_silent(ggplot2::ggplot(df,ggplot2::aes(x = test,y=test)))
 })

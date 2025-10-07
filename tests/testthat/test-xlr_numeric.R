@@ -70,14 +70,12 @@ test_that("as_xlr_numeric() converts characters() correctly",{
   expect_warning(as_xlr_numeric("a1"))
 })
 
-
 test_that("xlr_numeric.format prints the way we want it",{
   # verify_output is very cool, it helps us see if it works
   expect_snapshot(xlr_numeric(1:100/100))
   expect_snapshot(xlr_numeric(0:99/100,dp=2))
   expect_snapshot(tibble::tibble(test=xlr_numeric(0:99/100,dp=2)))
 })
-
 
 test_that("xlr_numeric.format prints using scientific notation like we want it",{
   # verify_output is very cool, it helps us see if it works
@@ -153,5 +151,38 @@ test_that("xlr_numerics should work with all numerics and
 
   expect_equal(3%%xlr_numeric(2),xlr_numeric(1))
   expect_equal(xlr_numeric(3)%%2,xlr_numeric(1))
+})
+
+
+test_that("vec_ptype2.xlr_percent.xlr_percent raises warning when things don't match",{
+  # first check it raises a warning
+  expect_snapshot(c(xlr_numeric(1),xlr_numeric(1,dp =3)))
+})
+
+test_that("vec_arith.xlr_percent.xlr_percent raises warning when things don't match",{
+  # first check it raises a warning
+  expect_snapshot(xlr_numeric(1)+xlr_numeric(1,dp =3))
+})
+
+
+test_that("vec_arith.xlr_percent.xlr_percent raises an error when things don't match",{
+  # first check it raises a warning
+  expect_error(xlr_numeric(1)+TRUE,class = "vctrs_error_incompatible")
+})
+
+test_that("we can create a ggplot silently",{
+  df <- mtcars
+  df$test <- xlr_numeric(df$mpg)
+  expect_silent(ggplot2::ggplot(df,ggplot2::aes(x = test,y=test)))
+})
+
+test_that("xlr_numeric works with vec_math, median and quantile",{
+
+  expect_equal(sum(xlr_numeric(c(0.5,0.5))),1)
+  expect_equal(median(xlr_numeric(c(0.5,0.5))),0.5)
+
+  quant_out <- 0.5
+  names(quant_out) <- "50%"
+  expect_equal(quantile(xlr_numeric(c(0.5,0.5)),0.5),quant_out)
 })
 

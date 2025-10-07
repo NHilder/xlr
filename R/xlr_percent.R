@@ -263,4 +263,3 @@ quantile.xlr_percent <- function(x, ...){
   quantile(vec_data(x), ...)
 }
 
-
