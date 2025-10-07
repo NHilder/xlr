@@ -102,3 +102,25 @@
       10 9.0000e-02
       # i 90 more rows
 
+# vec_ptype2.xlr_percent.xlr_percent raises warning when things don't match
+
+    Code
+      c(xlr_numeric(1), xlr_numeric(1, dp = 3))
+    Condition
+      Warning:
+      Attributes ("dp", "scientific", or "style) do not match, taking the attributes from the left-hand side.
+    Output
+      <xlr_numeric[2]>
+      [1] 1.00 1.00
+
+# vec_arith.xlr_percent.xlr_percent raises warning when things don't match
+
+    Code
+      xlr_numeric(1) + xlr_numeric(1, dp = 3)
+    Condition
+      Warning:
+      Attributes ("dp", "scientific", or "style) do not match, taking the attributes from the left-hand side.
+    Output
+      <xlr_numeric[1]>
+      [1] 2.00
+
