@@ -49,3 +49,14 @@
       10   9.00%
       # i 90 more rows
 
+# casting two percentages raises a warning
+
+    Code
+      vec_cast(xlr_percent(1), xlr_percent(dp = 4))
+    Condition
+      Warning:
+      Attributes ("dp", or "style) do not match, taking the attributes from the "to" vector.
+    Output
+      <xlr_percent[1]>
+      [1] 100.0000%
+

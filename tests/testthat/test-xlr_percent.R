@@ -121,16 +121,20 @@ test_that("casting works as expected",{
   # to a lower decimal places
   # to be fare this is just styling so it is probably ok
 
-  expect_s3_class(vec_cast(xlr_percent(1),xlr_percent(dp=4)),
+  expect_s3_class(vec_cast(xlr_percent(1),xlr_percent(dp=4)) |>
+                    suppressWarnings(),
                   class = "xlr_percent",
                   exact = FALSE)
-  expect_s3_class(vec_cast(xlr_percent(1,dp=4),xlr_percent()),
+  expect_s3_class(vec_cast(xlr_percent(1,dp=4),xlr_percent())|>
+                    suppressWarnings(),
                   class = "xlr_percent",
                   exact = FALSE)
-  expect_s3_class(vec_cast(1,xlr_percent(1)),
+  expect_s3_class(vec_cast(1,xlr_percent(1))|>
+                    suppressWarnings(),
                   class = "xlr_percent",
                   exact = FALSE)
-  expect_type(vec_cast(xlr_percent(1),1),
+  expect_type(vec_cast(xlr_percent(1),1)|>
+                suppressWarnings(),
                   type = "double")
 
 })
@@ -138,12 +142,15 @@ test_that("casting works as expected",{
 
 test_that("casting to a xlr_percent pulls the xlr_percent data",{
   expect_equal(vec_cast(xlr_percent(1),xlr_percent(dp=4)) |>
+                 suppressWarnings() |>
                  pull_dp(),
               4L)
   expect_equal(vec_cast(xlr_percent(1,dp=4),xlr_percent()) |>
+                 suppressWarnings() |>
                     pull_dp(),
                   0L)
   expect_equal(vec_cast(1,xlr_percent(1,style = xlr_format(8))) |>
+                 suppressWarnings() |>
                  pull_style(),
                xlr_format(8))
 })
@@ -158,10 +165,12 @@ test_that("casting works as expected",{
   # to a lower decimal places
   # to be fare this is just styling so it is probably ok
 
-  expect_s3_class(vec_cast(xlr_percent(1),xlr_percent(dp=4)),
+  expect_s3_class(vec_cast(xlr_percent(1),xlr_percent(dp=4)) |>
+                  suppressWarnings(),
                   class = "xlr_percent",
                   exact = FALSE)
-  expect_s3_class(vec_cast(xlr_percent(1,dp=4),xlr_percent()),
+  expect_s3_class(vec_cast(xlr_percent(1,dp=4),xlr_percent())|>
+                    suppressWarnings(),
                   class = "xlr_percent",
                   exact = FALSE)
   expect_s3_class(vec_cast(1,xlr_percent(1)),
@@ -172,34 +181,34 @@ test_that("casting works as expected",{
 
 })
 
+test_that("casting two percentages raises a warning",{
+  expect_snapshot(vec_cast(xlr_percent(1),xlr_percent(dp=4)))
+})
+
+
+
 # Arithmetic-----------------------------------
-test_that("percentages only define add, subtract and multiplication
-          for xlr_percent xlr_percent operations",{
+test_that("percentages arithmetic can work with same percentage",{
 
   expect_equal(xlr_percent(1)+xlr_percent(1),xlr_percent(2))
   expect_equal(xlr_percent(1)-xlr_percent(.5),xlr_percent(.5))
   expect_equal(xlr_percent(.2)*xlr_percent(1),xlr_percent(.2))
-
-  # now we want to expect errors
-  expect_error(xlr_percent(1)/xlr_percent(1),
-               class = "vctrs_error_incompatible_op")
-  expect_error(xlr_percent(1)^xlr_percent(.5),
-               class = "vctrs_error_incompatible_op")
-  expect_error(xlr_percent(.2)%%xlr_percent(1),
-               class = "vctrs_error_incompatible_op")
 })
 
 test_that("percentages and double multiplication returns a double, divsion returns a xlr_percent",{
 
-            expect_equal(xlr_percent(1)*2,2)
-            expect_equal(2*xlr_percent(1),2)
-            expect_equal(xlr_percent(1)/2,xlr_percent(0.5))
+    expect_equal(xlr_percent(1)*2,2)
+    expect_equal(2*xlr_percent(1),2)
+    expect_equal(xlr_percent(1)/2,0.5)
+})
 
-            # now we want to expect errors
-            expect_error(1/xlr_percent(1),
-                         class = "vctrs_error_incompatible_op")
-            expect_error(1^xlr_percent(.5),
-                         class = "vctrs_error_incompatible_op")
-            expect_error(1%%xlr_percent(1),
-                         class = "vctrs_error_incompatible_op")
-          })
+
+test_that("xlr_percent works with vec_math, median and quantile",{
+
+  expect_equal(sum(xlr_percent(c(0.5,0.5))),1)
+  expect_equal(median(xlr_percent(c(0.5,0.5))),0.5)
+
+  quant_out <- 0.5
+  names(quant_out) <- "50%"
+  expect_equal(quantile(xlr_percent(c(0.5,0.5)),0.5),quant_out)
+})
