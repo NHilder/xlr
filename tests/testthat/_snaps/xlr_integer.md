@@ -31,3 +31,14 @@
       10       9
       # i 90 more rows
 
+# vec_arith.xlr_integer.xlr_integer raises warning when things don't match
+
+    Code
+      xlr_integer(1) + xlr_integer(1, style = xlr_format())
+    Condition
+      Warning:
+      Attributes ("style) do not match, taking the attributes from the left-hand side.
+    Output
+      <xlr_integer[1]>
+      [1] 2
+

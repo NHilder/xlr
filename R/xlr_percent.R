@@ -71,12 +71,11 @@ new_xlr_percent <- function(x = double(),
   new_vctr(x,
            dp = dp,
            style = style,
-           class = "xlr_percent")
+           class = "xlr_percent",
+           inherit_base_type = TRUE)
 }
 
 
-# Compatibility with S4 system
-methods::setOldClass(c("xlr_percent","vctrs_vctr"))
 
 #' @export
 #' @rdname xlr_percent
@@ -104,13 +103,16 @@ as_xlr_percent.default <- function(x,
 as_xlr_percent.character <- function(x,
                                  dp = 0L,
                                  style = xlr_format_numeric()){
-  # this needs fixing
-  value <- as.numeric(gsub(" *% *$","",x)) / 100
-  xlr_percent(value,
-          dp = dp,
-          style = style)
+  vec_cast(x,xlr_percent(dp = dp, style = style))
 }
 
+
+#' @export
+as.character.xlr_percent <- function(x,...){
+  vec_cast(x,character())
+}
+
+#- Formatting-------------------------------------------------------------------
 # Helpful functions to pull out the attributes in
 # percent
 pull_dp <- function(x) attr(x,which = "dp")
@@ -127,63 +129,93 @@ format.xlr_percent <- function(x, ...){
   out
 }
 
+
 #' @export
 vec_ptype_abbr.xlr_percent <- function(x,...){
   "x_pct"
 }
 
 
+
+#- Typing-----------------------------------------------------------------------
 # now define some casting
 
+# Compatibility with S4 system
+methods::setOldClass(c("xlr_percent","vctrs_vctr"))
+
 #' @export
-vec_ptype2.xlr_percent.xlr_percent <- function(x,y,...){
-  if (pull_dp(x) != pull_dp(y) ||
-      pull_style(x) != pull_style(y)){
+vec_ptype2.xlr_percent.xlr_percent <- function(x,y,..., x_arg = "", y_arg = ""){
+  if (!identical(attributes(x),attributes(y))){
     rlang::warn('Percent attributes ("dp", or "style) do not match, taking the attributes from the left-hand side.')
   }
   # come back an implement what happens with size and face
-  new_xlr_percent(dp = pull_dp(x),
-                   style = pull_style(x))
+  new_xlr_percent(vec_data(x),
+                  dp = pull_dp(x),
+                  style = pull_style(x))
 }
 # Define casting between two xlr_percent
 
 #' @export
 vec_cast.xlr_percent.xlr_percent <- function(x,to,...){
+  if (identical(attributes(x),attributes(to))){
+    return(x)
+  }
   new_xlr_percent(vec_data(x),
                    dp = pull_dp(to),
                    style = pull_style(to))
 }
 
-# Define the double() & xlr_percent()
 
 #' @export
-vec_ptype2.xlr_percent.double <- function(x,y,...) x
+vec_ptype2.xlr_percent.numeric <- function(x,y,...) x
 #' @export
-vec_ptype2.double.xlr_percent <- function(x,y,...) y
+vec_ptype2.numeric.xlr_percent <- function(x,y,...) y
+#' @export
+vec_cast.xlr_percent.numeric <- function(x,to,...) xlr_percent(x,pull_dp(to),pull_style(to))
+#' @export
+vec_cast.numeric.xlr_percent <- function(x,to,...) vec_data(x)
 
 #' @export
-vec_cast.xlr_percent.double <- function(x,to,...) xlr_percent(x,pull_dp(to),pull_style(to))
+vec_ptype2.xlr_percent.double <- vec_ptype2.xlr_percent.numeric
 #' @export
-vec_cast.double.xlr_percent <- function(x,to,...) vec_data(x)
+vec_ptype2.double.xlr_percent <- vec_ptype2.numeric.xlr_percent
+#' @export
+vec_cast.xlr_percent.double <- vec_cast.xlr_percent.numeric
+#' @export
+vec_cast.double.xlr_percent <- vec_cast.numeric.xlr_percent
+#' @export
+vec_ptype2.xlr_percent.integer <- vec_ptype2.xlr_percent.numeric
+#' @export
+vec_ptype2.integer.xlr_percent <- vec_ptype2.numeric.xlr_percent
+#' @export
+vec_cast.xlr_percent.integer <- vec_cast.xlr_percent.double
+#' @export
+vec_cast.integer.xlr_percent <- vec_cast.double.xlr_percent
 
-# Define the integer() & xlr_percent()
+# Define for a character
+#' @export
+vec_ptype2.xlr_percent.character <- vec_ptype2.xlr_percent.numeric
+#' @export
+vec_ptype2.character.xlr_percent <- vec_ptype2.numeric.xlr_percent
+#' @export
+vec_cast.character.xlr_percent <- function(x,to,...){
+  format.xlr_percent(x)
+}
+#' @export
+vec_cast.xlr_percent.character <- function(x,to,...){
+  value <- as.numeric(gsub(" *% *$","",x)) / 100
+  xlr_percent(value,
+              dp = pull_dp(to),
+              style = pull_style(to))
+}
 
-#' @export
-vec_ptype2.xlr_percent.integer <- function(x,y,...) x
-#' @export
-vec_ptype2.integer.xlr_percent <- function(x,y,...) y
-#' @export
-vec_cast.xlr_percent.integer <- function(x,to,...) xlr_percent(x,pull_dp(to),pull_style(to))
-#' @export
-vec_cast.integer.xlr_percent <- function(x,to,...) vec_data(x)
-
-
-#-----------
+# ARITHMETIC--------------------------------------------------------------------
 # Now we define arithmetic
 # The first two functions are boiler plate
-
-#' @export
 #' @method vec_arith xlr_percent
+#' @keywords internal
+#' @export vec_arith.xlr_percent
+#' @export
 vec_arith.xlr_percent <- function(op, x, y, ...){
   UseMethod("vec_arith.xlr_percent",y)
 }
@@ -192,65 +224,42 @@ vec_arith.xlr_percent <- function(op, x, y, ...){
 vec_arith.xlr_percent.default <- function(op, x, y, ...){
   stop_incompatible_op(op,x,y)
 }
-
-# next we define a list of generics for arithmetic
-
-#' @export
 #' @method vec_arith.xlr_percent xlr_percent
+#' @export
 vec_arith.xlr_percent.xlr_percent <- function(op, x, y, ...){
-  if (pull_dp(x) != pull_dp(y) ||
-      pull_style(x) != pull_style(y)){
-    rlang::warn('Percent attributes ("dp", or "style") do not match, taking the attributes from the left-hand side.')
+  if (!identical(attributes(x),attributes(y))){
+    rlang::warn('Percent attributes ("dp", or "style) do not match, taking the attributes from the left-hand side.')
   }
-  switch(
-    op,
-    "+" = ,
-    "-" = ,
-    "*" = new_xlr_percent(vec_arith_base(op,x,y),
-                           dp = pull_dp(x),
-                           style = pull_style(x)),
-    stop_incompatible_op(op,x,y)
-  )
+  # do the operation
+  out <- vec_arith_base(op,x,y)
+  # Convert the percentage and output it
+  vec_cast(out,x)
 }
-
-# next we define a list of generics for arithmetic
-
-#' @export
 #' @method vec_arith.xlr_percent numeric
-vec_arith.xlr_percent.numeric <- function(op, x, y, ...){
-
-  switch(
-    op,
-    "*" = vec_arith_base(op,x,y),
-    "/" = new_xlr_percent(vec_arith_base(op,x,y),
-                           dp = pull_dp(x),
-                           style = pull_style(x)),
-    stop_incompatible_op(op,x,y)
-  )
-}
-
-# next we define a list of generics for arithmetic
-
 #' @export
+vec_arith.xlr_percent.numeric <- function(op, x, y, ...){
+  vec_arith_base(op,x,y)
+}
 #' @method vec_arith.numeric xlr_percent
+#' @export
 vec_arith.numeric.xlr_percent <- function(op, x, y, ...){
-
-  switch(
-    op,
-    "*" = vec_arith_base(op,x,y),
-    stop_incompatible_op(op,x,y)
-  )
+  vec_arith_base(op,x,y)
 }
 
-#-------------------------------------------------------------------------------
 #' @export
 vec_math.xlr_percent <- function(f, x, ...){
-  vec_math_base(f, x, ...) |>
-    xlr_percent(dp = pull_dp(x),style = pull_style(x))
+  vec_math_base(f, x, ...)
 }
 
+#' @importFrom stats median
 #' @export
 median.xlr_percent <- function(x, na.rm = FALSE, ....){
-  median(vec_data(x), na.rm = na.rm)|>
-    xlr_percent(dp = pull_dp(x),style = pull_style(x))
+  median(vec_data(x), na.rm = na.rm)
 }
+
+#' @importFrom stats quantile
+#' @export
+quantile.xlr_percent <- function(x, ...){
+  quantile(vec_data(x), ...)
+}
+

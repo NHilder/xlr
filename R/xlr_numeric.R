@@ -1,7 +1,4 @@
 
-# Compatibility with S4 system
-methods::setOldClass(c("xlr_numeric","vctrs_vctr"))
-
 #' `xlr_numeric` vector
 #'
 #' This creates an numeric vector that will be printed neatly and can easily be
@@ -87,55 +84,7 @@ new_xlr_numeric <- function(x = double(),
            inherit_base_type = TRUE)
 }
 
-
-#' Check if it is a percentage
-#' @export
-#' @rdname xlr_numeric
-is_xlr_numeric <- function(x) {
-  inherits(x, "xlr_numeric")
-}
-
-
-#' now we can define a as_xlr_numeric function
-#' @export
-#' @rdname xlr_numeric
-as_xlr_numeric <- function(x,
-                           dp = 0L,
-                           scientific = FALSE,
-                           style = xlr_format_numeric()){
-  UseMethod("as_xlr_numeric")
-}
-
-#' @export
-as_xlr_numeric.default <- function(x,
-                                   dp = 0L,
-                                   scientific = FALSE,
-                                   style = xlr_format_numeric()){
-  vec_cast(x,xlr_numeric(dp = dp,
-                         scientific = scientific,
-                         style = style))
-}
-
-#' @export
-as_xlr_numeric.character <- function(x,
-                                     dp = 0L,
-                                     scientific = FALSE,
-                                     style = xlr_format_numeric()){
-  # if R can work it out, cast it to a xlr_numeric with default settings
-  value <- as.double(x)
-  xlr_numeric(value,
-              dp = dp,
-              scientific = scientific,
-              style = style)
-}
-
-#' @export
-as.numeric.xlr_numeric <- function(x,...){
-  vec_data(x)
-}
-
 pull_attr <- function(x,attr) attr(x,which = attr)
-
 pull_dp <- function(x) attr(x,which = "dp")
 pull_style <-function(x) attr(x,which = "style")
 
@@ -171,12 +120,60 @@ vec_ptype_abbr.xlr_numeric <- function(x,...){
   "x_num"
 }
 
-# now define some casting
+#- Typing-----------------------------------------------------------------------
+
+#' Check if it is a percentage
+#' @export
+#' @rdname xlr_numeric
+is_xlr_numeric <- function(x) {
+  inherits(x, "xlr_numeric")
+}
+
+#' now we can define a as_xlr_numeric function
+#' @export
+#' @rdname xlr_numeric
+as_xlr_numeric <- function(x,
+                           dp = 0L,
+                           scientific = FALSE,
+                           style = xlr_format_numeric()){
+  UseMethod("as_xlr_numeric")
+}
+
+#' @export
+as_xlr_numeric.default <- function(x,
+                                   dp = 0L,
+                                   scientific = FALSE,
+                                   style = xlr_format_numeric()){
+  vec_cast(x,
+           xlr_numeric(dp = dp,
+                         scientific = scientific,
+                         style = style))
+}
+
+#' @export
+as_xlr_numeric.character <- function(x,
+                                     dp = 0L,
+                                     scientific = FALSE,
+                                     style = xlr_format_numeric()){
+  # if R can work it out, cast it to a xlr_numeric with default settings
+  value <- as.double(x)
+  xlr_numeric(value,
+              dp = dp,
+              scientific = scientific,
+              style = style)
+}
+
+#' @export
+as.numeric.xlr_numeric <- function(x,...){
+  vec_data(x)
+}
+# Compatibility with S4 system
+methods::setOldClass(c("xlr_numeric","vctrs_vctr"))
 
 #' @export
 vec_ptype2.xlr_numeric.xlr_numeric <- function(x,y,...){
   if (!identical(attributes(x),attributes(y))){
-    rlang::warn('Percent attributes ("dp", or "style) do not match, taking the attributes from the left-hand side.')
+    rlang::warn('Attributes ("dp", "scientific", or "style) do not match, taking the attributes from the left-hand side.')
   }
   # come back an implement what happens with size and face
   new_xlr_numeric(dp = pull_dp(x),
@@ -195,37 +192,36 @@ vec_ptype2.xlr_numeric.numeric <- function(x,y,...) x
 #' @export
 vec_ptype2.numeric.xlr_numeric <- function(x,y,...) y
 #' @export
-vec_cast.xlr_numeric.numeric <- function(x,to,...) xlr_numeric(x,
-                                                              pull_dp(to),
-                                                              pull_attr(to,"scientific"),
-                                                              pull_style(to))
+vec_cast.xlr_numeric.numeric <- function(x, to, ...){
+  xlr_numeric(vec_data(x),
+              dp = pull_dp(to),
+              scientific = pull_attr(to,"scientific"),
+              style = pull_style(to))
+}
 #' @export
-vec_ptype2.xlr_numeric.double <- function(x,y,...) x
-#' @export
-vec_ptype2.double.xlr_numeric <- function(x,y,...) y
-#' @export
-vec_cast.xlr_numeric.double <- function(x,to,...) xlr_numeric(x,
-                                                               pull_dp(to),
-                                                               pull_attr(to,"scientific"),
-                                                               pull_style(to))
-#' @export
-vec_cast.double.xlr_numeric <- function(x,to,...) vec_data(x)
-#' @export
-vec_cast.numeric.xlr_numeric <- function(x,to,...) vec_data(x)
-#' @export
-vec_ptype2.xlr_numeric.integer <- function(x,y,...) x
-#' @export
-vec_ptype2.integer.xlr_numeric <- function(x,y,...) y
-#' @export
-vec_cast.xlr_numeric.integer <- function(x,to,...)
-  xlr_numeric(x, pull_dp(to),
-                                                               pull_attr(to,"scientific"),
-                                                               pull_style(to))
-#' @export
-vec_cast.integer.xlr_numeric <- function(x,to,...){
-  vec_cast(vec_data(x),integer())
+vec_cast.numeric.xlr_numeric <- function(x, to, ...){
+  vec_cast(vec_data(x), to)
 }
 
+#' @export
+vec_ptype2.xlr_numeric.double <- vec_ptype2.xlr_numeric.numeric
+#' @export
+vec_ptype2.double.xlr_numeric <- vec_ptype2.numeric.xlr_numeric
+#' @export
+vec_cast.xlr_numeric.double <- vec_cast.xlr_numeric.numeric
+#' @export
+vec_cast.double.xlr_numeric <- vec_cast.numeric.xlr_numeric
+#' @export
+vec_ptype2.xlr_numeric.integer <- vec_ptype2.xlr_numeric.numeric
+#' @export
+vec_ptype2.integer.xlr_numeric <- vec_ptype2.numeric.xlr_numeric
+#' @export
+vec_cast.xlr_numeric.integer <- vec_cast.xlr_numeric.numeric
+#' @export
+vec_cast.integer.xlr_numeric <- vec_cast.numeric.xlr_numeric
+
+
+#- ARITHMETIC-------------------------------------------------------------------
 #' @export
 #' @method vec_arith xlr_numeric
 vec_arith.xlr_numeric <- function(op, x, y, ...){
@@ -242,10 +238,11 @@ vec_arith.xlr_numeric.default <- function(op, x, y, ...){
 #' @method vec_arith.xlr_numeric xlr_numeric
 vec_arith.xlr_numeric.xlr_numeric <- function(op, x, y, ...){
   if (!identical(attributes(x),attributes(y))){
-    rlang::warn('Percent attributes ("dp", or "style") do not match, taking the attributes from the left-hand side.')
+    rlang::warn('Attributes ("dp", "scientific", or "style) do not match, taking the attributes from the left-hand side.')
   }
   new_xlr_numeric(vec_arith_base(op,x,y),
                   dp = pull_dp(x),
+                  scientific = pull_attr(x,'scientific'),
                   style = pull_style(x))
 }
 
@@ -272,16 +269,17 @@ vec_arith.numeric.xlr_numeric <- function(op, x, y, ...){
 
 #' @export
 vec_math.xlr_numeric <- function(f, x, ...){
-  vec_math_base(f, x, ...) |>
-    xlr_numeric(dp = pull_dp(x),
-                scientific = pull_attr(y,'scientific'),
-                style = pull_style(x))
+  vec_math_base(f, x, ...)
 }
 
+#' @importFrom stats median
 #' @export
 median.xlr_numeric <- function(x, na.rm = FALSE, ....){
-  median(vec_data(x), na.rm = na.rm) |>
-    xlr_numeric(dp = pull_dp(x),
-                scientific = pull_attr(y,'scientific'),
-                style = pull_style(x))
+  median(vec_data(x), na.rm = na.rm)
+}
+
+#' @importFrom stats quantile
+#' @export
+quantile.xlr_numeric <- function(x, ...){
+  quantile(vec_data(x), ...)
 }

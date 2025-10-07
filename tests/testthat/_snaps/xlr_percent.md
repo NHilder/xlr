@@ -49,3 +49,25 @@
       10   9.00%
       # i 90 more rows
 
+# vec_ptype2.xlr_percent.xlr_percent raises warning when things don't match
+
+    Code
+      c(xlr_percent(1), xlr_percent(1, dp = 3))
+    Condition
+      Warning:
+      Percent attributes ("dp", or "style) do not match, taking the attributes from the left-hand side.
+    Output
+      <xlr_percent[2]>
+      [1] 100% 100%
+
+# vec_arith.xlr_percent.xlr_percent raises warning when things don't match
+
+    Code
+      xlr_percent(1) + xlr_percent(1, dp = 3)
+    Condition
+      Warning:
+      Percent attributes ("dp", or "style) do not match, taking the attributes from the left-hand side.
+    Output
+      <xlr_percent[1]>
+      [1] 200%
+
