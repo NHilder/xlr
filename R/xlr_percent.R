@@ -144,13 +144,14 @@ vec_ptype_abbr.xlr_percent <- function(x,...){
 methods::setOldClass(c("xlr_percent","vctrs_vctr"))
 
 #' @export
-vec_ptype2.xlr_percent.xlr_percent <- function(x,y,...){
+vec_ptype2.xlr_percent.xlr_percent <- function(x,y,..., x_arg = "", y_arg = ""){
   if (!identical(attributes(x),attributes(y))){
     rlang::warn('Percent attributes ("dp", or "style) do not match, taking the attributes from the left-hand side.')
   }
   # come back an implement what happens with size and face
-  new_xlr_percent(dp = pull_dp(x),
-                   style = pull_style(x))
+  new_xlr_percent(vec_data(x),
+                  dp = pull_dp(x),
+                  style = pull_style(x))
 }
 # Define casting between two xlr_percent
 
@@ -159,10 +160,6 @@ vec_cast.xlr_percent.xlr_percent <- function(x,to,...){
   if (identical(attributes(x),attributes(to))){
     return(x)
   }
-
-  # If they don't match throw a warning and process the styles
-  rlang::warn('Attributes ("dp", or "style) do not match, taking the attributes from the "to" vector.')
-
   new_xlr_percent(vec_data(x),
                    dp = pull_dp(to),
                    style = pull_style(to))
@@ -265,3 +262,5 @@ median.xlr_percent <- function(x, na.rm = FALSE, ....){
 quantile.xlr_percent <- function(x, ...){
   quantile(vec_data(x), ...)
 }
+
+

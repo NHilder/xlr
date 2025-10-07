@@ -181,11 +181,6 @@ test_that("casting works as expected",{
 
 })
 
-test_that("casting two percentages raises a warning",{
-  expect_snapshot(vec_cast(xlr_percent(1),xlr_percent(dp=4)))
-})
-
-
 
 # Arithmetic-----------------------------------
 test_that("percentages arithmetic can work with same percentage",{
@@ -211,4 +206,36 @@ test_that("xlr_percent works with vec_math, median and quantile",{
   quant_out <- 0.5
   names(quant_out) <- "50%"
   expect_equal(quantile(xlr_percent(c(0.5,0.5)),0.5),quant_out)
+})
+
+
+test_that("xlr_percent produces a correctly formatted character when casting or using as.character",{
+  # first check that vec_cast works as expected
+  expect_equal(vec_cast(xlr_percent(1),character()),"100%")
+  expect_equal(vec_cast(xlr_percent(0.50),character()),"50%")
+  expect_equal(vec_cast(xlr_percent(0.5055),character()),"51%")
+  expect_equal(vec_cast(xlr_percent(0.5055,dp = 2),character()),"50.55%")
+
+  # expect that as.character() which is a wrapper around vec_Cast
+  # works as expected
+  expect_equal(as.character(xlr_percent(1)),"100%")
+  expect_equal(as.character(xlr_percent(0.50)),"50%")
+  expect_equal(as.character(xlr_percent(0.5055)),"51%")
+  expect_equal(as.character(xlr_percent(0.5055,dp = 2)),"50.55%")
+})
+
+test_that("vec_ptype2.xlr_percent.xlr_percent raises warning when things don't match",{
+  # first check it raises a warning
+  expect_snapshot(c(xlr_percent(1),xlr_percent(1,dp =3)))
+})
+
+test_that("vec_arith.xlr_percent.xlr_percent raises warning when things don't match",{
+  # first check it raises a warning
+  expect_snapshot(xlr_percent(1)+xlr_percent(1,dp =3))
+})
+
+
+test_that("vec_arith.xlr_percent.xlr_percent raises an error when things don't match",{
+  # first check it raises a warning
+  expect_error(xlr_percent(1)+TRUE,class = "vctrs_error_incompatible")
 })
