@@ -1,8 +1,3 @@
-
-
-# Compatibility with S4 system
-methods::setOldClass(c("xlr_integer","vctrs_vctr"))
-
 #' `xlr_integer` vector
 #'
 #' This creates an integer vector that will be printed neatly and can easily be
@@ -62,37 +57,7 @@ new_xlr_integer <- function(x = integer(),
            class = "xlr_integer")
 }
 
-
-#' @export
-#' @rdname xlr_integer
-is_xlr_integer <- function(x) {
-  inherits(x, "xlr_integer")
-}
-
-#' @export
-#' @rdname xlr_integer
-as_xlr_integer <- function(x,
-                            style = xlr_format_numeric()){
-  UseMethod("as_xlr_integer")
-}
-
-#' @export
-as_xlr_integer.default <- function(x,
-                                    style = xlr_format_numeric()){
-  vec_cast(x,xlr_integer(style = style))
-}
-
-#' @export
-as_xlr_integer.character <- function(x,
-                                      style = xlr_format_numeric()){
-  # if R can work it out, cast it to a xlr_integer with default settings
-  value <- as.integer(x)
-  xlr_integer(value, style = style)
-}
-
-
-pull_style <-function(x) attr(x,which = "style")
-
+#- FORMATTING-------------------------------------------------------------------
 #' @export
 format.xlr_integer <- function(x, ...){
   out <- formatC(vec_data(x),
@@ -112,12 +77,44 @@ vec_ptype_abbr.xlr_integer <- function(x,...){
   "x_int"
 }
 
-# now define some casting--------------------------------------------
+# now define TYPING-------------------------------------------------------------
+
+# Compatibility with S4 system
+methods::setOldClass(c("xlr_integer","vctrs_vctr"))
+
+
+#' @export
+#' @rdname xlr_integer
+is_xlr_integer <- function(x) {
+  inherits(x, "xlr_integer")
+}
+
+#' @export
+#' @rdname xlr_integer
+as_xlr_integer <- function(x,
+                           style = xlr_format_numeric()){
+  UseMethod("as_xlr_integer")
+}
+
+#' @export
+as_xlr_integer.default <- function(x,
+                                   style = xlr_format_numeric()){
+  vec_cast(x,xlr_integer(style = style))
+}
+
+#' @export
+as_xlr_integer.character <- function(x,
+                                     style = xlr_format_numeric()){
+  # if R can work it out, cast it to a xlr_integer with default settings
+  value <- as.integer(x)
+  xlr_integer(value, style = style)
+}
+
 
 #' @export
 vec_ptype2.xlr_integer.xlr_integer <- function(x,y,...){
   if (pull_style(x) != pull_style(y)){
-    rlang::warn('Percent attributes ("style) do not match, taking the attributes from the left-hand side.')
+    rlang::warn('Attributes ("style) do not match, taking the attributes from the left-hand side.')
   }
   # come back an implement what happens with size and face
   new_xlr_integer(style = pull_style(x))
@@ -170,19 +167,14 @@ vec_arith.xlr_integer.default <- function(op, x, y, ...){
 vec_arith.xlr_integer.xlr_integer <- function(op, x, y, ...){
 
   if (pull_style(x) != pull_style(y)){
-    rlang::warn('Percent attributes ("style") do not match, taking the attributes from the left-hand side.')
+    rlang::warn('Attributes ("style) do not match, taking the attributes from the left-hand side.')
   }
-  switch(
-    op,
-    "+" =,
-    "-" =,
-    "*" =,
-    "^" =,
-    "%/%" = ,
-    "%%" = new_xlr_integer(vec_cast(vec_arith_base(op,x,y),integer()),
-                            style = pull_style(x)),
-    stop_incompatible_op(op,x,y)
-  )
+  out <- vec_arith_base(op,x,y)
+
+  out <- vec_cast(out,integer(), x_arg = "")
+
+  new_xlr_integer(out,
+              pull_style(x))
 }
 
 # next we define a list of generics for arithmetic
@@ -199,28 +191,19 @@ vec_arith.numeric.xlr_integer <- function(op, x, y, ...){
   vec_arith_base(op,x,y)
 }
 
-
-#-------------------------------------------------------------------------------
 #' @export
 vec_math.xlr_integer <- function(f, x, ...){
-  out <- vec_math_base(f, x, ...)
-
-  if (is_logical(out)){
-    return(out)
-  }
-  int_out <- xlr_integer(out,style = pull_style(x))
-  # need to convert the write type depending on the function
-  switch(
-    f,
-    "sum" = int_out,
-    "prod" = int_out,
-    "abs" = int_out,
-    xlr_numeric(out,style = pull_style(x))
-  )
+  vec_math_base(f, x, ...)
 }
-
+#' @importFrom stats median
 #' @export
 median.xlr_integer <- function(x, na.rm = FALSE, ....){
-  median(vec_data(x), na.rm = na.rm) |>
-    xlr_numeric(style = pull_style(x))
+  median(vec_data(x), na.rm = na.rm)
 }
+
+#' @importFrom stats quantile
+#' @export
+quantile.xlr_integer <- function(x, ...){
+  quantile(vec_data(x), ...)
+}
+
