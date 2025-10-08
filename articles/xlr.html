@@ -259,7 +259,7 @@ weights to the <code>wt</code> argument:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Gender by age make up of clothing opinion data (weighted)</span> <span style="color: #00BBBB;">───────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A xlr_table: 12 x 4</span></span></span>
 <span><span class="co">#&gt;   age_group gender2            N Percent</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;x_dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_pct&gt;</span></span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;x_num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_pct&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 18-30     male       122,277.0     47%</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 18-30     female     118,532.0     46%</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 18-30     non-binary  19,378.0      7%</span></span>
@@ -496,15 +496,15 @@ options.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">This is a title</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A xlr_table: 1000 x 20</span></span></span>
 <span><span class="co">#&gt;    weight group    gender   gender2     age age_group    Q1_1   Q1_2  Q1_3  Q1_4</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_in&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_i&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_i&gt;</span></span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_in&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_i&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_i&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>   1,072 a        female      2.00      25 18-30           1      5     5     2</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     219 a        female      2.00      64 51-65           3      1     2     2</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>   1,187 a        male        1.00      35 31-40           4      3     5     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>   1,860 a        male        1.00      55 51-65           4      1     2     2</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 996 more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 10 more variables: Q2_1 &lt;x_vctr&gt;, Q2_2 &lt;x_vctr&gt;, Q2_3 &lt;x_vctr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   Q2_4 &lt;x_vctr&gt;, Q2_5 &lt;x_vctr&gt;, Q2_6 &lt;x_vctr&gt;, Q3_1 &lt;x_dbl&gt;, Q3_2 &lt;x_dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   Q3_3 &lt;x_dbl&gt;, Q3_other &lt;x_vctr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   Q2_4 &lt;x_vctr&gt;, Q2_5 &lt;x_vctr&gt;, Q2_6 &lt;x_vctr&gt;, Q3_1 &lt;x_num&gt;, Q3_2 &lt;x_num&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   Q3_3 &lt;x_num&gt;, Q3_other &lt;x_vctr&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="font-style: italic;">this is a footnote with extra information</span></span></span></code></pre></div>
 <p>When you call <code><a href="../reference/xlr_table.html">xlr_table()</a></code> it converts the elements of
 your table to different <code>xlr</code> types.</p>
