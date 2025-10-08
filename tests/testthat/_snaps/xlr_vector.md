@@ -5,7 +5,7 @@
     Output
       # A xlr_table: 10 x 5
                a greater_10_1                   greater_10_2 greater_10_3 greater_10_4
-         <x_dbl> <x_vctr>                       <x_vctr>     <x_vctr>     <x_vctr>    
+         <x_num> <x_vctr>                       <x_vctr>     <x_vctr>     <x_vctr>    
        1    1.00 aaaaaaaaaaaaaaaaaaaaaaaaaaaaa~ aaaaaaaaaaa~ aaaaaaaaaaa~ aaaaaaaaaaa~
        2    1.00 aaaaaaaaaaaaaaaaaaaaaaaaaaaaa~ aaaaaaaaaaa~ aaaaaaaaaaa~ aaaaaaaaaaa~
        3    1.00 aaaaaaaaaaaaaaaaaaaaaaaaaaaaa~ aaaaaaaaaaa~ aaaaaaaaaaa~ aaaaaaaaaaa~
@@ -24,7 +24,7 @@
     Output
       # A xlr_table: 10 x 5
                a under_10 over_10                                under_10.1 over_10.1 
-         <x_dbl> <x_vctr> <x_vctr>                               <x_vctr>   <x_vctr>  
+         <x_num> <x_vctr> <x_vctr>                               <x_vctr>   <x_vctr>  
        1    1.00 aaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa~ aaaaaaaa   aaaaaaaaa~
        2    1.00 aaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa~ aaaaaaaa   aaaaaaaaa~
        3    1.00 aaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa~ aaaaaaaa   aaaaaaaaa~

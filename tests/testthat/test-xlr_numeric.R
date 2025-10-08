@@ -186,3 +186,19 @@ test_that("xlr_numeric works with vec_math, median and quantile",{
   expect_equal(quantile(xlr_numeric(c(0.5,0.5)),0.5),quant_out)
 })
 
+
+test_that("xlr_numeric casting can work between xlr types",{
+  expect_s3_class(vec_cast(xlr_percent(dp=4),xlr_numeric(1)),
+                  class = "xlr_numeric",
+                  exact = FALSE)
+  expect_s3_class(c(xlr_numeric(1), xlr_percent(dp=4)),
+                  class = "xlr_numeric",
+                  exact = FALSE)
+
+  expect_s3_class(vec_cast(xlr_integer(1),xlr_numeric(1)),
+                  class = "xlr_numeric",
+                  exact = FALSE)
+  expect_s3_class(c(xlr_numeric(1), xlr_integer(1)),
+                  class = "xlr_numeric",
+                  exact = FALSE)
+})

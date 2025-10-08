@@ -5,7 +5,7 @@
     Output
       # A xlr_table: 100 x 4
            b_int   b_pct   b_dbl d_vctr  
-         <x_int> <x_pct> <x_dbl> <x_vctr>
+         <x_int> <x_pct> <x_num> <x_vctr>
        1       1      1%    1.00 1       
        2       2      2%    2.00 2       
        3       3      3%    3.00 3       
@@ -28,7 +28,7 @@
     Output
       # A xlr_table: 100 x 4
            b_int   b_pct   b_dbl d_vctr  
-         <x_int> <x_pct> <x_dbl> <x_vctr>
+         <x_int> <x_pct> <x_num> <x_vctr>
        1       1      1%    1.00 1       
        2       2      2%    2.00 2       
        3       3      3%    3.00 3       
@@ -48,7 +48,7 @@
     Output
       # A xlr_table: 100 x 4
            b_int   b_pct   b_dbl d_vctr  
-         <x_int> <x_pct> <x_dbl> <x_vctr>
+         <x_int> <x_pct> <x_num> <x_vctr>
        1       1      1%    1.00 1       
        2       2      2%    2.00 2       
        3       3      3%    3.00 3       
@@ -72,7 +72,7 @@
     Output
       # A xlr_table: 100 x 4
            b_int   b_pct   b_dbl d_vctr  
-         <x_int> <x_pct> <x_dbl> <x_vctr>
+         <x_int> <x_pct> <x_num> <x_vctr>
        1       1      1%    1.00 1       
        2       2      2%    2.00 2       
        3       3      3%    3.00 3       

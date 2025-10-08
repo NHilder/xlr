@@ -144,6 +144,20 @@ vec_cast.xlr_integer.integer <- function(x,to,...) xlr_integer(x,pull_style(to))
 #' @export
 vec_cast.integer.xlr_integer <- function(x,to,...) vec_data(x)
 
+#- Add casting between different xlr types where it makes sense
+# Define all the casting 'to' an xlr_percent
+#' @export
+vec_ptype2.xlr_integer.xlr_percent <- function(x,y,...) x
+#' @export
+vec_cast.xlr_integer.xlr_percent <- function(x,to,...) {
+  vec_cast(vec_data(x),xlr_integer())
+}
+#' @export
+vec_ptype2.xlr_integer.xlr_numeric <- function(x,y,...) x
+#' @export
+vec_cast.xlr_integer.xlr_numeric <- function(x,to,...) {
+  vec_cast(vec_data(x),xlr_integer())
+}
 
 #-----------
 # Now we define arithmetic
@@ -192,13 +206,13 @@ vec_arith.numeric.xlr_integer <- function(op, x, y, ...){
 }
 
 #' @export
-vec_math.xlr_integer <- function(f, x, ...){
-  vec_math_base(f, x, ...)
+vec_math.xlr_integer <- function(.fn, .x, ...){
+  vec_math_base(.fn, .x, ...)
 }
 #' @importFrom stats median
 #' @export
-median.xlr_integer <- function(x, na.rm = FALSE, ....){
-  median(vec_data(x), na.rm = na.rm)
+median.xlr_integer <- function(x, na.rm = FALSE, ...){
+  median(vec_data(x), na.rm = na.rm, ...)
 }
 
 #' @importFrom stats quantile

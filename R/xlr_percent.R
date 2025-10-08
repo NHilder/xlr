@@ -209,12 +209,19 @@ vec_cast.xlr_percent.character <- function(x,to,...){
               style = pull_style(to))
 }
 
+#- Add casting between different xlr types where it makes sense
+# Define all the casting 'to' an xlr_percent
+#' @export
+vec_ptype2.xlr_percent.xlr_numeric <- function(x,y,...) x
+#' @export
+vec_cast.xlr_percent.xlr_numeric <- function(x,to,...) {
+  xlr_percent(vec_data(x),pull_dp(to),pull_style(to))
+}
+
 # ARITHMETIC--------------------------------------------------------------------
 # Now we define arithmetic
 # The first two functions are boiler plate
 #' @method vec_arith xlr_percent
-#' @keywords internal
-#' @export vec_arith.xlr_percent
 #' @export
 vec_arith.xlr_percent <- function(op, x, y, ...){
   UseMethod("vec_arith.xlr_percent",y)
@@ -247,14 +254,14 @@ vec_arith.numeric.xlr_percent <- function(op, x, y, ...){
 }
 
 #' @export
-vec_math.xlr_percent <- function(f, x, ...){
-  vec_math_base(f, x, ...)
+vec_math.xlr_percent <- function(.fn, .x, ...){
+  vec_math_base(.fn, .x, ...)
 }
 
 #' @importFrom stats median
 #' @export
-median.xlr_percent <- function(x, na.rm = FALSE, ....){
-  median(vec_data(x), na.rm = na.rm)
+median.xlr_percent <- function(x, na.rm = FALSE, ...){
+  median(vec_data(x), na.rm = na.rm, ...)
 }
 
 #' @importFrom stats quantile
