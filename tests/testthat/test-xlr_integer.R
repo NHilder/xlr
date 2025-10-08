@@ -161,3 +161,25 @@ test_that("xlr_integer works with vec_math, median and quantile",{
   names(quant_out) <- "50%"
   expect_equal(quantile(xlr_integer(c(1,1)),0.5),quant_out)
 })
+
+
+test_that("xlr_integer casting can work between xlr types",{
+  expect_s3_class(vec_cast(xlr_percent(dp=4),xlr_integer(1)),
+                  class = "xlr_integer",
+                  exact = FALSE)
+  expect_s3_class(c(xlr_integer(1), xlr_percent(dp=4)),
+                  class = "xlr_integer",
+                  exact = FALSE)
+
+  expect_s3_class(vec_cast(xlr_numeric(1),xlr_integer(1)),
+                  class = "xlr_integer",
+                  exact = FALSE)
+  expect_s3_class(c(xlr_integer(1), xlr_numeric(1)),
+                  class = "xlr_integer",
+                  exact = FALSE)
+})
+
+test_that("xlr_integer casting throughs an error when you lose precision",{
+  expect_snapshot(vec_cast(c(1.2,4.2,4.5),xlr_integer()),
+                  error = TRUE)
+})

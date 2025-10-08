@@ -245,3 +245,12 @@ test_that("we can create a ggplot silently",{
   df$test <- xlr_percent(df$mpg)
   expect_silent(ggplot2::ggplot(df,ggplot2::aes(x = test,y=test)))
 })
+
+test_that("xlr_percent casting can work between xlr types",{
+  expect_s3_class(vec_cast(xlr_numeric(1),xlr_percent(dp=4)),
+                  class = "xlr_percent",
+                  exact = FALSE)
+  expect_s3_class(c(xlr_percent(dp=4),xlr_numeric(1)),
+                  class = "xlr_percent",
+                  exact = FALSE)
+})

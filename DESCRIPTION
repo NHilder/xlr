@@ -41,7 +41,8 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     data.table,
-    lubridate
+    lubridate,
+    ggplot2
 Config/testthat/edition: 3
 Imports:
   rlang,
