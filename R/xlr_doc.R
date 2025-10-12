@@ -34,7 +34,7 @@ NULL
 #'
 #' @importFrom haven labelled
 #'
-#' @importFrom tidyselect starts_with everything where
+#' @importFrom tidyselect starts_with everything where all_of
 NULL
 
 
