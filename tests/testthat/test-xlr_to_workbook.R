@@ -80,14 +80,16 @@ test_that("convert_xlr_type_to_R() works correctly",{
                   c3 = xlr_numeric(1:10),
                   c4 = xlr_integer(1:10),
                   c5 = xlr_vector(rep("a",10)),
-                  c6 = rep("a",10))
+                  c6 = rep("a",10),
+                  c7 = xlr_n_percent(1:10,1:10/100))
 
   output = data.frame(c1 = 1:10,
                        c2 = 1:10/100,
                        c3 = 1:10,
                        c4 = as.integer(1:10),
                        c5 = rep("a",10),
-                       c6 = rep("a",10)
+                       c6 = rep("a",10),
+                      c7 = vec_cast(xlr_n_percent(1:10,1:10/100),character())
   )
   expect_equal(convert_xlr_type_to_R(x),output)
 
@@ -186,6 +188,12 @@ test_that("column_to_style() handles Date() correctly",{
   expect_equal(column_to_style(rep(as.Date(c("2022-02-02","1999-05-03")),5)),
                xlr_format_to_openxlsx_format(xlr_format(), "dd/mm/yyyy"))
 })
+
+test_that("column_to_style() handles xlr_n_percent() correctly",{
+  expect_equal(column_to_style(xlr_n_percent(1,1)),
+               xlr_format_to_openxlsx_format(xlr_format_numeric(), "GENERAL"))
+})
+
 
 test_that("create_column_widths() test that the column width is good", {
 
@@ -504,7 +512,8 @@ test_that("data_to_worksheet() generates data correctly",{
                test_r_char = rep("test",nrow(mtcars)),
                test_xlr_scientific = xlr_numeric(mtcars$qsec,scientific = TRUE),
                test_r_factor = factor(rep(c("a","b"),16)),
-               test_r_complex = rep(1+1i, nrow(mtcars))
+               test_r_complex = rep(1+1i, nrow(mtcars)),
+               test_xlr_n_percent = xlr_n_percent(1:nrow(mtcars),1:nrow(mtcars)/nrow(mtcars))
     )
   wb <- createWorkbook()
   addWorksheet(wb,"Test 1")
@@ -550,7 +559,8 @@ test_that("data_to_worksheet() adds data correctly, we check all types",{
            test_r_char = rep("test",nrow(mtcars)),
            test_xlr_scientific = xlr_numeric(mtcars$qsec,scientific = TRUE),
            test_r_factor = factor(rep(c("a","b"),16)),
-           test_r_complex = rep(1+1i, nrow(mtcars))
+           test_r_complex = rep(1+1i, nrow(mtcars)),
+           test_xlr_n_percent = xlr_n_percent(1:nrow(mtcars),1:nrow(mtcars)/nrow(mtcars))
            )
 
   wb <- createWorkbook()
@@ -591,7 +601,8 @@ test_that("data_to_worksheet() can change the data table names",{
                test_r_char = rep("test",nrow(mtcars)),
                test_xlr_scientific = xlr_numeric(mtcars$qsec,scientific = TRUE),
                test_r_factor = factor(rep(c("a","b"),16)),
-               test_r_complex = rep(1+1i, nrow(mtcars))
+               test_r_complex = rep(1+1i, nrow(mtcars)),
+               test_xlr_n_percent = xlr_n_percent(1:nrow(mtcars),1:nrow(mtcars)/nrow(mtcars))
     )
 
   wb <- createWorkbook()
