@@ -30,7 +30,7 @@ NULL
 #'
 #' @importFrom pillar tbl_sum tbl_format_footer
 #'
-#' @importFrom tidyr pivot_longer pivot_wider
+#' @importFrom tidyr pivot_longer pivot_wider build_wider_spec pivot_wider_spec
 #'
 #' @importFrom haven labelled
 #'

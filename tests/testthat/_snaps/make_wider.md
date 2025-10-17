@@ -57,3 +57,11 @@
       Error in `make_wider()`:
       x `input` does not contain the column `not_a_col`.
 
+# that errors from inputting an invalid names_prefix
+
+    Code
+      make_wider(input, names_prefix = function(x) x)
+    Condition
+      Error in `make_wider()`:
+      ! `names_prefix` must be a single string, not a function.
+

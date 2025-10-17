@@ -11,6 +11,9 @@
 #' @param top_variable Optional. A bare column name to use for the `names_from` argument
 #'   in `pivot_wider`. If `NULL` (default), the function infers the column
 #'   based the default position.
+#' @param names_prefix String added to the start of every variable name. This is
+#'  particularly useful if `top_variable` is a numeric vector and you want to create
+#'  syntactic variable names.
 #'
 #' @return A [xlr_table] (if x is a [xlr_table]) or [tibble] (if [tibble] or
 #' `data.frame`) in a wider format with columns containing
@@ -30,7 +33,8 @@
 #'
 #' @export
 make_wider <- function(x,
-                       top_variable = NULL){
+                       top_variable = NULL,
+                       names_prefix = ""){
 
   var_name <- enquo(x)
   # lets see if we can extract the name
@@ -86,9 +90,30 @@ make_wider <- function(x,
     }
   }
 
-  x_order |>
+  # lets change it so that we use build_wider_spec to get better error handing
+
+  out <-x_order |>
     mutate(N_Percent = xlr_n_percent(N,Percent,dp = dp_out,style_out)) |>
-    select(-N,-Percent) |>
-    pivot_wider(names_from = all_of(get_col), values_from = N_Percent)
+    select(-N,-Percent)
+
+  pivot_map <- build_wider_spec(out,
+                                names_from = all_of(get_col),
+                                values_from = N_Percent,
+                                names_prefix = names_prefix,
+                                error_call = caller_env(0))
+  # now output it
+  if (is_xlr_table(out)){
+    out <-  out |>
+      pivot_wider_spec.xlr_table(pivot_map,error_call = caller_env(0))
+  } else{
+    out <-  out |>
+      pivot_wider_spec(pivot_map,error_call = caller_env(0))
+  }
+
+  out
 }
 
+# these are not s3 classes
+pivot_wider_spec.xlr_table <- function(x, ...){
+  dplyr_generic(x, pivot_wider_spec, ...)
+}

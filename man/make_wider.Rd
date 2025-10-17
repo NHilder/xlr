@@ -4,7 +4,7 @@
 \alias{make_wider}
 \title{Pivot a table wider combining counts and percentages}
 \usage{
-make_wider(x, top_variable = NULL)
+make_wider(x, top_variable = NULL, names_prefix = "")
 }
 \arguments{
 \item{x}{A data frame or tibble containing at least the columns \code{N} and \code{Percent}.
@@ -13,6 +13,10 @@ Typically the output of \link{build_table}, \link{build_mtable}, or \link{build_
 \item{top_variable}{Optional. A bare column name to use for the \code{names_from} argument
 in \code{pivot_wider}. If \code{NULL} (default), the function infers the column
 based the default position.}
+
+\item{names_prefix}{String added to the start of every variable name. This is
+particularly useful if \code{top_variable} is a numeric vector and you want to create
+syntactic variable names.}
 }
 \value{
 A \link{xlr_table} (if x is a \link{xlr_table}) or \link[tibble:tibble]{tibble::tibble} (if \link[tibble:tibble]{tibble::tibble} or

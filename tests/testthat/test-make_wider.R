@@ -100,3 +100,30 @@ test_that("make_wider works with a call", {
     make_wider()
 )
 })
+
+
+test_that("make_wider adds a prefix when needed", {
+  # Using output from build_table similar
+  df <- create_block_question_df()
+
+  input <- build_table(df, c(group, gender))
+
+  output <- data.frame(
+    gender = c("f","m"),
+    test_a = xlr_n_percent(c(2,3), c(0.4, 0.6)),
+    test_b = xlr_n_percent(c(3,2), c(0.6,0.4))
+  ) |>
+    xlr_table()
+
+  expect_equal(make_wider(input,names_prefix = "test_"),
+               output)
+})
+
+test_that("that errors from inputting an invalid names_prefix", {
+  df <- create_block_question_df()
+
+  input <- build_table(df, c(group, gender))
+
+  expect_snapshot(make_wider(input, names_prefix = \(x) x),
+                  error = TRUE)
+})

@@ -229,7 +229,7 @@ convert_to_xlr_types <- function(x) {
 
 
 
-# Both of these are used to print the xlr_table very nicely by default
+# Both of these areused to print the xlr_table very nicely by default
 # it uses pillar to do it nicely
 
 #' @export
