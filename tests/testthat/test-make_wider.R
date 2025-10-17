@@ -90,3 +90,13 @@ test_that("that errors from inputting an invalid top_variable is caught correctl
   expect_snapshot(make_wider(input, not_a_col),
                   error = TRUE)
 })
+
+test_that("make_wider works with a call", {
+  # Using output from build_table similar
+  df <- create_block_question_df()
+
+  expect_silent(df |>
+    build_table(c(group, gender)) |>
+    make_wider()
+)
+})
