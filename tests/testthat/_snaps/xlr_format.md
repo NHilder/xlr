@@ -34,6 +34,8 @@
       size: 11, colour: "black", font: "calibri", style:
       -- Text alignment:
       Horizontal: "left", Vertical: "top", Indent: 0, Rotation: 0, Wrap text: FALSE
+      -- Column Width:
+      Col width: 13.4
 
 ---
 
@@ -46,6 +48,8 @@
       Sides: "left", Colours: "black", Styles: "thin"
       -- Text alignment:
       Horizontal: "left", Vertical: "top", Indent: 0, Rotation: 0, Wrap text: FALSE
+      -- Column Width:
+      Col width: 13.4
 
 ---
 
@@ -58,4 +62,34 @@
       Sides: "right" and "left", Colours: "black", Styles: "thin"
       -- Text alignment:
       Horizontal: "left", Vertical: "top", Indent: 0, Rotation: 0, Wrap text: FALSE
+      -- Column Width:
+      Col width: 13.4
+
+# setting col_width works correctly
+
+    Code
+      xlr_format(col_width = -1)
+    Condition
+      Error in `xlr_format()`:
+      i In argument: `col_width`.
+      ! `col_width` must be between 0 and 255.
+
+---
+
+    Code
+      xlr_format(col_width = 255.4)
+    Condition
+      Error in `xlr_format()`:
+      i In argument: `col_width`.
+      ! `col_width` must be between 0 and 255.
+
+# Dot's must be empty gives correct error
+
+    Code
+      xlr_format(x = 123)
+    Condition
+      Error in `xlr_format()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * x = 123
 

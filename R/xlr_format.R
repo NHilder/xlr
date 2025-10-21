@@ -105,7 +105,7 @@ xlr_format <- function(font_size = 11,
   font_size = vec_cast(font_size,double())
   text_rotation = vec_cast(text_rotation,integer())
   indent = vec_cast(indent,integer())
-
+  col_width = vec_cast(col_width, double())
   # first we do a bunch of coersions to null if something
   # is null
 
@@ -209,8 +209,9 @@ print.xlr_format <- function(x,...){
                "Vertical: {.val {attr(x,which='valign')}}, ",
                "Indent: {.val {attr(x,which='indent')}}, ",
                "Rotation: {.val {attr(x,which='text_rotation')}}, ",
-               "Wrap text: {.val {attr(x,which='wrap_text')}}",
-               "Col width: {.val {attr(x,which='col_width')}}"))
+               "Wrap text: {.val {attr(x,which='wrap_text')}}"))
+    cli_text("-- Column Width:")
+    cli_text("Col width: {.val {attr(x,which='col_width')}}")
   },
   strip_newline = TRUE)
   cat(paste(x,collapse="\n"))

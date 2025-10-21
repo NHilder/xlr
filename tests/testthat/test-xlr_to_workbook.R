@@ -990,3 +990,4 @@ test_that("xlr_to_workbook() appends to an existing and makes the correct TOC", 
                test_output,
                overwrite = TRUE)
 })
+
