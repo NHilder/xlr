@@ -35,7 +35,7 @@
       -- Text alignment:
       Horizontal: "left", Vertical: "top", Indent: 0, Rotation: 0, Wrap text: FALSE
       -- Column Width:
-      Col width: 13.4
+      Col width: 10
 
 ---
 
@@ -49,7 +49,7 @@
       -- Text alignment:
       Horizontal: "left", Vertical: "top", Indent: 0, Rotation: 0, Wrap text: FALSE
       -- Column Width:
-      Col width: 13.4
+      Col width: 10
 
 ---
 
@@ -63,7 +63,7 @@
       -- Text alignment:
       Horizontal: "left", Vertical: "top", Indent: 0, Rotation: 0, Wrap text: FALSE
       -- Column Width:
-      Col width: 13.4
+      Col width: 10
 
 # setting col_width works correctly
 

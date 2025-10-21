@@ -187,22 +187,37 @@ test_that("column_to_style() handles Date() correctly",{
                xlr_format_to_openxlsx_format(xlr_format(), "dd/mm/yyyy"))
 })
 
-test_that("create_column_widths() test that the column width is good", {
+test_that("create_column_widths() pulls out the column widths", {
 
-  col1_test <- paste0(rep("a",30),collapse="")
-  col2_test <- paste0(rep("a",90),collapse="")
-  col3_test <- paste0(rep("a",6),collapse="")
+  col1_test <- xlr_numeric(1)
+  col2_test <- xlr_integer(1,style = xlr_format(col_width = 123))
 
-  data <- mtcars |>
-    mutate("{col1_test}" := rep("This is some text",nrow(mtcars)),
-           "{col2_test}" := rep("This is some text",nrow(mtcars)),
-           "{col3_test}" := rep("This is some text",nrow(mtcars)))
+  data <- data.frame(a = col1_test,b = col2_test)
 
   col_data <- create_column_widths(data)
 
-  expect_equal(nrow(col_data),2)
-  expect_equal(col_data[["index"]],c(12,13))
-  expect_equal(col_data[["cell_width"]],c(30,30))
+  expect_equal(col_data[["cell_width"]],c(10.0,123.0))
+})
+
+test_that("setting col_widths works as expected when writing to Excel. Cannot be automated.", {
+  skip_on_cran()
+  test <- data.frame(A = xlr_integer(1,style = xlr_format(col_width = 20)))
+  wb <- createWorkbook()
+  addWorksheet(wb,"test1")
+  dataframe_to_sheet(test, wb = wb,"test1")
+
+  addWorksheet(wb,"test2")
+  test_table <-  data.frame(A = xlr_integer(1,
+                                            style = xlr_format(col_width = 255))) |>
+    xlr_table("test")
+  xlr_table_to_sheet(test_table, wb = wb,"test2")
+
+  test_output <- test_path("_output_excel_snaps/column_widths.xlsx")
+  # we use openxlsx to write it
+  saveWorkbook(wb,
+               test_output,
+               overwrite = TRUE)
+
 })
 
 
