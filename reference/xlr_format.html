@@ -59,7 +59,9 @@ default values.</p>
 <span>  valign <span class="op">=</span> <span class="st">"top"</span>,</span>
 <span>  wrap_text <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  text_rotation <span class="op">=</span> <span class="fl">0L</span>,</span>
-<span>  indent <span class="op">=</span> <span class="fl">0L</span></span>
+<span>  indent <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  col_width <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">xlr_format_numeric</span><span class="op">(</span></span>
@@ -75,7 +77,8 @@ default values.</p>
 <span>  valign <span class="op">=</span> <span class="st">"bottom"</span>,</span>
 <span>  wrap_text <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  text_rotation <span class="op">=</span> <span class="fl">0L</span>,</span>
-<span>  indent <span class="op">=</span> <span class="fl">0L</span></span>
+<span>  indent <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  col_width <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -149,6 +152,14 @@ sides specified in <code>border</code>. The list of styles are <code>"none"</cod
 <dt id="arg-indent">indent<a class="anchor" aria-label="anchor" href="#arg-indent"></a></dt>
 <dd><p>Integer. The number of indent positions, must be an integer between 0 and 250.</p></dd>
 
+
+<dt id="arg-col-width">col_width<a class="anchor" aria-label="anchor" href="#arg-col-width"></a></dt>
+<dd><p>Numeric. The column width.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Dots. For future expansions. Must be empty.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -218,6 +229,8 @@ be dashed with default colours. You'd set:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> size: <span style="color: #0000BB;">11</span>, colour: <span style="color: #0000BB;">"black"</span>, font: <span style="color: #0000BB;">"calibri"</span>, style:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -- Text alignment:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Horizontal: <span style="color: #0000BB;">"left"</span>, Vertical: <span style="color: #0000BB;">"top"</span>, Indent: <span style="color: #0000BB;">0</span>, Rotation: <span style="color: #0000BB;">0</span>, Wrap text: <span style="color: #0000BB;">FALSE</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -- Column Width:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Col width: <span style="color: #0000BB;">10</span></span>
 <span class="r-in"><span><span class="co"># You can update the format by defining a new format</span></span></span>
 <span class="r-in"><span><span class="va">bf</span> <span class="op">&lt;-</span> <span class="fu">xlr_format</span><span class="op">(</span>font_size <span class="op">=</span> <span class="fl">11</span>,</span></span>
 <span class="r-in"><span>                  <span class="co"># not that font is not validated</span></span></span>
