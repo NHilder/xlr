@@ -19,7 +19,7 @@ xlr_format(
   wrap_text = FALSE,
   text_rotation = 0L,
   indent = 0L,
-  col_width = 13.4,
+  col_width = 10,
   ...
 )
 
@@ -37,7 +37,7 @@ xlr_format_numeric(
   wrap_text = FALSE,
   text_rotation = 0L,
   indent = 0L,
-  col_width = 13.4
+  col_width = 10
 )
 }
 \arguments{

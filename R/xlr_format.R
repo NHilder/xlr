@@ -98,7 +98,7 @@ xlr_format <- function(font_size = 11,
                        wrap_text = FALSE,
                        text_rotation = 0L,
                        indent = 0L,
-                       col_width = 13.4,
+                       col_width = 10.00,
                        ...){
 
   # first we convert the numerics to the right type
@@ -162,7 +162,7 @@ xlr_format_numeric <-function(font_size = 11,
                               wrap_text = FALSE,
                               text_rotation = 0L,
                               indent = 0L,
-                              col_width = 13.4){
+                              col_width = 10.0){
 
   xlr_format(
     font_size = font_size,
@@ -275,7 +275,7 @@ new_xlr_format <- function(font_size = 11,
                             wrap_text = FALSE,
                             text_rotation = 0L,
                             indent = 0L,
-                            col_width = 13.4,
+                            col_width = 10.0,
                             call = caller_env()){
 
 
@@ -465,7 +465,7 @@ validate_xlr_format <- function(
   }
 
   # the column width must be between 0 and 255
-  type_abort(col_width, is_scalar_double,13.4,call = call)
+  type_abort(col_width, is_scalar_double,10.0,call = call)
   if (col_width < 0 || col_width > 255){
     cli_abort(c("i" = "In argument: {.code col_width}.",
                 "!" = "{.code col_width} must be between 0 and 255."),

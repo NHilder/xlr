@@ -553,15 +553,23 @@ get_border_styles <- function(body_styling,
 create_column_widths <- function(x){
   c_name <- cell_width <- NULL
 
-  data.frame("c_name" = colnames(x),
-              "index" = 1:ncol(x)) |>
-    mutate("col_width" := nchar(c_name),
-           cell_width = case_when(
-             col_width > 40 ~ 30,
-             col_width > 9 ~ col_width,
-             TRUE ~ NA
-           )) |>
-    filter(!is.na(cell_width))
+  # first check it is a data.frame
+  if (!is.data.frame(x)){
+    cli_abort("`x` must be a data.frame. You should not see this error.")
+  }
+  # now we just create the column widths, pulling them out of the data.frame
+
+  col_width <- lapply(x, function(x) {
+    out <- pull_attr(x,"style") |>
+      pull_attr("col_width")
+    if (is.null(out)){
+      return(10.00)
+    }
+    out
+  }) |>
+    unlist(use.names = FALSE)
+  data.frame(cell_width = col_width,
+              index = 1:ncol(x))
 }
 
 dataframe_to_sheet <- function(x,
