@@ -32,6 +32,8 @@
 #' @param text_rotation Integer. Rotation of text in degrees. Must be an integer between -90 and
 #' 90.
 #' @param indent Integer. The number of indent positions, must be an integer between 0 and 250.
+#' @param col_width Numeric. The column width.
+#' @param ... Dots. For future expansions. Must be empty.
 #'
 #' @return a `xlr_format` S3 class.
 #'
@@ -95,7 +97,9 @@ xlr_format <- function(font_size = 11,
                        valign = "top",
                        wrap_text = FALSE,
                        text_rotation = 0L,
-                       indent = 0L){
+                       indent = 0L,
+                       col_width = 13.4,
+                       ...){
 
   # first we convert the numerics to the right type
   font_size = vec_cast(font_size,double())
@@ -119,7 +123,9 @@ xlr_format <- function(font_size = 11,
     valign,
     wrap_text,
     text_rotation,
-    indent
+    indent,
+    col_width,
+    ...
   )
 
   # construct a new object
@@ -136,7 +142,8 @@ xlr_format <- function(font_size = 11,
     valign = valign,
     wrap_text = wrap_text,
     text_rotation = text_rotation,
-    indent = indent
+    indent = indent,
+    col_width = col_width
   )
 }
 
@@ -154,7 +161,8 @@ xlr_format_numeric <-function(font_size = 11,
                               valign = "bottom",
                               wrap_text = FALSE,
                               text_rotation = 0L,
-                              indent = 0L){
+                              indent = 0L,
+                              col_width = 13.4){
 
   xlr_format(
     font_size = font_size,
@@ -169,7 +177,8 @@ xlr_format_numeric <-function(font_size = 11,
     valign = valign,
     wrap_text = wrap_text,
     text_rotation = text_rotation,
-    indent = indent
+    indent = indent,
+    col_width = col_width
   )
 }
 
@@ -200,7 +209,8 @@ print.xlr_format <- function(x,...){
                "Vertical: {.val {attr(x,which='valign')}}, ",
                "Indent: {.val {attr(x,which='indent')}}, ",
                "Rotation: {.val {attr(x,which='text_rotation')}}, ",
-               "Wrap text: {.val {attr(x,which='wrap_text')}}"))
+               "Wrap text: {.val {attr(x,which='wrap_text')}}",
+               "Col width: {.val {attr(x,which='col_width')}}"))
   },
   strip_newline = TRUE)
   cat(paste(x,collapse="\n"))
@@ -239,6 +249,8 @@ print.xlr_format <- function(x,...){
                     attr(e2,which="text_rotation")),
     custom_equality(attr(e1,which="indent"),
                     attr(e2,which="indent")),
+    custom_equality(attr(e1,which="col_width"),
+                    attr(e2,which="col_width")),
     na.rm = TRUE
   )
 }
@@ -262,6 +274,7 @@ new_xlr_format <- function(font_size = 11,
                             wrap_text = FALSE,
                             text_rotation = 0L,
                             indent = 0L,
+                            col_width = 13.4,
                             call = caller_env()){
 
 
@@ -284,7 +297,8 @@ new_xlr_format <- function(font_size = 11,
     valign = valign,
     wrap_text = wrap_text,
     text_rotation = text_rotation,
-    indent = indent
+    indent = indent,
+    col_width = col_width
   )
 }
 
@@ -303,6 +317,8 @@ validate_xlr_format <- function(
     wrap_text,
     text_rotation,
     indent,
+    col_width,
+    ...,
     call = caller_env()){
 
   type_abort(font_size,is_scalar_double,1.1,call=call)
@@ -447,7 +463,18 @@ validate_xlr_format <- function(
               call = call)
   }
 
+  # the column width must be between 0 and 255
+  type_abort(col_width, is_scalar_double,13.4,call = call)
+  if (col_width < 0 || col_width > 255){
+    cli_abort(c("i" = "In argument: {.code col_width}.",
+                "!" = "{.code col_width} must be between 0 and 255."),
+              call = call)
+  }
 
+  check_dots_empty(env = caller_env(1),
+                   call = call)
+
+  # check that the d
   return(TRUE)
 }
 
