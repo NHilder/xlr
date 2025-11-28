@@ -1,0 +1,186 @@
+# xlr or ‘Exceller’
+
+# xlr
+
+xlr is designed to help build summary tables with complex survey data,
+and export data to `Excel`. It includes functions to easily make
+cross-tabulations, work with multiple response data, and question
+blocks. It supports labelled data that can be generated from the popular
+survey platform Qualtrics.
+
+It makes exporting data from `Excel` easier. It is a easier to use
+wrapper around [openxlsx](https://ycphs.github.io/openxlsx/). It
+supports tables with footnotes, headers, and generating table of
+contents in `Excel` documents. It is not fully featured, but designed to
+be used when you are moving either statistical summaries or tables from
+R into `Excel`.
+
+This package is designed to work seamlessly with
+[tidyverse](https://www.tidyverse.org/) family of functions.
+
+It is currently experimental and subject to change based on peoples
+feedback.
+
+## Installation
+
+``` r
+# To install via CRAN
+install.packages("xlr")
+```
+
+You can install the development version of xlr from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("NHilder/xlr")
+```
+
+## Example
+
+This is a example of how to create a two-way table, fix the formatting
+for that table, and then export that table to `Excel`.
+
+``` r
+library(xlr)
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+
+# create a summary table
+two_way_table <- build_table(mtcars,c(cyl,gear))
+two_way_table
+#> # A xlr_table: 8 x 4
+#>       cyl    gear       N Percent
+#>   <x_dbl> <x_dbl> <x_int> <x_pct>
+#> 1    4.00    3.00       1      9%
+#> 2    4.00    4.00       8     73%
+#> 3    4.00    5.00       2     18%
+#> 4    6.00    3.00       2     29%
+#> 5    6.00    4.00       4     57%
+#> 6    6.00    5.00       1     14%
+#> 7    8.00    3.00      12     86%
+#> 8    8.00    5.00       2     14%
+
+# make the percentage have two decimal places using dplyr
+two_way_table <- two_way_table |> 
+  mutate(Percent = xlr_percent(Percent, dp = 2))
+
+# write the data to an xlsx file
+write_xlsx(two_way_table,
+           "example.xlsx",
+           "an example")
+#> ℹ Appending file: 'example.xlsx'
+```
+
+Check out the vignettes for more information on how to use the package.
+
+# Package index
+
+## All functions
+
+- [`as_base_r()`](https://nhilder.github.io/xlr/reference/as_base_r.md)
+  : Convert xlr types to their base R type
+
+- [`build_mtable()`](https://nhilder.github.io/xlr/reference/build_mtable.md)
+  : Summarise a multiple response table
+
+- [`build_qtable()`](https://nhilder.github.io/xlr/reference/build_qtable.md)
+  : Summarise a question block
+
+- [`build_table()`](https://nhilder.github.io/xlr/reference/build_table.md)
+  : Create a one, two, three,..., n-way table
+
+- [`clothes_opinions`](https://nhilder.github.io/xlr/reference/clothes_opinions.md)
+  : Clothes opinions data
+
+- [`create_table_of_contents()`](https://nhilder.github.io/xlr/reference/create_table_of_contents.md)
+  :
+
+  Adds a table of contents to an .xlsx (`Excel`) file
+
+- [`is_xlr_format()`](https://nhilder.github.io/xlr/reference/is_xlr_format.md)
+  :
+
+  Test if an object is a `xlr_format`
+
+- [`is_xlr_type()`](https://nhilder.github.io/xlr/reference/is_xlr_type.md)
+  : Check if a variable is an xlr type This function tests whether an R
+  variable has a xlr type.
+
+- [`make_wider()`](https://nhilder.github.io/xlr/reference/make_wider.md)
+  : Pivot a table wider combining counts and percentages
+
+- [`update_theme()`](https://nhilder.github.io/xlr/reference/update_theme.md)
+  :
+
+  Update the `xlr_table` theme
+
+- [`write_xlsx()`](https://nhilder.github.io/xlr/reference/write_xlsx.md)
+  :
+
+  Write a `xlr_table`, `data.frame`, or `tibble` to an .xlsx (`Excel`)
+  file
+
+- [`xlr_and_dplyr`](https://nhilder.github.io/xlr/reference/xlr_and_dplyr.md)
+  : xlr and dplyr
+
+- [`xlr_format()`](https://nhilder.github.io/xlr/reference/xlr_format.md)
+  [`xlr_format_numeric()`](https://nhilder.github.io/xlr/reference/xlr_format.md)
+  :
+
+  Specify formatting options for `xlr_*` types
+
+- [`xlr_integer()`](https://nhilder.github.io/xlr/reference/xlr_integer.md)
+  [`is_xlr_integer()`](https://nhilder.github.io/xlr/reference/xlr_integer.md)
+  [`as_xlr_integer()`](https://nhilder.github.io/xlr/reference/xlr_integer.md)
+  :
+
+  `xlr_integer` vector
+
+- [`xlr_n_percent()`](https://nhilder.github.io/xlr/reference/xlr_n_percent.md)
+  [`is_xlr_n_percent()`](https://nhilder.github.io/xlr/reference/xlr_n_percent.md)
+  :
+
+  `xlr_n_percent` vector
+
+- [`xlr_numeric()`](https://nhilder.github.io/xlr/reference/xlr_numeric.md)
+  [`is_xlr_numeric()`](https://nhilder.github.io/xlr/reference/xlr_numeric.md)
+  [`as_xlr_numeric()`](https://nhilder.github.io/xlr/reference/xlr_numeric.md)
+  :
+
+  `xlr_numeric` vector
+
+- [`xlr_percent()`](https://nhilder.github.io/xlr/reference/xlr_percent.md)
+  [`is_xlr_percent()`](https://nhilder.github.io/xlr/reference/xlr_percent.md)
+  [`as_xlr_percent()`](https://nhilder.github.io/xlr/reference/xlr_percent.md)
+  :
+
+  `xlr_percent` vector
+
+- [`xlr_table()`](https://nhilder.github.io/xlr/reference/xlr_table.md)
+  [`is_xlr_table()`](https://nhilder.github.io/xlr/reference/xlr_table.md)
+  [`as_xlr_table()`](https://nhilder.github.io/xlr/reference/xlr_table.md)
+  :
+
+  `xlr_table` object
+
+- [`xlr_vector()`](https://nhilder.github.io/xlr/reference/xlr_vector.md)
+  [`is_xlr_vector()`](https://nhilder.github.io/xlr/reference/xlr_vector.md)
+  [`as_xlr_vector()`](https://nhilder.github.io/xlr/reference/xlr_vector.md)
+  :
+
+  `xlr_vector` vector
+
+# Articles
+
+### All vignettes
+
+- [Getting started with
+  xlr](https://nhilder.github.io/xlr/articles/xlr.md):
