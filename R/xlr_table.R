@@ -212,7 +212,8 @@ new_xlr_table <- function(x,
 convert_to_xlr_types <- function(x) {
 
   if (is_xlr_numeric(x) || is_xlr_percent(x) ||
-      is_xlr_integer(x) || is_xlr_vector(x)) {
+      is_xlr_integer(x) || is_xlr_vector(x) ||
+      is_xlr_n_percent(x)) {
     return(x)
   }
   else if (is.factor(x)) {
@@ -228,7 +229,7 @@ convert_to_xlr_types <- function(x) {
 
 
 
-# Both of these are used to print the xlr_table very nicely by default
+# Both of these areused to print the xlr_table very nicely by default
 # it uses pillar to do it nicely
 
 #' @export
@@ -309,6 +310,18 @@ mutate.xlr_table <- function(.data, ...) {
 }
 
 #- N-------------------
+
+#- P-------------------
+#' @importFrom tidyr pivot_wider
+#' @export
+pivot_wider.xlr_table <- function(data,...){
+  dplyr_generic(data, pivot_wider,...)
+}
+#' @importFrom tidyr pivot_longer
+#' @export
+pivot_longer.xlr_table <- function(data,...){
+  dplyr_generic(data, pivot_longer,...)
+}
 
 #- R-------------------
 #' @export

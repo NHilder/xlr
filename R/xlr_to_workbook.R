@@ -699,6 +699,10 @@ convert_xlr_type_to_R <- function(x,
   x |>
     lapply(function(x){
         if(is_xlr_type(x)){
+          if (is_xlr_n_percent(x)){
+            y <- vec_cast(x,character())
+            return(y)
+          }
           y <- as_base_r(x)
           return(y)
         }
@@ -714,6 +718,9 @@ convert_xlr_type_to_R <- function(x,
 column_to_style <- function(col){
   # first we have rules for all the xlr types (and integers)
 
+  if (is_xlr_n_percent(col)) {
+    column_cell_format <- "GENERAL"
+  }
   if (is_xlr_percent(col)){
     column_cell_format <- paste0(generate_dp(pull_dp(col)),"%")
   }
@@ -740,6 +747,9 @@ column_to_style <- function(col){
   }
   else if(inherits(col,"Date")){
     column_cell_format <- "dd/mm/yyyy"
+  }
+  else if(is.numeric(col)){
+    column_cell_format <- "numFmt"
   }
   else{
     column_cell_format <- "GENERAL"

@@ -27,6 +27,7 @@ Collate:
   xlr_integer.R
   xlr_vector.R
   xlr_percent.R
+  xlr_n_percent.R
   xlr_format.R
   openxlsx_utils.R
   xlr_doc.R
@@ -36,6 +37,7 @@ Collate:
   table_utils.R
   data.R
   is_xlr_type.R
+  make_wider.R
 Suggests: 
     knitr,
     rmarkdown,
