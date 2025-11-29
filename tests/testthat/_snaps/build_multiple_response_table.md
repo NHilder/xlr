@@ -61,15 +61,6 @@
       x You can't specify `use_question = TRUE` and have a footnote.
       i Either set `use_question = FALSE` or do not have a footnote.
 
-# Test we get an error if you include a column without unique results
-
-    Code
-      build_mtable(test_df, "enjoy_fruit")
-    Condition
-      Error in `build_mtable()`:
-      i In arguments: `x` and `mcols`.
-      Data frame columns `enjoy_fruit_other` must have at most one non-missing value.
-
 # Test that a non numeric wt column errors
 
     Code
@@ -88,4 +79,14 @@
       i In arguments: `mcols`.
       x You cannot specify more than two multiple response columns.
       i For more complicated counts we recommend using `tidyr::pivot_longer()` and `dplyr::left_join()`.
+
+# Test that dots must be empty
+
+    Code
+      build_mtable(test_df, c("enjoy_fruit", "enjoy_veg", "enjoy_food"), a = 7)
+    Condition
+      Error in `build_mtable()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * a = 7
 

@@ -17,7 +17,7 @@
 #' @param wt Specify a weighting variable, if `NULL` no weight is applied.
 #' @param footnote optional parameter to pass a custom footnote to the question,
 #' this parameter overwrites `use_questions`.
-#'
+#' @inheritParams rlang::args_dots_empty
 #' @return a `xlr_table` object. Use [write_xlsx] to write to an `Excel` file.
 #' See [xlr_table] for more information.
 #'
@@ -63,7 +63,10 @@ build_mtable <- function(
     use_questions = FALSE,
     use_NA = FALSE,
     wt = NULL,
-    footnote = ""){
+    footnote = "",
+    seen_but_answered = NULL,
+    name_seen_but_answered = paste0(seen_but_answered,collapse="_"),
+    ...){
 
   N <- N_group <- id <- NULL
   # Input validation ----------------------------------------------------------
@@ -79,18 +82,21 @@ build_mtable <- function(
                                     c(!!enquo(cols),!!enquo(wt)),
                                     mcols)
 
-  # Check that mcols has at most one unique non-missing value
-  x_check <- x_selected |>
-    select(starts_with(mcols) & where(\(x) n_distinct(x, na.rm = TRUE) > 1))
+  # check that dots are empty
+  check_dots_empty()
 
-  if (ncol(x_check) > 0) {
-    names_error <- names(x_check)
-
-    cli_abort(
-      c("i" = "In arguments: {.arg x} and {.arg mcols}.",
-        "Data frame columns {.code {names_error}} must have at most one non-missing value.")
-    )
-  }
+# # Check that mcols has at most one unique non-missing value
+#   x_check <- x_selected |>
+#     select(starts_with(mcols) & where(\(x) n_distinct(x, na.rm = TRUE) > 1))
+#
+#   if (ncol(x_check) > 0) {
+#     names_error <- names(x_check)
+#
+#     cli_abort(
+#       c("i" = "In arguments: {.arg x} and {.arg mcols}.",
+#         "Data frame columns {.code {names_error}} must have at most one non-missing value.")
+#     )
+#   }
 
   # Check that wt is numeric, if it exists
   wt_quo <- enquo(wt)
@@ -180,7 +186,11 @@ build_mtable <- function(
                       attr(.f, "label") <- NULL
                       .f
                     })) |>
-      apply_NA_rules(use_NA,{{mcols}},{{cols}}) |>
+      apply_NA_rules(use_NA,
+                     {{mcols}},
+                     {{cols}},
+                     seen_but_answered,
+                     name_seen_but_answered) |>
       # Add group count
       group_by(across({{ cols }})) |>
       add_tally(name = "N_group",
@@ -202,11 +212,15 @@ build_mtable <- function(
     output <-
       output |>
       # Add proportion to end
-      mutate(Percent = xlr_percent(N/N_group),
-             # add code to convert the NA string to an NA
-             "{sym_mcol}" := ifelse({{ sym_mcol }} == "NA",NA,vec_cast({{ sym_mcol }}, character()))
-             ) |>
-      arrange(across({{cols}}),{{sym_mcol}})
+      mutate(
+        Percent = xlr_percent(N / N_group),
+        # add code to convert the NA string to an NA
+        "{sym_mcol}" := ifelse({{ sym_mcol }} == "NA", NA, vec_cast({{ sym_mcol }}, character()))
+      ) |>
+      arrange(across({{cols}}),
+              ifelse({{sym_mcol}} == name_seen_but_answered,1,0),
+              {{sym_mcol}})
+
 
     # now tidy up the table
     final_table <-
@@ -241,7 +255,7 @@ build_mtable <- function(
                       attr(.f, "label") <- NULL
                       .f
                     })) |>
-      mutate(id = dplyr::row_number())
+      mutate(id = row_number())
 
     # next we need to create quo names for the columns if required
     cols_quo <- enquo(cols)
@@ -330,15 +344,64 @@ build_mtable <- function(
   final_table
 }
 
-apply_NA_rules <- function(x, use_NA, mcols, cols = NULL){
+apply_NA_rules <- function(x,
+                           use_NA,
+                           mcols,
+                           cols = NULL,
+                           seen_but_answered = NULL,
+                           name_seen_but_answered = NULL){
+
+  # first make sure the input is valid
+  if (is.null(name_seen_but_answered)){
+    name_seen_but_answered <- paste0(seen_but_answered,
+                                     collapse = "_")
+  }
+
+  # This is the easy case:
+  # With seen and unanswered, every person in the data is included, if someone
+  # saw the question but did not respond to anything they are always included
   if (use_NA){
     # First lets define an NA Var
     na_var <- paste0(mcols,"_NA")
+
+    # next if a value for the column is 'seen but answered', convert that to
+    # NA.
+    if (!is.null(seen_but_answered)){
+      x <- x |>
+        mutate(across(starts_with(mcols),
+                      ~ if_else(.x %in% seen_but_answered,NA,.x)))
+    }
     x <-
       x |>
       # This creates a multiple response option for the NA vars
       # It will be pivoted and can be used later
-      mutate(!!na_var := ifelse(dplyr::if_all(starts_with(mcols), ~ is.na(.x)),"NA",NA))
+      mutate(!!na_var := if_else(if_all(starts_with(mcols), ~ is.na(.x)),"NA",NA))
+
+    return(x)
+  } else if (!is.null(seen_but_answered)){
+    # next if a value for the column is 'seen but answered', is not null
+    # need to create a variable (like above), which captures the number
+    # of NA values
+    # First lets define an NA seen but answered questions
+    na_var <- paste0(mcols,"_",name_seen_but_answered)
+
+    # we then filter out all the NA values
+    x <-
+      x |>
+      # Lets remove all the NA lines from the multiple response colunms
+      # And any of the NA groups
+      filter(if_any(starts_with(mcols), ~ !is.na(.x)))
+
+    # Next we make all of the over values NA and then do the same NA trick
+    x <- x |>
+      mutate(across(starts_with(mcols),
+                    ~ if_else(.x %in% seen_but_answered,NA,.x))) |>
+      # This creates a multiple response option for the NA vars
+      # It will be pivoted and can be used later
+      mutate(!!na_var := if_else(if_all(starts_with(mcols),~ is.na(.x)),
+                                   name_seen_but_answered,
+                                  NA))
+
     return(x)
   } else{
     x <-

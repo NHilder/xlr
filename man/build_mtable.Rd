@@ -12,7 +12,10 @@ build_mtable(
   use_questions = FALSE,
   use_NA = FALSE,
   wt = NULL,
-  footnote = ""
+  footnote = "",
+  seen_but_answered = NULL,
+  name_seen_but_answered = paste0(seen_but_answered, collapse = "_"),
+  ...
 )
 }
 \arguments{
@@ -36,6 +39,8 @@ file, convert the column label to a footnote with the question.}
 
 \item{footnote}{optional parameter to pass a custom footnote to the question,
 this parameter overwrites \code{use_questions}.}
+
+\item{...}{These dots are for future extensions and must be empty.}
 }
 \value{
 a \code{xlr_table} object. Use \link{write_xlsx} to write to an \code{Excel} file.
