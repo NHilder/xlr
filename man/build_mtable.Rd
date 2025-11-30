@@ -40,6 +40,13 @@ file, convert the column label to a footnote with the question.}
 \item{footnote}{optional parameter to pass a custom footnote to the question,
 this parameter overwrites \code{use_questions}.}
 
+\item{seen_but_answered}{vector. Pass values to this argument if there
+exists values in the multiple response question but indicate someone saw the
+question but did not response to the value (e.g. \code{-99}, \code{0}).}
+
+\item{name_seen_but_answered}{string. A name for the value of the \verb{seen but answered}
+response.}
+
 \item{...}{These dots are for future extensions and must be empty.}
 }
 \value{

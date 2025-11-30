@@ -17,7 +17,13 @@
 #' @param wt Specify a weighting variable, if `NULL` no weight is applied.
 #' @param footnote optional parameter to pass a custom footnote to the question,
 #' this parameter overwrites `use_questions`.
+#' @param seen_but_answered vector. Pass values to this argument if there
+#' exists values in the multiple response question but indicate someone saw the
+#' question but did not response to the value (e.g. `-99`, `0`).
+#' @param name_seen_but_answered string. A name for the value of the `seen but answered`
+#' response.
 #' @inheritParams rlang::args_dots_empty
+#'
 #' @return a `xlr_table` object. Use [write_xlsx] to write to an `Excel` file.
 #' See [xlr_table] for more information.
 #'
