@@ -54,7 +54,10 @@ columns by specify the cols parameter.</p>
 <span>  use_questions <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  use_NA <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  wt <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  footnote <span class="op">=</span> <span class="st">""</span></span>
+<span>  footnote <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  seen_but_answered <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  name_seen_but_answered <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">seen_but_answered</span>, collapse <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -97,6 +100,21 @@ file, convert the column label to a footnote with the question.</p></dd>
 <dt id="arg-footnote">footnote<a class="anchor" aria-label="anchor" href="#arg-footnote"></a></dt>
 <dd><p>optional parameter to pass a custom footnote to the question,
 this parameter overwrites <code>use_questions</code>.</p></dd>
+
+
+<dt id="arg-seen-but-answered">seen_but_answered<a class="anchor" aria-label="anchor" href="#arg-seen-but-answered"></a></dt>
+<dd><p>vector. Pass values to this argument if there
+exists values in the multiple response question but indicate someone saw the
+question but did not response to the value (e.g. <code>-99</code>, <code>0</code>).</p></dd>
+
+
+<dt id="arg-name-seen-but-answered">name_seen_but_answered<a class="anchor" aria-label="anchor" href="#arg-name-seen-but-answered"></a></dt>
+<dd><p>string. A name for the value of the <code>seen but answered</code>
+response.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>These dots are for future extensions and must be empty.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -15,7 +15,10 @@ build_mtable(
   use_questions = FALSE,
   use_NA = FALSE,
   wt = NULL,
-  footnote = ""
+  footnote = "",
+  seen_but_answered = NULL,
+  name_seen_but_answered = paste0(seen_but_answered, collapse = "_"),
+  ...
 )
 ```
 
@@ -57,6 +60,20 @@ build_mtable(
 
   optional parameter to pass a custom footnote to the question, this
   parameter overwrites `use_questions`.
+
+- seen_but_answered:
+
+  vector. Pass values to this argument if there exists values in the
+  multiple response question but indicate someone saw the question but
+  did not response to the value (e.g. `-99`, `0`).
+
+- name_seen_but_answered:
+
+  string. A name for the value of the `seen but answered` response.
+
+- ...:
+
+  These dots are for future extensions and must be empty.
 
 ## Value
 
