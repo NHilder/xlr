@@ -18,7 +18,9 @@ xlr_format(
   valign = "top",
   wrap_text = FALSE,
   text_rotation = 0L,
-  indent = 0L
+  indent = 0L,
+  col_width = 10,
+  ...
 )
 
 xlr_format_numeric(
@@ -34,7 +36,8 @@ xlr_format_numeric(
   valign = "bottom",
   wrap_text = FALSE,
   text_rotation = 0L,
-  indent = 0L
+  indent = 0L,
+  col_width = 10
 )
 }
 \arguments{
@@ -78,6 +81,10 @@ sides specified in \code{border}. The list of styles are \code{"none"}, \code{"t
 90.}
 
 \item{indent}{Integer. The number of indent positions, must be an integer between 0 and 250.}
+
+\item{col_width}{Numeric. The column width.}
+
+\item{...}{Dots. For future expansions. Must be empty.}
 }
 \value{
 a \code{xlr_format} S3 class.

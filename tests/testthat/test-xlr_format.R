@@ -237,3 +237,23 @@ test_that("xlr_format_numeric default values are correct", {
   expect_equal(xlr_format_numeric() |> pull_attr("valign"),"bottom")
 })
 
+
+test_that("setting col_width works correctly", {
+  # only the correct arguments
+  expect_silent(xlr_format(col_width = 1))
+  expect_silent(xlr_format(col_width = 1L))
+  expect_equal(xlr_format(col_width = 1L) |> pull_attr("col_width"),1)
+
+  # errors if outside the range
+  expect_snapshot(xlr_format(col_width = -1),
+                  error = TRUE)
+  expect_snapshot(xlr_format(col_width = 255.4),
+                  error = TRUE)
+})
+
+test_that("Dot's must be empty gives correct error", {
+  # errors if outside the range
+  expect_snapshot(xlr_format(x=123),
+                  error = TRUE)
+})
+

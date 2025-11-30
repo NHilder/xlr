@@ -167,6 +167,12 @@ as_xlr_numeric.character <- function(x,
 as.numeric.xlr_numeric <- function(x,...){
   vec_data(x)
 }
+
+#' @export
+as.character.xlr_numeric <- function(x,...){
+  out <- vec_data(x)
+  as.character(out)
+}
 # Compatibility with S4 system
 methods::setOldClass(c("xlr_numeric","vctrs_vctr"))
 

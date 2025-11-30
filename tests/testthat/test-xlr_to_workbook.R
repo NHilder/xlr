@@ -80,14 +80,16 @@ test_that("convert_xlr_type_to_R() works correctly",{
                   c3 = xlr_numeric(1:10),
                   c4 = xlr_integer(1:10),
                   c5 = xlr_vector(rep("a",10)),
-                  c6 = rep("a",10))
+                  c6 = rep("a",10),
+                  c7 = xlr_n_percent(1:10,1:10/100))
 
   output = data.frame(c1 = 1:10,
                        c2 = 1:10/100,
                        c3 = 1:10,
                        c4 = as.integer(1:10),
                        c5 = rep("a",10),
-                       c6 = rep("a",10)
+                       c6 = rep("a",10),
+                      c7 = vec_cast(xlr_n_percent(1:10,1:10/100),character())
   )
   expect_equal(convert_xlr_type_to_R(x),output)
 
@@ -187,22 +189,42 @@ test_that("column_to_style() handles Date() correctly",{
                xlr_format_to_openxlsx_format(xlr_format(), "dd/mm/yyyy"))
 })
 
-test_that("create_column_widths() test that the column width is good", {
+test_that("column_to_style() handles xlr_n_percent() correctly",{
+  expect_equal(column_to_style(xlr_n_percent(1,1)),
+               xlr_format_to_openxlsx_format(xlr_format_numeric(), "GENERAL"))
+})
 
-  col1_test <- paste0(rep("a",30),collapse="")
-  col2_test <- paste0(rep("a",90),collapse="")
-  col3_test <- paste0(rep("a",6),collapse="")
+test_that("create_column_widths() pulls out the column widths", {
 
-  data <- mtcars |>
-    mutate("{col1_test}" := rep("This is some text",nrow(mtcars)),
-           "{col2_test}" := rep("This is some text",nrow(mtcars)),
-           "{col3_test}" := rep("This is some text",nrow(mtcars)))
+  col1_test <- xlr_numeric(1)
+  col2_test <- xlr_integer(1,style = xlr_format(col_width = 123))
+
+  data <- data.frame(a = col1_test,b = col2_test)
 
   col_data <- create_column_widths(data)
 
-  expect_equal(nrow(col_data),2)
-  expect_equal(col_data[["index"]],c(12,13))
-  expect_equal(col_data[["cell_width"]],c(30,30))
+  expect_equal(col_data[["cell_width"]],c(10.0,123.0))
+})
+
+test_that("setting col_widths works as expected when writing to Excel. Cannot be automated.", {
+  skip_on_cran()
+  test <- data.frame(A = xlr_integer(1,style = xlr_format(col_width = 20)))
+  wb <- createWorkbook()
+  addWorksheet(wb,"test1")
+  dataframe_to_sheet(test, wb = wb,"test1")
+
+  addWorksheet(wb,"test2")
+  test_table <-  data.frame(A = xlr_integer(1,
+                                            style = xlr_format(col_width = 255))) |>
+    xlr_table("test")
+  xlr_table_to_sheet(test_table, wb = wb,"test2")
+
+  test_output <- test_path("_output_excel_snaps/column_widths.xlsx")
+  # we use openxlsx to write it
+  saveWorkbook(wb,
+               test_output,
+               overwrite = TRUE)
+
 })
 
 
@@ -504,7 +526,8 @@ test_that("data_to_worksheet() generates data correctly",{
                test_r_char = rep("test",nrow(mtcars)),
                test_xlr_scientific = xlr_numeric(mtcars$qsec,scientific = TRUE),
                test_r_factor = factor(rep(c("a","b"),16)),
-               test_r_complex = rep(1+1i, nrow(mtcars))
+               test_r_complex = rep(1+1i, nrow(mtcars)),
+               test_xlr_n_percent = xlr_n_percent(1:nrow(mtcars),1:nrow(mtcars)/nrow(mtcars))
     )
   wb <- createWorkbook()
   addWorksheet(wb,"Test 1")
@@ -550,7 +573,8 @@ test_that("data_to_worksheet() adds data correctly, we check all types",{
            test_r_char = rep("test",nrow(mtcars)),
            test_xlr_scientific = xlr_numeric(mtcars$qsec,scientific = TRUE),
            test_r_factor = factor(rep(c("a","b"),16)),
-           test_r_complex = rep(1+1i, nrow(mtcars))
+           test_r_complex = rep(1+1i, nrow(mtcars)),
+           test_xlr_n_percent = xlr_n_percent(1:nrow(mtcars),1:nrow(mtcars)/nrow(mtcars))
            )
 
   wb <- createWorkbook()
@@ -591,7 +615,8 @@ test_that("data_to_worksheet() can change the data table names",{
                test_r_char = rep("test",nrow(mtcars)),
                test_xlr_scientific = xlr_numeric(mtcars$qsec,scientific = TRUE),
                test_r_factor = factor(rep(c("a","b"),16)),
-               test_r_complex = rep(1+1i, nrow(mtcars))
+               test_r_complex = rep(1+1i, nrow(mtcars)),
+               test_xlr_n_percent = xlr_n_percent(1:nrow(mtcars),1:nrow(mtcars)/nrow(mtcars))
     )
 
   wb <- createWorkbook()
@@ -979,3 +1004,4 @@ test_that("xlr_to_workbook() appends to an existing and makes the correct TOC", 
                test_output,
                overwrite = TRUE)
 })
+

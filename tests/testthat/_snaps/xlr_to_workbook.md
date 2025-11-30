@@ -173,8 +173,14 @@
       Worksheets:
        Sheet 1: "Table 1"
        
+      	Custom column widths (column: width)
+      	  1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10, 9: 10, 10: 10, 11: 10 
+       
       
        Sheet 2: "Table 2"
+       
+      	Custom column widths (column: width)
+      	  1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10, 9: 10, 10: 10, 11: 10 
        
       
        
