@@ -85,18 +85,27 @@ build_mtable <- function(
   # check that dots are empty
   check_dots_empty()
 
-# # Check that mcols has at most one unique non-missing value
-#   x_check <- x_selected |>
-#     select(starts_with(mcols) & where(\(x) n_distinct(x, na.rm = TRUE) > 1))
-#
-#   if (ncol(x_check) > 0) {
-#     names_error <- names(x_check)
-#
-#     cli_abort(
-#       c("i" = "In arguments: {.arg x} and {.arg mcols}.",
-#         "Data frame columns {.code {names_error}} must have at most one non-missing value.")
-#     )
-#   }
+# Check that mcols has at most one unique non-missing value
+  x_check <-
+    x_selected |>
+    mutate(across(starts_with(mcols),
+                  ~ if_else(.x %in% c(seen_but_answered),NA,.x))) |>
+    select(starts_with(mcols) & where(\(x) n_distinct(x, na.rm = TRUE) > 1))
+
+  if (ncol(x_check) > 0) {
+    names_error <- names(x_check)
+    if (ncol(x_check) > 1){
+      cli_abort(
+        c("x" = "In arguments: {.arg x} and {.arg mcols}.",
+          "i" = "Data frame columns {.code {names_error}} must have at most one non-missing value.",
+          "i" = "Did you forget to specify a value(s) for {.code seen_but_answered}?")
+      )
+    }
+    cli_abort(
+      c("x" = "In arguments: {.arg x} and {.arg mcols}.",
+        "i" = "Data frame columns {.code {names_error}} must have at most one non-missing value.")
+    )
+  }
 
   # Check that wt is numeric, if it exists
   wt_quo <- enquo(wt)

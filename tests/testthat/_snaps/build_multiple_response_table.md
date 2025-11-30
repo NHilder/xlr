@@ -61,6 +61,15 @@
       x You can't specify `use_question = TRUE` and have a footnote.
       i Either set `use_question = FALSE` or do not have a footnote.
 
+# Test we get an error if you include a column without unique results
+
+    Code
+      build_mtable(test_df, "enjoy_fruit")
+    Condition
+      Error in `build_mtable()`:
+      x In arguments: `x` and `mcols`.
+      i Data frame columns `enjoy_fruit_other` must have at most one non-missing value.
+
 # Test that a non numeric wt column errors
 
     Code
@@ -89,4 +98,14 @@
       ! `...` must be empty.
       x Problematic argument:
       * a = 7
+
+# build_mtable works when you specify seen_but_answered errors if not specified
+
+    Code
+      build_mtable(test_df, "enjoy_fruit")
+    Condition
+      Error in `build_mtable()`:
+      x In arguments: `x` and `mcols`.
+      i Data frame columns `enjoy_fruit_apple`, `enjoy_fruit_banana`, and `enjoy_fruit_pear` must have at most one non-missing value.
+      i Did you forget to specify a value(s) for `seen_but_answered`?
 

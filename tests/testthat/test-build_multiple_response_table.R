@@ -743,6 +743,18 @@ test_that("build_mtable allows you to specify the value for seen but answered, a
 
 })
 
+test_that("build_mtable works when you specify seen_but_answered errors if not specified",{
+  test_df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other ) |>
+    mutate(across(starts_with("enjoy_fruit"), ~ haven::as_factor(.x) |> as.character()),
+           across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),"z",.x)))
+
+
+  expect_snapshot(build_mtable(test_df,"enjoy_fruit"),
+                  error = TRUE)
+})
 
 
 
