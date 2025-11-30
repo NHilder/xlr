@@ -185,10 +185,15 @@ vec_arith.xlr_integer.xlr_integer <- function(op, x, y, ...){
   }
   out <- vec_arith_base(op,x,y)
 
-  out <- vec_cast(out,integer(), x_arg = "")
+  # Try and cast to an xlr_integer, if it succeeds output the new vector
+  # otherwise case to a xlr_numeric
+  try_fetch(
+    vec_cast(out,xlr_integer(style = pull_style(x))),
+    error = function(cnd){
+      vec_cast(out,xlr_numeric(style = pull_style(x)))
+    }
+  )
 
-  new_xlr_integer(out,
-              pull_style(x))
 }
 
 # next we define a list of generics for arithmetic
@@ -202,6 +207,13 @@ vec_arith.xlr_integer.numeric <- function(op, x, y, ...){
 #' @export
 #' @method vec_arith.numeric xlr_integer
 vec_arith.numeric.xlr_integer <- function(op, x, y, ...){
+  vec_arith_base(op,x,y)
+}
+
+# next we define a list of generics for arithmetic
+#' @export
+#' @method vec_arith.xlr_integer numeric
+vec_arith.xlr_integer.numeric <- function(op, x, y, ...){
   vec_arith_base(op,x,y)
 }
 
