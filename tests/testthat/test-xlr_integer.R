@@ -114,7 +114,7 @@ test_that("Casting within a function works as expected, when casting from a
 })
 
 # Arithmetic-----------------------------------
-test_that("xlr_integers should not calculate division",{
+test_that("xlr_integers work with different operations n",{
   # test every operation works
   expect_equal(xlr_integer(1)+xlr_integer(1),xlr_integer(2))
   expect_equal(xlr_integer(1)-xlr_integer(0),xlr_integer(1))
@@ -122,10 +122,14 @@ test_that("xlr_integers should not calculate division",{
   expect_equal(xlr_integer(1)^xlr_integer(2),xlr_integer(1))
   expect_equal(xlr_integer(3)%%xlr_integer(2),xlr_integer(1))
 
-  expect_equal(xlr_integer(2)/xlr_integer(1),xlr_integer(2))
+})
 
-  expect_error(xlr_integer(1)/xlr_integer(2))
+test_that("when an operation involves a coersion into a numeric, it
+          gives back an xlr_numeric",{
 
+  expect_silent(xlr_integer(1)/xlr_integer(2))
+  expect_s3_class(xlr_integer(1)/xlr_integer(2),"xlr_numeric")
+  expect_equal(xlr_integer(1)/xlr_integer(2),xlr_numeric(0.5))
 })
 
 test_that("xlr_integers should work with all numerics and

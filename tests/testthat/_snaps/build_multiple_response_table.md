@@ -67,8 +67,8 @@
       build_mtable(test_df, "enjoy_fruit")
     Condition
       Error in `build_mtable()`:
-      i In arguments: `x` and `mcols`.
-      Data frame columns `enjoy_fruit_other` must have at most one non-missing value.
+      x In arguments: `x` and `mcols`.
+      i Data frame columns `enjoy_fruit_other` must have at most one non-missing value.
 
 # Test that a non numeric wt column errors
 
@@ -88,4 +88,24 @@
       i In arguments: `mcols`.
       x You cannot specify more than two multiple response columns.
       i For more complicated counts we recommend using `tidyr::pivot_longer()` and `dplyr::left_join()`.
+
+# Test that dots must be empty
+
+    Code
+      build_mtable(test_df, c("enjoy_fruit", "enjoy_veg", "enjoy_food"), a = 7)
+    Condition
+      Error in `build_mtable()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * a = 7
+
+# build_mtable works when you specify seen_but_answered errors if not specified
+
+    Code
+      build_mtable(test_df, "enjoy_fruit")
+    Condition
+      Error in `build_mtable()`:
+      x In arguments: `x` and `mcols`.
+      i Data frame columns `enjoy_fruit_apple`, `enjoy_fruit_banana`, and `enjoy_fruit_pear` must have at most one non-missing value.
+      i Did you forget to specify a value(s) for `seen_but_answered`?
 

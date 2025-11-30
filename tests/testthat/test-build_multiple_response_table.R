@@ -244,7 +244,7 @@ test_that("test that adding a footnote manually and adding footnote_question thr
                   error = TRUE)
 })
 
-test_that("use_questions pulls out the column names (the qestions) as expected",{
+test_that("use_questions pulls out the column names (the questions) as expected",{
   df <- create_multi_response_df() |>
     select(-enjoy_fruit_other,-enjoy_veg_other)
 
@@ -296,6 +296,15 @@ test_that("Test that when there are multiple mcols we through an error",{
                   error = TRUE)
 })
 
+test_that("Test that dots must be empty",{
+  test_df <-
+    create_multi_response_df() |>
+    select(-ends_with("_other"))
+  expect_snapshot(build_mtable(test_df,
+                               c("enjoy_fruit","enjoy_veg","enjoy_food"),
+                               a=7),
+                  error = TRUE)
+})
 
 #- NA Tests -------------------------------------------------------------------
 
@@ -616,3 +625,138 @@ test_that("build_mtable works with weights, two multiple response col,
 
   expect_equal(func_output, expected_output)
 })
+
+# Data with seen but answered questions-----------------------------------------
+
+test_that("build_mtable works when you specify seen_but_answered for 0",{
+  test_df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other ) |>
+    mutate(across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),0,.x)))
+  test_df[7,c("enjoy_fruit_apple","enjoy_fruit_banana","enjoy_fruit_pear")] <- NA
+
+  out <-
+    test_df |>
+    build_mtable("enjoy_fruit",seen_but_answered = 0)
+
+  expected_output <-
+    data.frame(enjoy_fruit = c("Apple","Banana","Pear"),
+               N = xlr_integer(c(3,4,5)),
+               N_group = xlr_integer(rep(6,3)),
+               Percent = xlr_percent(c(.5,4/6,5/6))) |>
+    xlr_table()
+
+  expect_equal(out, expected_output)
+
+})
+
+test_that("build_mtable works when you specify seen_but_answered for 0, with NA value",{
+  test_df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other ) |>
+    mutate(across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),0,.x)))
+
+  out <-
+    test_df |>
+    build_mtable("enjoy_fruit",seen_but_answered = 0)
+
+  expected_output <-
+    data.frame(enjoy_fruit = c("Apple","Banana","Pear","0"),
+               N = xlr_integer(c(3,4,5,1)),
+               N_group = xlr_integer(rep(7,4)),
+               Percent = xlr_percent(c(3,4,5,1) / 7 )) |>
+    xlr_table()
+
+  expect_equal(out, expected_output)
+
+})
+
+test_that("build_mtable works when you specify seen_but_answered for a character value",{
+  test_df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other ) |>
+    mutate(across(starts_with("enjoy_fruit"), ~ haven::as_factor(.x) |> as.character()),
+           across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),"z",.x)))
+
+  out <-
+    test_df |>
+    build_mtable("enjoy_fruit",
+                 seen_but_answered = "z")
+
+  expected_output <-
+    data.frame(enjoy_fruit = c("Apple","Banana","Pear","z"),
+               N = xlr_integer(c(3,4,5,1)),
+               N_group = xlr_integer(rep(7,4)),
+               Percent = xlr_percent(c(3,4,5,1) / 7 )) |>
+    xlr_table()
+
+  expect_equal(out, expected_output)
+
+})
+
+
+test_that("build_mtable allows you to specify the value for seen but answered, and
+          that this value is always LAST in the the table",{
+ # The case of no cross tables
+  test_df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other ) |>
+    mutate(across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),-99,.x)))
+
+   out <-
+    test_df |>
+    build_mtable("enjoy_fruit",
+                 seen_but_answered = -99,
+                 name_seen_but_answered = "AA seen but answered (-99)")
+
+  expected_output <-
+    data.frame(enjoy_fruit = c("Apple","Banana","Pear","AA seen but answered (-99)"),
+               N = xlr_integer(c(3,4,5,1)),
+               N_group = xlr_integer(rep(7,4))) |>
+    mutate(Percent = xlr_percent(N/N_group)) |>
+    xlr_table()
+
+  expect_equal(out, expected_output)
+
+  # the case of a cross table
+  out <-
+    test_df |>
+    mutate(col_1 = ifelse(col_1 == "c","a","c")) |>
+    build_mtable("enjoy_fruit",col_1,
+                 seen_but_answered = -99,
+                 name_seen_but_answered = "AA seen but answered (-99)")
+
+  expected_output <-
+    data.frame(col_1 = c(rep("a",4),rep("c",3)),
+               enjoy_fruit = c("Apple","Banana","Pear","AA seen but answered (-99)",
+                               "Apple","Banana","Pear"),
+               N = xlr_integer(c(rep(1,4),c(2,3,4))),
+               N_group = xlr_integer(c(rep(3,4),rep(4,3)))) |>
+    mutate(Percent = xlr_percent(N/N_group)) |>
+    xlr_table()
+
+  expect_equal(out, expected_output)
+
+})
+
+test_that("build_mtable works when you specify seen_but_answered errors if not specified",{
+  test_df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other ) |>
+    mutate(across(starts_with("enjoy_fruit"), ~ haven::as_factor(.x) |> as.character()),
+           across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),"z",.x)))
+
+
+  expect_snapshot(build_mtable(test_df,"enjoy_fruit"),
+                  error = TRUE)
+})
+
+
+
+
+
