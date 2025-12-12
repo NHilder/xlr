@@ -280,11 +280,52 @@ test_that("build_qtable removes NA for each question, instead of the entire obse
     ID = 1:5,  # Respondent IDs
     Q1_a = c("Yes", "No", NA, "Yes", "No"),  # Mix of valid and NA responses
     Q1_b = c("No", NA, "Yes", "Yes", "No"),
-    Q1_c = c(NA, "Yes", "No", "No", NA)
-  )
+    Q1_c = c(NA, "Yes", "No", "No", NA),
+    Q1_d = c(NA, "Yes", NA, NA, NA)
+  ) |>
+    mutate(across(everything(), ~factor(.x,c("Yes","No"))))
 
   # Run build_qtable on the question block (assuming it processes columns Q1_a, Q1_b, Q1_c)
-  result <- build_qtable(test_data, all_of(c("Q1_a", "Q1_b", "Q1_c")))
+  result <- build_qtable(test_data, all_of(c("Q1_a", "Q1_b", "Q1_c","Q1_d")))
+
+  # Expected behavior:
+  # - Respondent 1: Q1_a = Yes, Q1_b = No, Q1_c = NA (should contribute to Q1_a and Q1_b counts)
+  # - Respondent 2: Q1_a = No, Q1_b = NA, Q1_c = Yes (should contribute to Q1_a and Q1_c counts)
+  # - Respondent 3: Q1_a = NA, Q1_b = Yes, Q1_c = No (should contribute to Q1_b and Q1_c counts)
+  # - Respondent 4: Q1_a = Yes, Q1_b = Yes, Q1_c = No (should contribute to all)
+  # - Respondent 5: Q1_a = No, Q1_b = No, Q1_c = NA (should contribute to Q1_a and Q1_b counts)
+  # - Total N = 5 (all respondents have at least one non-NA response)
+
+  # Expected frequency table (example structure, adjust based on build_qtable output)
+  expected <- tibble::tribble(
+    ~`Question Block`, ~value, ~N, ~Percent,
+    "Q1_a", "No", 2L, .50,
+    "Q1_a", "Yes", 2L, .50,
+    "Q1_b", "No", 2L, .50,
+    "Q1_b", "Yes", 2L, .50,
+    "Q1_c", "No", 2L, 2/3,
+    "Q1_c", "Yes", 1L, 1/3
+  ) |>
+    xlr_table() |>
+    mutate(Percent = xlr_percent(Percent))
+  # Check that the output matches expected frequencies
+  expect_equal(result, expected,info = "The xlr tables match")
+})
+
+
+test_that("build_qtable removes NA for each question, instead of the entire observation if it contains a NA ", {
+  # Create a sample data frame for a question block (Q1 with sub-questions Q1_a, Q1_b, Q1_c)
+  test_data <- data.frame(
+    ID = 1:5,  # Respondent IDs
+    Q1_a = c("Yes", "No", NA, "Yes", "No"),  # Mix of valid and NA responses
+    Q1_b = c("No", NA, "Yes", "Yes", "No"),
+    Q1_c = c(NA, "Yes", "No", "No", NA),
+    Q1_d = c(NA, NA, NA, NA, NA)
+  ) |>
+    mutate(across(everything(), ~factor(.x,c("Yes","No"))))
+
+  # Run build_qtable on the question block (assuming it processes columns Q1_a, Q1_b, Q1_c)
+  result <- build_qtable(test_data, all_of(c("Q1_a", "Q1_b", "Q1_c","Q1_d")))
 
   # Expected behavior:
   # - Respondent 1: Q1_a = Yes, Q1_b = No, Q1_c = NA (should contribute to Q1_a and Q1_b counts)

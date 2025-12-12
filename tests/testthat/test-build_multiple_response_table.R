@@ -757,6 +757,65 @@ test_that("build_mtable works when you specify seen_but_answered errors if not s
 })
 
 
+test_that("build_mtable works when you specify seen_but_answered for two mcols",{
+  test_df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other, -enjoy_veg_other) |>
+    mutate(across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),0,.x)),
+           across(starts_with("enjoy_veg"), ~ dplyr::if_else(is.na(.x),"0",.x)),)
+  test_df[7,c("enjoy_fruit_apple","enjoy_fruit_banana","enjoy_fruit_pear")] <- NA
+  test_df[6,c("enjoy_veg_potato","enjoy_veg_tomato","enjoy_veg_carrot")] <- "0"
 
+  out <-
+    test_df |>
+    build_mtable(c("enjoy_fruit","enjoy_veg"),
+                 seen_but_answered = 0)
+
+  expected_output <-
+    data.frame(
+      enjoy_fruit = c("Apple", "Apple", "Apple",
+                      "Banana", "Banana", "Banana","Pear", "Pear", "Pear", "Pear"),
+      enjoy_veg = c("Carrot", "Potato", "Tomato",
+                    "Carrot", "Potato", "Tomato", "0","Carrot", "Potato", "Tomato"),
+      N = xlr_integer(c(2L, 2L, 2L, 3L, 4L, 3L, 1, 3L, 3L,2L)),
+      N_enjoy_fruit = xlr_integer(c(3L, 3L, 3L, 4L, 4L, 4L, 5, 5L, 5L, 5L))
+    ) |>
+    mutate(Percent = xlr_percent(N/N_enjoy_fruit)) |>
+    xlr_table()
+
+  expect_equal(out, expected_output)
+})
+
+test_that("build_mtable works when you specify seen_but_answered for two mcols",{
+  test_df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other, -enjoy_veg_other) |>
+    mutate(across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),0,.x)),
+           across(starts_with("enjoy_veg"), ~ dplyr::if_else(is.na(.x),"0",.x)),)
+  test_df[7,c("enjoy_fruit_apple","enjoy_fruit_banana","enjoy_fruit_pear")] <- NA
+  test_df[6,c("enjoy_veg_potato","enjoy_veg_tomato","enjoy_veg_carrot")] <- "0"
+
+  out <-
+    test_df |>
+    build_mtable(c("enjoy_fruit","enjoy_veg"),
+                 seen_but_answered = 0,
+                 use_NA = TRUE)
+
+  expected_output <-
+    data.frame(
+      enjoy_fruit = c("Apple", "Apple", "Apple",
+                      "Banana", "Banana", "Banana","Pear", "Pear", "Pear", "Pear"),
+      enjoy_veg = c("Carrot", "Potato", "Tomato",
+                    "Carrot", "Potato", "Tomato", "0","Carrot", "Potato", "Tomato"),
+      N = xlr_integer(c(2L, 2L, 2L, 3L, 4L, 3L, 1, 3L, 3L,2L)),
+      N_enjoy_fruit = xlr_integer(c(3L, 3L, 3L, 4L, 4L, 4L, 5, 5L, 5L, 5L))
+    ) |>
+    mutate(Percent = xlr_percent(N/N_enjoy_fruit)) |>
+    xlr_table()
+
+  expect_equal(out, expected_output)
+})
 
 
