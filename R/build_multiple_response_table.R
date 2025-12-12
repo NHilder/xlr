@@ -290,7 +290,11 @@ build_mtable <- function(
       x_selected |>
       select(id, {{cols}}, {{wt}}, starts_with(mcol_1)) |>
       # add the NA column if we need to
-      apply_NA_rules(use_NA,{{mcol_1}},{{cols}}) |>
+      apply_NA_rules(use_NA,
+                     {{mcol_1}},
+                     {{cols}},
+                     seen_but_answered,
+                     name_seen_but_answered) |>
       pivot_longer(starts_with(mcol_1),
                    names_to = NULL,
                    values_to = mcol_1) |>
@@ -305,7 +309,10 @@ build_mtable <- function(
     LHS <-
       x_selected |>
       select(id, starts_with(mcol_2)) |>
-      apply_NA_rules(use_NA,{{mcol_2}}) |>
+      apply_NA_rules(use_NA,
+                     {{mcol_2}},
+                     seen_but_answered,
+                     name_seen_but_answered) |>
       pivot_longer(starts_with(mcol_2),
                    names_to = NULL,
                    values_to = mcol_2) |>
@@ -414,8 +421,8 @@ apply_NA_rules <- function(x,
       # This creates a multiple response option for the NA vars
       # It will be pivoted and can be used later
       mutate(!!na_var := if_else(if_all(starts_with(mcols),~ is.na(.x)),
-                                   name_seen_but_answered,
-                                  NA))
+                                 name_seen_but_answered,
+                                 NA))
 
     return(x)
   } else{
