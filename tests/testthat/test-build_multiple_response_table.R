@@ -628,7 +628,7 @@ test_that("build_mtable works with weights, two multiple response col,
 
 # Data with seen but answered questions-----------------------------------------
 
-test_that("build_mtable works when you specify seen_but_answered for 0",{
+test_that("build_mtable works when you specify exclude_codes for 0",{
   test_df <-
     create_multi_response_df() |>
     # now convert some of the NA values to 0
@@ -638,7 +638,7 @@ test_that("build_mtable works when you specify seen_but_answered for 0",{
 
   out <-
     test_df |>
-    build_mtable("enjoy_fruit",seen_but_answered = 0)
+    build_mtable("enjoy_fruit",exclude_codes = 0)
 
   expected_output <-
     data.frame(enjoy_fruit = c("Apple","Banana","Pear"),
@@ -651,7 +651,7 @@ test_that("build_mtable works when you specify seen_but_answered for 0",{
 
 })
 
-test_that("build_mtable works when you specify seen_but_answered for 0, with NA value",{
+test_that("build_mtable works when you specify exclude_codes for 0, with NA value",{
   test_df <-
     create_multi_response_df() |>
     # now convert some of the NA values to 0
@@ -660,7 +660,7 @@ test_that("build_mtable works when you specify seen_but_answered for 0, with NA 
 
   out <-
     test_df |>
-    build_mtable("enjoy_fruit",seen_but_answered = 0)
+    build_mtable("enjoy_fruit",exclude_codes = 0)
 
   expected_output <-
     data.frame(enjoy_fruit = c("Apple","Banana","Pear","0"),
@@ -673,7 +673,7 @@ test_that("build_mtable works when you specify seen_but_answered for 0, with NA 
 
 })
 
-test_that("build_mtable works when you specify seen_but_answered for a character value",{
+test_that("build_mtable works when you specify exclude_codes for a character value",{
   test_df <-
     create_multi_response_df() |>
     # now convert some of the NA values to 0
@@ -684,7 +684,7 @@ test_that("build_mtable works when you specify seen_but_answered for a character
   out <-
     test_df |>
     build_mtable("enjoy_fruit",
-                 seen_but_answered = "z")
+                 exclude_codes = "z")
 
   expected_output <-
     data.frame(enjoy_fruit = c("Apple","Banana","Pear","z"),
@@ -710,8 +710,8 @@ test_that("build_mtable allows you to specify the value for seen but answered, a
    out <-
     test_df |>
     build_mtable("enjoy_fruit",
-                 seen_but_answered = -99,
-                 name_seen_but_answered = "AA seen but answered (-99)")
+                 exclude_codes = -99,
+                 exclude_label = "AA seen but answered (-99)")
 
   expected_output <-
     data.frame(enjoy_fruit = c("Apple","Banana","Pear","AA seen but answered (-99)"),
@@ -727,8 +727,8 @@ test_that("build_mtable allows you to specify the value for seen but answered, a
     test_df |>
     mutate(col_1 = ifelse(col_1 == "c","a","c")) |>
     build_mtable("enjoy_fruit",col_1,
-                 seen_but_answered = -99,
-                 name_seen_but_answered = "AA seen but answered (-99)")
+                 exclude_codes = -99,
+                 exclude_label = "AA seen but answered (-99)")
 
   expected_output <-
     data.frame(col_1 = c(rep("a",4),rep("c",3)),
@@ -743,7 +743,7 @@ test_that("build_mtable allows you to specify the value for seen but answered, a
 
 })
 
-test_that("build_mtable works when you specify seen_but_answered errors if not specified",{
+test_that("build_mtable works when you specify exclude_codes errors if not specified",{
   test_df <-
     create_multi_response_df() |>
     # now convert some of the NA values to 0
@@ -757,7 +757,7 @@ test_that("build_mtable works when you specify seen_but_answered errors if not s
 })
 
 
-test_that("build_mtable works when you specify seen_but_answered for two mcols",{
+test_that("build_mtable works when you specify exclude_codes for two mcols",{
   test_df <-
     create_multi_response_df() |>
     # now convert some of the NA values to 0
@@ -770,7 +770,7 @@ test_that("build_mtable works when you specify seen_but_answered for two mcols",
   out <-
     test_df |>
     build_mtable(c("enjoy_fruit","enjoy_veg"),
-                 seen_but_answered = 0)
+                 exclude_codes = 0)
 
   expected_output <-
     data.frame(
@@ -787,7 +787,7 @@ test_that("build_mtable works when you specify seen_but_answered for two mcols",
   expect_equal(out, expected_output)
 })
 
-test_that("build_mtable works when you specify seen_but_answered for two mcols, with NA",{
+test_that("build_mtable works when you specify exclude_codes for two mcols, with NA",{
   test_df <-
     create_multi_response_df() |>
     # now convert some of the NA values to 0
@@ -800,7 +800,7 @@ test_that("build_mtable works when you specify seen_but_answered for two mcols, 
   out <-
     test_df |>
     build_mtable(c("enjoy_fruit","enjoy_veg"),
-                 seen_but_answered = 0,
+                 exclude_codes = 0,
                  use_NA = TRUE)
 
   expected_output <-
@@ -878,7 +878,7 @@ test_that("apply_NA_rules adds seen but answered column", {
     x = df,
     use_NA = TRUE,
     mcols = "q2",
-    seen_but_answered = c("Seen")
+    exclude_codes = c("Seen")
   )
 
   expected_col <- "q2_Seen"
@@ -898,7 +898,7 @@ test_that("apply_NA_rules adds seen but answered column", {
   expect_true(is.na(out$q2_2[4]))
 })
 
-test_that("apply_NA_rules constructs name_seen_but_answered automatically", {
+test_that("apply_NA_rules constructs exclude_label automatically", {
   df <- data.frame(
     q3_1 = c("X", "Y"),
     q3_2 = c("X", "Z"),
@@ -909,7 +909,7 @@ test_that("apply_NA_rules constructs name_seen_but_answered automatically", {
     x = df,
     use_NA = TRUE,
     mcols = "q3",
-    seen_but_answered = c("X", "Y")
+    exclude_codes = c("X", "Y")
   )
 
   # Expected automatic name

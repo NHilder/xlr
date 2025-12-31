@@ -17,10 +17,10 @@
 #' @param wt Specify a weighting variable, if `NULL` no weight is applied.
 #' @param footnote optional parameter to pass a custom footnote to the question,
 #' this parameter overwrites `use_questions`.
-#' @param seen_but_answered vector. Pass values to this argument if there
+#' @param exclude_codes vector. Pass values to this argument if there
 #' exists values in the multiple response question but indicate someone saw the
 #' question but did not response to the value (e.g. `-99`, `0`).
-#' @param name_seen_but_answered string. A name for the value of the `seen but answered`
+#' @param exclude_label string. A name for the value of the `seen but answered`
 #' response.
 #' @inheritParams rlang::args_dots_empty
 #'
@@ -70,8 +70,8 @@ build_mtable <- function(
     use_NA = FALSE,
     wt = NULL,
     footnote = "",
-    seen_but_answered = NULL,
-    name_seen_but_answered = paste0(seen_but_answered,collapse="_"),
+    exclude_codes = NULL,
+    exclude_label = paste0(exclude_codes,collapse="_"),
     ...){
 
   N <- N_group <- id <- NULL
@@ -97,7 +97,7 @@ build_mtable <- function(
   x_check <-
     x_selected |>
     mutate(across(starts_with(mcols),
-                  ~ if_else(.x %in% c(seen_but_answered),NA,.x))) |>
+                  ~ if_else(.x %in% c(exclude_codes),NA,.x))) |>
     select(starts_with(mcols) & where(\(x) n_distinct(x, na.rm = TRUE) > 1))
 
   if (ncol(x_check) > 0) {
@@ -106,7 +106,7 @@ build_mtable <- function(
       cli_abort(
         c("x" = "In arguments: {.arg x} and {.arg mcols}.",
           "i" = "Data frame columns {.code {names_error}} must have at most one non-missing value.",
-          "i" = "Did you forget to specify a value(s) for {.code seen_but_answered}?")
+          "i" = "Did you forget to specify a value(s) for {.code exclude_codes}?")
       )
     }
     cli_abort(
@@ -210,8 +210,8 @@ build_mtable <- function(
       apply_NA_rules(use_NA,
                      mcols,
                      cols_names,
-                     seen_but_answered,
-                     name_seen_but_answered) |>
+                     exclude_codes,
+                     exclude_label) |>
       # Add group count
       group_by(across({{ cols }})) |>
       add_tally(name = "N_group",
@@ -239,7 +239,7 @@ build_mtable <- function(
         "{sym_mcol}" := ifelse({{ sym_mcol }} == "NA", NA, vec_cast({{ sym_mcol }}, character()))
       ) |>
       arrange(across({{cols}}),
-              ifelse({{sym_mcol}} == name_seen_but_answered,1,0),
+              ifelse({{sym_mcol}} == exclude_label,1,0),
               {{sym_mcol}})
 
 
@@ -299,8 +299,8 @@ build_mtable <- function(
       apply_NA_rules(use_NA,
                      mcol_RHS,
                      cols_names,
-                     seen_but_answered,
-                     name_seen_but_answered) |>
+                     exclude_codes,
+                     exclude_label) |>
       pivot_longer(starts_with(mcol_RHS),
                    names_to = NULL,
                    values_to = mcol_RHS) |>
@@ -318,8 +318,8 @@ build_mtable <- function(
       apply_NA_rules(use_NA,
                      mcol_LHS,
                      cols_names,
-                     seen_but_answered,
-                     name_seen_but_answered) |>
+                     exclude_codes,
+                     exclude_label) |>
       pivot_longer(starts_with(mcol_LHS),
                    names_to = NULL,
                    values_to = mcol_LHS) |>
@@ -380,7 +380,7 @@ build_mtable <- function(
 #' filtering rows based on missingness. Specifically, it can:
 #'
 #' - Add a *"seen but answered"* indicator column, if values representing this
-#'   state are supplied via `seen_but_answered`.
+#'   state are supplied via `exclude_codes`.
 #' - Add an *NA indicator column* (named `"<mcols>_NA"`) when `use_NA = TRUE`,
 #'   marking rows where all multiple-response columns are `NA`.
 #' - When `use_NA = FALSE`, remove rows that contain only `NA` values across
@@ -395,19 +395,19 @@ build_mtable <- function(
 #'   multiple-response columns.
 #' @param cols Character vector of additional column names to check for
 #'   non-missing values when filtering. Defaults to `NULL`.
-#' @param seen_but_answered Vector of values representing "seen but answered"
+#' @param exclude_codes Vector of values representing "seen but answered"
 #'   responses. If provided, an indicator column is created to capture this
 #'   state and corresponding response values are converted to `NA`.
-#' @param name_seen_but_answered Character string naming the "seen but answered"
+#' @param exclude_label Character string naming the "seen but answered"
 #'   indicator column. If `NULL`, it is constructed automatically by
-#'   concatenating `seen_but_answered` values with underscores.
+#'   concatenating `exclude_codes` values with underscores.
 #' @param call Environment used for error reporting, typically from
 #'   [rlang::caller_env()].
 #'
 #' @return A modified `data.frame` that:
 #' \itemize{
-#'   \item Includes an additional `"<mcols>_<name_seen_but_answered>"` column
-#'         if `seen_but_answered` values are specified.
+#'   \item Includes an additional `"<mcols>_<exclude_label>"` column
+#'         if `exclude_codes` values are specified.
 #'   \item Includes an additional `"<mcols>_NA"` column if `use_NA = TRUE`.
 #'   \item Is filtered to exclude rows containing only `NA` values in relevant
 #'         columns if `use_NA = FALSE`.
@@ -420,32 +420,32 @@ apply_NA_rules <- function(x,
                            use_NA,
                            mcols,
                            cols = NULL,
-                           seen_but_answered = NULL,
-                           name_seen_but_answered = NULL,
+                           exclude_codes = NULL,
+                           exclude_label = NULL,
                            call = caller_env()) {
   tmp_seen_value <- NULL
   # check that cols is a string or NULL
   type_abort(cols, \(x) is_character(x) | is.null(x), "b")
 
   # generate name if not provided
-  if (is.null(name_seen_but_answered)) {
-    name_seen_but_answered <- paste0(seen_but_answered, collapse = "_")
+  if (is.null(exclude_label)) {
+    exclude_label <- paste0(exclude_codes, collapse = "_")
   }
 
   # Handle 'seen but answered' columns
-  if (!is.null(seen_but_answered)) {
-    seen_col_name <- paste0(mcols, "_", name_seen_but_answered)
+  if (!is.null(exclude_codes)) {
+    seen_col_name <- paste0(mcols, "_", exclude_label)
 
     x <- x |>
       mutate(
-        tmp_seen_value = if_all(starts_with(mcols), ~ .x %in% seen_but_answered),
+        tmp_seen_value = if_all(starts_with(mcols), ~ .x %in% exclude_codes),
         # this is done in this order to avoid overwrite the names
         across(
           starts_with(mcols),
-          ~ if_else(.x %in% seen_but_answered, NA, .x)
+          ~ if_else(.x %in% exclude_codes, NA, .x)
         ),
         # lastly write the new column value
-        !!seen_col_name := if_else(tmp_seen_value, name_seen_but_answered,NA)
+        !!seen_col_name := if_else(tmp_seen_value, exclude_label,NA)
       ) |>
       select(-tmp_seen_value)
   }
