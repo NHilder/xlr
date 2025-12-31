@@ -16,8 +16,8 @@ build_mtable(
   use_NA = FALSE,
   wt = NULL,
   footnote = "",
-  seen_but_answered = NULL,
-  name_seen_but_answered = paste0(seen_but_answered, collapse = "_"),
+  exclude_codes = NULL,
+  exclude_label = paste0(exclude_codes, collapse = "_"),
   ...
 )
 ```
@@ -61,13 +61,13 @@ build_mtable(
   optional parameter to pass a custom footnote to the question, this
   parameter overwrites `use_questions`.
 
-- seen_but_answered:
+- exclude_codes:
 
   vector. Pass values to this argument if there exists values in the
   multiple response question but indicate someone saw the question but
   did not response to the value (e.g. `-99`, `0`).
 
-- name_seen_but_answered:
+- exclude_label:
 
   string. A name for the value of the `seen but answered` response.
 
@@ -325,4 +325,128 @@ clothes_opinions |>
 #> 10 male     Grey     Earrings   76,754.0 232,228.0     33%
 #> # ℹ 44 more rows
 #> This is an example footnote.
+
+# Sometimes your survey data includes special codes that indicate a respondent
+# saw the question but didn't select that option (e.g., 0 or -99). Use
+# exclude_codes to filter these out from the count
+
+# lets first change our data structure to match
+# a normal set up in a survey
+clothes_opinions <- clothes_opinions |>
+  mutate(across(starts_with("Q2"),
+               ~ if_else(is.na(.x), "0", .x))
+  )
+
+build_mtable(clothes_opinions,
+             "Q2",
+             table_title = "What is your favourite colour?",
+             exclude_codes = 0)
+#> 
+#> ── What is your favourite colour? ──────────────────────────────────────────────
+#> # A xlr_table: 7 x 4
+#>   Q2             N N_group Percent
+#>   <x_vctr> <x_int> <x_int> <x_pct>
+#> 1 Black        897   1,000     90%
+#> 2 Blue         192   1,000     19%
+#> 3 Green        323   1,000     32%
+#> 4 Grey         494   1,000     49%
+#> 5 Red          792   1,000     79%
+#> 6 Yellow       208   1,000     21%
+#> 7 0              5   1,000      0%
+
+# You can exclude multiple codes by passing a vector
+build_mtable(clothes_opinions,
+             "Q2",
+             table_title = "What is your favourite colour?",
+             exclude_codes = c(0, -99))
+#> 
+#> ── What is your favourite colour? ──────────────────────────────────────────────
+#> # A xlr_table: 7 x 4
+#>   Q2             N N_group Percent
+#>   <x_vctr> <x_int> <x_int> <x_pct>
+#> 1 Black        897   1,000     90%
+#> 2 Blue         192   1,000     19%
+#> 3 Green        323   1,000     32%
+#> 4 Grey         494   1,000     49%
+#> 5 Red          792   1,000     79%
+#> 6 Yellow       208   1,000     21%
+#> 7 0_-99          5   1,000      0%
+
+# By default, excluded codes are labeled with the codes concatenated together.
+# You can provide a custom label using exclude_label
+build_mtable(clothes_opinions,
+             "Q2",
+             use_NA = TRUE,
+             table_title = "What is your favourite colour?",
+             exclude_codes = 0,
+             exclude_label = "Not selected")
+#> 
+#> ── What is your favourite colour? ──────────────────────────────────────────────
+#> # A xlr_table: 7 x 4
+#>   Q2                 N N_group Percent
+#>   <x_vctr>     <x_int> <x_int> <x_pct>
+#> 1 Black            897   1,000     90%
+#> 2 Blue             192   1,000     19%
+#> 3 Green            323   1,000     32%
+#> 4 Grey             494   1,000     49%
+#> 5 Red              792   1,000     79%
+#> 6 Yellow           208   1,000     21%
+#> 7 Not selected       5   1,000      0%
+
+# exclude_codes works with all other parameters including cuts and weights
+build_mtable(clothes_opinions,
+             "Q2",
+             gender2,
+             table_title = "Your favourite colour by gender",
+             exclude_codes = c(0, -99),
+             exclude_label = "No response",
+             wt = weight)
+#> 
+#> ── Your favourite colour by gender ─────────────────────────────────────────────
+#> # A xlr_table: 20 x 5
+#>    gender2    Q2                  N   N_group Percent
+#>    <x_vctr>   <x_vctr>      <x_num>   <x_num> <x_pct>
+#>  1 male       Black       422,100.0 470,171.0     90%
+#>  2 male       Blue         78,108.0 470,171.0     17%
+#>  3 male       Green       146,440.0 470,171.0     31%
+#>  4 male       Grey        232,228.0 470,171.0     49%
+#>  5 male       Red         373,520.0 470,171.0     79%
+#>  6 male       Yellow      106,110.0 470,171.0     23%
+#>  7 male       No response     645.0 470,171.0      0%
+#>  8 female     Black       421,416.0 471,572.0     89%
+#>  9 female     Blue         99,852.0 471,572.0     21%
+#> 10 female     Green       157,654.0 471,572.0     33%
+#> 11 female     Grey        249,450.0 471,572.0     53%
+#> 12 female     Red         357,249.0 471,572.0     76%
+#> 13 female     Yellow       89,559.0 471,572.0     19%
+#> 14 female     No response   6,436.0 471,572.0      1%
+#> 15 non-binary Black        76,548.0  80,670.0     95%
+#> 16 non-binary Blue         11,316.0  80,670.0     14%
+#> 17 non-binary Green        18,349.0  80,670.0     23%
+#> 18 non-binary Grey         32,864.0  80,670.0     41%
+#> 19 non-binary Red          68,508.0  80,670.0     85%
+#> 20 non-binary Yellow       20,650.0  80,670.0     26%
+
+# When working with two multiple response columns, exclude_codes applies
+# to both columns
+clothes_opinions |>
+  select(-Q3_other) |>
+  build_mtable(c("Q2", "Q3"),
+               gender2,
+               exclude_codes = 0,
+               exclude_label = "Not selected")
+#> # A xlr_table: 57 x 6
+#>    gender2  Q2       Q3              N N_group Percent
+#>    <x_vctr> <x_vctr> <x_vctr>  <x_int> <x_int> <x_pct>
+#>  1 male     Black    Earrings      127     413     31%
+#>  2 male     Black    Necklaces      78     413     19%
+#>  3 male     Black    Rings         315     413     76%
+#>  4 male     Blue     Earrings       23      82     28%
+#>  5 male     Blue     Necklaces      21      82     26%
+#>  6 male     Blue     Rings          61      82     74%
+#>  7 male     Green    Earrings       43     144     30%
+#>  8 male     Green    Necklaces      31     144     22%
+#>  9 male     Green    Rings         108     144     75%
+#> 10 male     Grey     Earrings       72     225     32%
+#> # ℹ 47 more rows
 ```

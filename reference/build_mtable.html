@@ -55,8 +55,8 @@ columns by specify the cols parameter.</p>
 <span>  use_NA <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  wt <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  footnote <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  seen_but_answered <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  name_seen_but_answered <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">seen_but_answered</span>, collapse <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>,</span>
+<span>  exclude_codes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  exclude_label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">exclude_codes</span>, collapse <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -102,13 +102,13 @@ file, convert the column label to a footnote with the question.</p></dd>
 this parameter overwrites <code>use_questions</code>.</p></dd>
 
 
-<dt id="arg-seen-but-answered">seen_but_answered<a class="anchor" aria-label="anchor" href="#arg-seen-but-answered"></a></dt>
+<dt id="arg-exclude-codes">exclude_codes<a class="anchor" aria-label="anchor" href="#arg-exclude-codes"></a></dt>
 <dd><p>vector. Pass values to this argument if there
 exists values in the multiple response question but indicate someone saw the
 question but did not response to the value (e.g. <code>-99</code>, <code>0</code>).</p></dd>
 
 
-<dt id="arg-name-seen-but-answered">name_seen_but_answered<a class="anchor" aria-label="anchor" href="#arg-name-seen-but-answered"></a></dt>
+<dt id="arg-exclude-label">exclude_label<a class="anchor" aria-label="anchor" href="#arg-exclude-label"></a></dt>
 <dd><p>string. A name for the value of the <code>seen but answered</code>
 response.</p></dd>
 
@@ -349,6 +349,130 @@ details on the importing type.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> male     Grey     Earrings   76,754.0 232,228.0     33%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 44 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-style: italic;">This is an example footnote.</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Sometimes your survey data includes special codes that indicate a respondent</span></span></span>
+<span class="r-in"><span><span class="co"># saw the question but didn't select that option (e.g., 0 or -99). Use</span></span></span>
+<span class="r-in"><span><span class="co"># exclude_codes to filter these out from the count</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># lets first change our data structure to match</span></span></span>
+<span class="r-in"><span><span class="co"># a normal set up in a survey</span></span></span>
+<span class="r-in"><span><span class="va">clothes_opinions</span> <span class="op">&lt;-</span> <span class="va">clothes_opinions</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"Q2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               <span class="op">~</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span>, <span class="st">"0"</span>, <span class="va">.x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">build_mtable</span><span class="op">(</span><span class="va">clothes_opinions</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"Q2"</span>,</span></span>
+<span class="r-in"><span>             table_title <span class="op">=</span> <span class="st">"What is your favourite colour?"</span>,</span></span>
+<span class="r-in"><span>             exclude_codes <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">What is your favourite colour?</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A xlr_table: 7 x 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Q2             N N_group Percent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_pct&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Black        897   1,000     90%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Blue         192   1,000     19%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Green        323   1,000     32%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Grey         494   1,000     49%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Red          792   1,000     79%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Yellow       208   1,000     21%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> 0              5   1,000      0%</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can exclude multiple codes by passing a vector</span></span></span>
+<span class="r-in"><span><span class="fu">build_mtable</span><span class="op">(</span><span class="va">clothes_opinions</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"Q2"</span>,</span></span>
+<span class="r-in"><span>             table_title <span class="op">=</span> <span class="st">"What is your favourite colour?"</span>,</span></span>
+<span class="r-in"><span>             exclude_codes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">99</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">What is your favourite colour?</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A xlr_table: 7 x 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Q2             N N_group Percent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_pct&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Black        897   1,000     90%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Blue         192   1,000     19%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Green        323   1,000     32%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Grey         494   1,000     49%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Red          792   1,000     79%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Yellow       208   1,000     21%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> 0_-99          5   1,000      0%</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># By default, excluded codes are labeled with the codes concatenated together.</span></span></span>
+<span class="r-in"><span><span class="co"># You can provide a custom label using exclude_label</span></span></span>
+<span class="r-in"><span><span class="fu">build_mtable</span><span class="op">(</span><span class="va">clothes_opinions</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"Q2"</span>,</span></span>
+<span class="r-in"><span>             use_NA <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>             table_title <span class="op">=</span> <span class="st">"What is your favourite colour?"</span>,</span></span>
+<span class="r-in"><span>             exclude_codes <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>             exclude_label <span class="op">=</span> <span class="st">"Not selected"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">What is your favourite colour?</span> <span style="color: #00BBBB;">──────────────────────────────────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A xlr_table: 7 x 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Q2                 N N_group Percent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_pct&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Black            897   1,000     90%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Blue             192   1,000     19%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Green            323   1,000     32%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Grey             494   1,000     49%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Red              792   1,000     79%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Yellow           208   1,000     21%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> Not selected       5   1,000      0%</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># exclude_codes works with all other parameters including cuts and weights</span></span></span>
+<span class="r-in"><span><span class="fu">build_mtable</span><span class="op">(</span><span class="va">clothes_opinions</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"Q2"</span>,</span></span>
+<span class="r-in"><span>             <span class="va">gender2</span>,</span></span>
+<span class="r-in"><span>             table_title <span class="op">=</span> <span class="st">"Your favourite colour by gender"</span>,</span></span>
+<span class="r-in"><span>             exclude_codes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">99</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>             exclude_label <span class="op">=</span> <span class="st">"No response"</span>,</span></span>
+<span class="r-in"><span>             wt <span class="op">=</span> <span class="va">weight</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Your favourite colour by gender</span> <span style="color: #00BBBB;">─────────────────────────────────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A xlr_table: 20 x 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    gender2    Q2                  N   N_group Percent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;x_num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;x_num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_pct&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> male       Black       422,100.0 470,171.0     90%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> male       Blue         78,108.0 470,171.0     17%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> male       Green       146,440.0 470,171.0     31%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> male       Grey        232,228.0 470,171.0     49%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> male       Red         373,520.0 470,171.0     79%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> male       Yellow      106,110.0 470,171.0     23%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> male       No response     645.0 470,171.0      0%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> female     Black       421,416.0 471,572.0     89%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> female     Blue         99,852.0 471,572.0     21%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> female     Green       157,654.0 471,572.0     33%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> female     Grey        249,450.0 471,572.0     53%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> female     Red         357,249.0 471,572.0     76%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> female     Yellow       89,559.0 471,572.0     19%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> female     No response   6,436.0 471,572.0      1%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> non-binary Black        76,548.0  80,670.0     95%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> non-binary Blue         11,316.0  80,670.0     14%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> non-binary Green        18,349.0  80,670.0     23%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> non-binary Grey         32,864.0  80,670.0     41%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> non-binary Red          68,508.0  80,670.0     85%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> non-binary Yellow       20,650.0  80,670.0     26%</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># When working with two multiple response columns, exclude_codes applies</span></span></span>
+<span class="r-in"><span><span class="co"># to both columns</span></span></span>
+<span class="r-in"><span><span class="va">clothes_opinions</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">Q3_other</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">build_mtable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Q2"</span>, <span class="st">"Q3"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>               <span class="va">gender2</span>,</span></span>
+<span class="r-in"><span>               exclude_codes <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>               exclude_label <span class="op">=</span> <span class="st">"Not selected"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A xlr_table: 57 x 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    gender2  Q2       Q3              N N_group Percent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_vctr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;x_pct&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> male     Black    Earrings      127     413     31%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> male     Black    Necklaces      78     413     19%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> male     Black    Rings         315     413     76%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> male     Blue     Earrings       23      82     28%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> male     Blue     Necklaces      21      82     26%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> male     Blue     Rings          61      82     74%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> male     Green    Earrings       43     144     30%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> male     Green    Necklaces      31     144     22%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> male     Green    Rings         108     144     75%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> male     Grey     Earrings       72     225     32%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 47 more rows</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
