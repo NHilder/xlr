@@ -9,8 +9,8 @@ apply_NA_rules(
   use_NA,
   mcols,
   cols = NULL,
-  seen_but_answered = NULL,
-  name_seen_but_answered = NULL,
+  exclude_codes = NULL,
+  exclude_label = NULL,
   call = caller_env()
 )
 }
@@ -26,13 +26,13 @@ multiple-response columns.}
 \item{cols}{Character vector of additional column names to check for
 non-missing values when filtering. Defaults to \code{NULL}.}
 
-\item{seen_but_answered}{Vector of values representing "seen but answered"
+\item{exclude_codes}{Vector of values representing "seen but answered"
 responses. If provided, an indicator column is created to capture this
 state and corresponding response values are converted to \code{NA}.}
 
-\item{name_seen_but_answered}{Character string naming the "seen but answered"
+\item{exclude_label}{Character string naming the "seen but answered"
 indicator column. If \code{NULL}, it is constructed automatically by
-concatenating \code{seen_but_answered} values with underscores.}
+concatenating \code{exclude_codes} values with underscores.}
 
 \item{call}{Environment used for error reporting, typically from
 \code{\link[rlang:stack]{rlang::caller_env()}}.}
@@ -40,8 +40,8 @@ concatenating \code{seen_but_answered} values with underscores.}
 \value{
 A modified \code{data.frame} that:
 \itemize{
-\item Includes an additional \code{"<mcols>_<name_seen_but_answered>"} column
-if \code{seen_but_answered} values are specified.
+\item Includes an additional \code{"<mcols>_<exclude_label>"} column
+if \code{exclude_codes} values are specified.
 \item Includes an additional \code{"<mcols>_NA"} column if \code{use_NA = TRUE}.
 \item Is filtered to exclude rows containing only \code{NA} values in relevant
 columns if \code{use_NA = FALSE}.
@@ -57,7 +57,7 @@ filtering rows based on missingness. Specifically, it can:
 \details{
 \itemize{
 \item Add a \emph{"seen but answered"} indicator column, if values representing this
-state are supplied via \code{seen_but_answered}.
+state are supplied via \code{exclude_codes}.
 \item Add an \emph{NA indicator column} (named \code{"<mcols>_NA"}) when \code{use_NA = TRUE},
 marking rows where all multiple-response columns are \code{NA}.
 \item When \code{use_NA = FALSE}, remove rows that contain only \code{NA} values across

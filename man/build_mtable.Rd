@@ -13,8 +13,8 @@ build_mtable(
   use_NA = FALSE,
   wt = NULL,
   footnote = "",
-  seen_but_answered = NULL,
-  name_seen_but_answered = paste0(seen_but_answered, collapse = "_"),
+  exclude_codes = NULL,
+  exclude_label = paste0(exclude_codes, collapse = "_"),
   ...
 )
 }
@@ -40,11 +40,11 @@ file, convert the column label to a footnote with the question.}
 \item{footnote}{optional parameter to pass a custom footnote to the question,
 this parameter overwrites \code{use_questions}.}
 
-\item{seen_but_answered}{vector. Pass values to this argument if there
+\item{exclude_codes}{vector. Pass values to this argument if there
 exists values in the multiple response question but indicate someone saw the
 question but did not response to the value (e.g. \code{-99}, \code{0}).}
 
-\item{name_seen_but_answered}{string. A name for the value of the \verb{seen but answered}
+\item{exclude_label}{string. A name for the value of the \verb{seen but answered}
 response.}
 
 \item{...}{These dots are for future extensions and must be empty.}
@@ -153,4 +153,53 @@ clothes_opinions |>
                gender2,
                wt = weight,
                footnote = "This is an example footnote.")
+
+# Sometimes your survey data includes special codes that indicate a respondent
+# saw the question but didn't select that option (e.g., 0 or -99). Use
+# exclude_codes to filter these out from the count
+
+# lets first change our data structure to match
+# a normal set up in a survey
+clothes_opinions <- clothes_opinions |>
+  mutate(across(starts_with("Q2"),
+               ~ if_else(is.na(.x), "0", .x))
+  )
+
+build_mtable(clothes_opinions,
+             "Q2",
+             table_title = "What is your favourite colour?",
+             exclude_codes = 0)
+
+# You can exclude multiple codes by passing a vector
+build_mtable(clothes_opinions,
+             "Q2",
+             table_title = "What is your favourite colour?",
+             exclude_codes = c(0, -99))
+
+# By default, excluded codes are labeled with the codes concatenated together.
+# You can provide a custom label using exclude_label
+build_mtable(clothes_opinions,
+             "Q2",
+             use_NA = TRUE,
+             table_title = "What is your favourite colour?",
+             exclude_codes = 0,
+             exclude_label = "Not selected")
+
+# exclude_codes works with all other parameters including cuts and weights
+build_mtable(clothes_opinions,
+             "Q2",
+             gender2,
+             table_title = "Your favourite colour by gender",
+             exclude_codes = c(0, -99),
+             exclude_label = "No response",
+             wt = weight)
+
+# When working with two multiple response columns, exclude_codes applies
+# to both columns
+clothes_opinions |>
+  select(-Q3_other) |>
+  build_mtable(c("Q2", "Q3"),
+               gender2,
+               exclude_codes = 0,
+               exclude_label = "Not selected")
 }
