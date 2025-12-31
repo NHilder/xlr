@@ -304,10 +304,12 @@ test_that("build_qtable removes NA for each question, instead of the entire obse
     "Q1_b", "No", 2L, .50,
     "Q1_b", "Yes", 2L, .50,
     "Q1_c", "No", 2L, 2/3,
-    "Q1_c", "Yes", 1L, 1/3
+    "Q1_c", "Yes", 1L, 1/3,
+    "Q1_d", "Yes", 1L, 1
   ) |>
     xlr_table() |>
-    mutate(Percent = xlr_percent(Percent))
+    mutate(Percent = xlr_percent(Percent)) |>
+    arrange(`Question Block`,desc(value))
   # Check that the output matches expected frequencies
   expect_equal(result, expected,info = "The xlr tables match")
 })
@@ -346,7 +348,8 @@ test_that("build_qtable removes NA for each question, instead of the entire obse
     "Q1_c", "Yes", 1L, 1/3
   ) |>
     xlr_table() |>
-    mutate(Percent = xlr_percent(Percent))
+    mutate(Percent = xlr_percent(Percent))|>
+    arrange(`Question Block`,desc(value))
   # Check that the output matches expected frequencies
   expect_equal(result, expected,info = "The xlr tables match")
 })

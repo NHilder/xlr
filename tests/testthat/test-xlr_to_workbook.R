@@ -224,7 +224,6 @@ test_that("setting col_widths works as expected when writing to Excel. Cannot be
   saveWorkbook(wb,
                test_output,
                overwrite = TRUE)
-
 })
 
 

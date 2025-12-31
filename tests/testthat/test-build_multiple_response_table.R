@@ -787,7 +787,7 @@ test_that("build_mtable works when you specify seen_but_answered for two mcols",
   expect_equal(out, expected_output)
 })
 
-test_that("build_mtable works when you specify seen_but_answered for two mcols",{
+test_that("build_mtable works when you specify seen_but_answered for two mcols, with NA",{
   test_df <-
     create_multi_response_df() |>
     # now convert some of the NA values to 0
@@ -806,11 +806,21 @@ test_that("build_mtable works when you specify seen_but_answered for two mcols",
   expected_output <-
     data.frame(
       enjoy_fruit = c("Apple", "Apple", "Apple",
-                      "Banana", "Banana", "Banana","Pear", "Pear", "Pear", "Pear"),
+                      "Banana", "Banana", "Banana",
+                      "Pear","Pear", "Pear", "Pear",
+                      NA, NA, NA),
       enjoy_veg = c("Carrot", "Potato", "Tomato",
-                    "Carrot", "Potato", "Tomato", "0","Carrot", "Potato", "Tomato"),
-      N = xlr_integer(c(2L, 2L, 2L, 3L, 4L, 3L, 1, 3L, 3L,2L)),
-      N_enjoy_fruit = xlr_integer(c(3L, 3L, 3L, 4L, 4L, 4L, 5, 5L, 5L, 5L))
+                    "Carrot", "Potato", "Tomato",
+                    "0", "Carrot", "Potato", "Tomato",
+                    "Carrot", "Potato", "Tomato"),
+      N = xlr_integer(c(2L, 2L, 2L,
+                        3L, 4L, 3L,
+                        1, 3L, 3L,2L,
+                        1, 1, 1)),
+      N_enjoy_fruit = xlr_integer(c(3L, 3L, 3L,
+                                    4L, 4L, 4L,
+                                    5, 5L, 5L, 5L,
+                                    1,1,1))
     ) |>
     mutate(Percent = xlr_percent(N/N_enjoy_fruit)) |>
     xlr_table()
@@ -818,4 +828,191 @@ test_that("build_mtable works when you specify seen_but_answered for two mcols",
   expect_equal(out, expected_output)
 })
 
+
+test_that("apply_NA_rules adds NA indicator column when use_NA = TRUE", {
+  df <- data.frame(
+    q1_1 = c(NA, "A", NA),
+    q1_2 = c(NA, NA, "B"),
+    stringsAsFactors = FALSE
+  )
+
+  out <- apply_NA_rules(
+    x = df,
+    use_NA = TRUE,
+    mcols = "q1"
+  )
+
+  expect_true("q1_NA" %in% names(out))
+  expect_equal(out$q1_NA, c("NA", NA, NA))
+})
+
+test_that("apply_NA_rules filters rows correctly when use_NA = FALSE", {
+  df <- data.frame(
+    q1_1 = c(NA, "A", NA),
+    q1_2 = c(NA, NA, "B"),
+    extra = c(1, 2, NA),
+    stringsAsFactors = FALSE
+  )
+
+  out <- apply_NA_rules(
+    x = df,
+    use_NA = FALSE,
+    mcols = "q1",
+    cols = "extra"
+  )
+
+  # First row should be removed (all NA in q1 and has extra = 1)
+  expect_equal(out,
+               data.frame(q1_1 = "A", q1_2 = as.character(NA), extra = 2))
+  expect_equal(nrow(out), 1)
+})
+
+test_that("apply_NA_rules adds seen but answered column", {
+  df <- data.frame(
+    q2_1 = c("Seen", "Val", "Seen", NA),
+    q2_2 = c("Seen", "Val", "Seen", NA),
+    stringsAsFactors = FALSE
+  )
+
+  out <- apply_NA_rules(
+    x = df,
+    use_NA = TRUE,
+    mcols = "q2",
+    seen_but_answered = c("Seen")
+  )
+
+  expected_col <- "q2_Seen"
+  expect_true(expected_col %in% names(out))
+
+  # Rows where all q2_* == "Seen" should have indicator
+  expect_equal(out[[expected_col]], c("Seen", NA, "Seen", NA))
+
+  # Verify 'Seen' values have been replaced with NA in those rows
+  expect_true(all(is.na(out$q2_1[c(1, 3)])))
+  expect_true(all(is.na(out$q2_2[c(1, 3)])))
+
+  # Mixed-value and NA rows should remain unchanged
+  expect_equal(out$q2_1[2], "Val")
+  expect_equal(out$q2_2[2], "Val")
+  expect_true(is.na(out$q2_1[4]))
+  expect_true(is.na(out$q2_2[4]))
+})
+
+test_that("apply_NA_rules constructs name_seen_but_answered automatically", {
+  df <- data.frame(
+    q3_1 = c("X", "Y"),
+    q3_2 = c("X", "Z"),
+    stringsAsFactors = FALSE
+  )
+
+  out <- apply_NA_rules(
+    x = df,
+    use_NA = TRUE,
+    mcols = "q3",
+    seen_but_answered = c("X", "Y")
+  )
+
+  # Expected automatic name
+  expected_name <- "X_Y"
+  expected_col <- paste0("q3_", expected_name)
+
+  expect_true(expected_col %in% names(out))
+})
+
+test_that("apply_NA_rules handles NULL cols argument without error", {
+  df <- data.frame(
+    q4_1 = c("A", NA),
+    q4_2 = c(NA, "B"),
+    stringsAsFactors = FALSE
+  )
+
+  expect_no_error(
+    apply_NA_rules(
+      x = df,
+      use_NA = FALSE,
+      mcols = "q4"
+    )
+  )
+})
+
+test_that("apply_NA_rules handles more complex data correctly, removes NAs",{
+  df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other ) |>
+    select(starts_with("enjoy_fruit"),col_1,col_2)
+
+  test_df <- df |>
+    mutate(across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),0,.x)))
+
+  test_df[7,c("enjoy_fruit_apple","enjoy_fruit_banana","enjoy_fruit_pear")] <- NA
+
+  out <- apply_NA_rules(
+    test_df,
+    FALSE,
+    "enjoy_fruit",
+    NULL,
+    "0"
+  )
+
+  expected <- df[1:6,] |>
+    mutate(enjoy_fruit_0 = as.character(NA))
+
+  expect_equal(out,expected)
+
+})
+
+
+test_that("apply_NA_rules handles more complex data correctly, with NAs",{
+  df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other ) |>
+    select(starts_with("enjoy_fruit"),col_1,col_2)
+
+  test_df <- df |>
+    mutate(across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),0,.x)))
+
+  test_df[7,c("enjoy_fruit_apple","enjoy_fruit_banana","enjoy_fruit_pear")] <- NA
+
+  out <- apply_NA_rules(
+    test_df,
+    TRUE,
+    "enjoy_fruit",
+    NULL,
+    "0"
+  )
+  expected <- df |>
+    mutate(enjoy_fruit_0 = as.character(NA))
+  expected$enjoy_fruit_NA <- c(rep(as.character(NA),6),"NA")
+  expect_equal(out,expected)
+
+})
+
+test_that("apply_NA_rules handles more complex data correctly, with NAs",{
+  df <-
+    create_multi_response_df() |>
+    # now convert some of the NA values to 0
+    select(-enjoy_fruit_other ) |>
+    select(starts_with("enjoy_fruit"),col_1,col_2)
+
+  test_df <- df |>
+    mutate(across(starts_with("enjoy_fruit"), ~ dplyr::if_else(is.na(.x),0,.x)))
+
+  test_df[7,c("enjoy_fruit_apple","enjoy_fruit_banana","enjoy_fruit_pear")] <- 0
+
+  out <- apply_NA_rules(
+    test_df,
+    TRUE,
+    "enjoy_fruit",
+    NULL,
+    "0"
+  )
+  expected <- df |>
+    mutate(enjoy_fruit_0 = c(rep(as.character(NA),6),"0"),
+           enjoy_fruit_NA = as.character(NA))
+
+  expect_equal(out,expected)
+
+})
 

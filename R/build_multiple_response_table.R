@@ -75,6 +75,7 @@ build_mtable <- function(
     ...){
 
   N <- N_group <- id <- NULL
+
   # Input validation ----------------------------------------------------------
   # Simple validation of arguments, we validate the columns below cause they
   # depend differently
@@ -91,7 +92,8 @@ build_mtable <- function(
   # check that dots are empty
   check_dots_empty()
 
-# Check that mcols has at most one unique non-missing value
+
+  # Check that mcols has at most one unique non-missing value
   x_check <-
     x_selected |>
     mutate(across(starts_with(mcols),
@@ -140,6 +142,10 @@ build_mtable <- function(
               "x" = "You cannot specify more than two multiple response columns.",
               "i" = "For more complicated counts we recommend using {.fun tidyr::pivot_longer} and {.fun dplyr::left_join}."))
   }
+
+  #- Type conversion. First convert any symbols to strings or names------------
+  cols_names <- quo_name(enquo(cols))
+
   # Additional information on the questions-------------------------------------
   # lastly if empty title or footnote set it to null
   if (table_title == "") table_title <- character()
@@ -202,8 +208,8 @@ build_mtable <- function(
                       .f
                     })) |>
       apply_NA_rules(use_NA,
-                     {{mcols}},
-                     {{cols}},
+                     mcols,
+                     cols_names,
                      seen_but_answered,
                      name_seen_but_answered) |>
       # Add group count
@@ -254,11 +260,11 @@ build_mtable <- function(
              N_group = xlr_numeric(N_group, dp = 1))
   } else{
 
-    mcol_1 <- mcols[1]
-    mcol_2 <- mcols[2]
+    mcol_RHS <- mcols[1]
+    mcol_LHS <- mcols[2]
     # now my sym versions so we can deffuse them when we need too
-    sym_mcol_1 <- sym(mcol_1)
-    sym_mcol_2 <- sym(mcol_2)
+    sym_mcol_1 <- sym(mcol_RHS)
+    sym_mcol_2 <- sym(mcol_LHS)
     # We can gaurentee this is equal to 2
 
     # First we tidy the x-selected columns to tidy them up
@@ -275,7 +281,7 @@ build_mtable <- function(
     # next we need to create quo names for the columns if required
     cols_quo <- enquo(cols)
     if (quo_is_null(cols_quo)){
-      group_col_name <- paste0("N_", mcol_1)
+      group_col_name <- paste0("N_", mcol_RHS)
       group_col_name_quo <- sym(group_col_name)
     } else{
       # First convert the column names to strings
@@ -288,34 +294,35 @@ build_mtable <- function(
     # are in it, we are using the same techniques as the 1 column above
     RHS <-
       x_selected |>
-      select(id, {{cols}}, {{wt}}, starts_with(mcol_1)) |>
+      select(id, {{cols}}, {{wt}}, starts_with(mcol_RHS)) |>
       # add the NA column if we need to
       apply_NA_rules(use_NA,
-                     {{mcol_1}},
-                     {{cols}},
+                     mcol_RHS,
+                     cols_names,
                      seen_but_answered,
                      name_seen_but_answered) |>
-      pivot_longer(starts_with(mcol_1),
+      pivot_longer(starts_with(mcol_RHS),
                    names_to = NULL,
-                   values_to = mcol_1) |>
+                   values_to = mcol_RHS) |>
       filter(!is.na({{sym_mcol_1}}))
 
     RHS_1 <- RHS |>
       # Add group count
-      group_by(across(c({{cols}}, {{mcol_1}}))) |>
+      group_by(across(c({{cols}}, {{mcol_RHS}}))) |>
       add_tally(name = {{group_col_name}},
                 wt = {{wt}})
 
     LHS <-
       x_selected |>
-      select(id, starts_with(mcol_2)) |>
+      select(id, starts_with(mcol_LHS)) |>
       apply_NA_rules(use_NA,
-                     {{mcol_2}},
+                     mcol_LHS,
+                     cols_names,
                      seen_but_answered,
                      name_seen_but_answered) |>
-      pivot_longer(starts_with(mcol_2),
+      pivot_longer(starts_with(mcol_LHS),
                    names_to = NULL,
-                   values_to = mcol_2) |>
+                   values_to = mcol_LHS) |>
       filter(!is.na({{sym_mcol_2}}))
 
     # now join them together
@@ -331,7 +338,7 @@ build_mtable <- function(
       # Drop the ID
       select(-id) |>
       # Group by everything and then count it
-      group_by(across(c({{cols}}, {{mcol_1}}, {{group_col_name}}, {{mcol_2}}))) |>
+      group_by(across(c({{cols}}, {{mcol_RHS}}, {{group_col_name}}, {{mcol_LHS}}))) |>
       tally(wt= {{wt}}, name = "N") |>
       ungroup() |>
       relocate(c(N, {{group_col_name}}), .after = everything())
@@ -342,8 +349,8 @@ build_mtable <- function(
       # Add proportion to end
       mutate(Percent = xlr_percent(N / {{group_col_name_quo}}),
              # add code to convert the NA string to an NA
-             "{mcol_1}" := ifelse({{ sym_mcol_1 }} == "NA",NA,vec_cast({{ sym_mcol_1 }}, character())),
-             "{mcol_2}" := ifelse({{ sym_mcol_2 }} == "NA",NA,vec_cast({{ sym_mcol_2 }}, character())),
+             "{mcol_RHS}" := ifelse({{ sym_mcol_1 }} == "NA",NA,vec_cast({{ sym_mcol_1 }}, character())),
+             "{mcol_LHS}" := ifelse({{ sym_mcol_2 }} == "NA",NA,vec_cast({{ sym_mcol_2 }}, character())),
              ) |>
       arrange(across({{cols}}),{{sym_mcol_1}},{{sym_mcol_2}})
 
@@ -366,75 +373,101 @@ build_mtable <- function(
   final_table
 }
 
+#' Apply NA handling rules to multiple-response data
+#'
+#' This internal helper function applies NA-handling rules to a multiple-response
+#' dataset. It modifies the input `data.frame` by adding indicator columns or by
+#' filtering rows based on missingness. Specifically, it can:
+#'
+#' - Add a *"seen but answered"* indicator column, if values representing this
+#'   state are supplied via `seen_but_answered`.
+#' - Add an *NA indicator column* (named `"<mcols>_NA"`) when `use_NA = TRUE`,
+#'   marking rows where all multiple-response columns are `NA`.
+#' - When `use_NA = FALSE`, remove rows that contain only `NA` values across
+#'   the relevant columns.
+#'
+#' This function is intended for internal use and not exported.
+#'
+#' @param x A `data.frame` containing multiple-response data.
+#' @param use_NA Logical; if `TRUE`, adds an indicator column for fully missing
+#'   responses. If `FALSE`, removes rows with only missing responses.
+#' @param mcols Character string specifying the common prefix for the
+#'   multiple-response columns.
+#' @param cols Character vector of additional column names to check for
+#'   non-missing values when filtering. Defaults to `NULL`.
+#' @param seen_but_answered Vector of values representing "seen but answered"
+#'   responses. If provided, an indicator column is created to capture this
+#'   state and corresponding response values are converted to `NA`.
+#' @param name_seen_but_answered Character string naming the "seen but answered"
+#'   indicator column. If `NULL`, it is constructed automatically by
+#'   concatenating `seen_but_answered` values with underscores.
+#' @param call Environment used for error reporting, typically from
+#'   [rlang::caller_env()].
+#'
+#' @return A modified `data.frame` that:
+#' \itemize{
+#'   \item Includes an additional `"<mcols>_<name_seen_but_answered>"` column
+#'         if `seen_but_answered` values are specified.
+#'   \item Includes an additional `"<mcols>_NA"` column if `use_NA = TRUE`.
+#'   \item Is filtered to exclude rows containing only `NA` values in relevant
+#'         columns if `use_NA = FALSE`.
+#' }
+#'
+#' The returned object preserves the same class as `x`.
+#'
+#' @keywords internal
 apply_NA_rules <- function(x,
                            use_NA,
                            mcols,
                            cols = NULL,
                            seen_but_answered = NULL,
-                           name_seen_but_answered = NULL){
+                           name_seen_but_answered = NULL,
+                           call = caller_env()) {
+  tmp_seen_value <- NULL
+  # check that cols is a string or NULL
+  type_abort(cols, \(x) is_character(x) | is.null(x), "b")
 
-  # first make sure the input is valid
-  if (is.null(name_seen_but_answered)){
-    name_seen_but_answered <- paste0(seen_but_answered,
-                                     collapse = "_")
+  # generate name if not provided
+  if (is.null(name_seen_but_answered)) {
+    name_seen_but_answered <- paste0(seen_but_answered, collapse = "_")
   }
 
-  # This is the easy case:
-  # With seen and unanswered, every person in the data is included, if someone
-  # saw the question but did not respond to anything they are always included
-  if (use_NA){
-    # First lets define an NA Var
-    na_var <- paste0(mcols,"_NA")
+  # Handle 'seen but answered' columns
+  if (!is.null(seen_but_answered)) {
+    seen_col_name <- paste0(mcols, "_", name_seen_but_answered)
 
-    # next if a value for the column is 'seen but answered', convert that to
-    # NA.
-    if (!is.null(seen_but_answered)){
-      x <- x |>
-        mutate(across(starts_with(mcols),
-                      ~ if_else(.x %in% seen_but_answered,NA,.x)))
-    }
-    x <-
-      x |>
-      # This creates a multiple response option for the NA vars
-      # It will be pivoted and can be used later
-      mutate(!!na_var := if_else(if_all(starts_with(mcols), ~ is.na(.x)),"NA",NA))
-
-    return(x)
-  } else if (!is.null(seen_but_answered)){
-    # next if a value for the column is 'seen but answered', is not null
-    # need to create a variable (like above), which captures the number
-    # of NA values
-    # First lets define an NA seen but answered questions
-    na_var <- paste0(mcols,"_",name_seen_but_answered)
-
-    # we then filter out all the NA values
-    x <-
-      x |>
-      # Lets remove all the NA lines from the multiple response colunms
-      # And any of the NA groups
-      filter(if_any(starts_with(mcols), ~ !is.na(.x)))
-
-    # Next we make all of the over values NA and then do the same NA trick
     x <- x |>
-      mutate(across(starts_with(mcols),
-                    ~ if_else(.x %in% seen_but_answered,NA,.x))) |>
-      # This creates a multiple response option for the NA vars
-      # It will be pivoted and can be used later
-      mutate(!!na_var := if_else(if_all(starts_with(mcols),~ is.na(.x)),
-                                 name_seen_but_answered,
-                                 NA))
+      mutate(
+        tmp_seen_value = if_all(starts_with(mcols), ~ .x %in% seen_but_answered),
+        # this is done in this order to avoid overwrite the names
+        across(
+          starts_with(mcols),
+          ~ if_else(.x %in% seen_but_answered, NA, .x)
+        ),
+        # lastly write the new column value
+        !!seen_col_name := if_else(tmp_seen_value, name_seen_but_answered,NA)
+      ) |>
+      select(-tmp_seen_value)
+  }
 
+  # Handle NA rules
+  if (use_NA) {
+    na_var <- paste0(mcols, "_NA")
+    x <- x |>
+      mutate(
+        !!na_var := if_else(
+          if_all(starts_with(mcols), ~ is.na(.x)),
+          "NA",
+          NA
+        )
+      )
     return(x)
-  } else{
-    x <-
-      x |>
-      # Lets remove all the NA lines from the multiple response colunms
-      # And any of the NA groups
+  } else {
+    x <- x |>
+      # as the structure of a multiple response is usually that one (or more)
+      # columns have the value, we use if_any instead of if all.
       filter(if_any(starts_with(mcols), ~ !is.na(.x))) |>
-      # next filter any of the any rows in the cols
-      filter(if_all({{cols}}, ~ !is.na(.x)))
-
+      filter(if_all(any_of(cols), ~ !is.na(.x)))
     return(x)
   }
 }
-
