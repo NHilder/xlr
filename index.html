@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">xlr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +58,7 @@
 </h1>
 <p>xlr is designed to help build summary tables with complex survey data, and export data to <code>Excel</code>. It includes functions to easily make cross-tabulations, work with multiple response data, and question blocks. It supports labelled data that can be generated from the popular survey platform Qualtrics.</p>
 <p>It makes exporting data from <code>Excel</code> easier. It is a easier to use wrapper around <a href="https://ycphs.github.io/openxlsx/" class="external-link">openxlsx</a>. It supports tables with footnotes, headers, and generating table of contents in <code>Excel</code> documents. It is not fully featured, but designed to be used when you are moving either statistical summaries or tables from R into <code>Excel</code>.</p>
-<p>This package is designed to work seamlessly with <a href="https://www.tidyverse.org/" class="external-link">tidyverse</a> family of functions.</p>
+<p>This package is designed to work seamlessly with <a href="https://tidyverse.org/" class="external-link">tidyverse</a> family of functions.</p>
 <p>It is currently experimental and subject to change based on peoples feedback.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -92,7 +92,7 @@
 <span><span class="va">two_way_table</span></span>
 <span><span class="co">#&gt; # A xlr_table: 8 x 4</span></span>
 <span><span class="co">#&gt;       cyl    gear       N Percent</span></span>
-<span><span class="co">#&gt;   &lt;x_dbl&gt; &lt;x_dbl&gt; &lt;x_int&gt; &lt;x_pct&gt;</span></span>
+<span><span class="co">#&gt;   &lt;x_num&gt; &lt;x_num&gt; &lt;x_int&gt; &lt;x_pct&gt;</span></span>
 <span><span class="co">#&gt; 1    4.00    3.00       1      9%</span></span>
 <span><span class="co">#&gt; 2    4.00    4.00       8     73%</span></span>
 <span><span class="co">#&gt; 3    4.00    5.00       2     18%</span></span>
@@ -109,8 +109,7 @@
 <span><span class="co"># write the data to an xlsx file</span></span>
 <span><span class="fu"><a href="reference/write_xlsx.html">write_xlsx</a></span><span class="op">(</span><span class="va">two_way_table</span>,</span>
 <span>           <span class="st">"example.xlsx"</span>,</span>
-<span>           <span class="st">"an example"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ℹ Appending file: 'example.xlsx'</span></span></code></pre></div>
+<span>           <span class="st">"an example"</span><span class="op">)</span></span></code></pre></div>
 <p>Check out the vignettes for more information on how to use the package.</p>
 </div>
 </div>

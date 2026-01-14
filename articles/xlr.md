@@ -14,8 +14,8 @@ is designed with ease of use in mind, at the expense of some
 functionality of `openxlsx`.
 
 This package relies extensively on the
-[tidyverse](https://www.tidyverse.org/) and so we use many of the same
-terms and concepts here.
+[tidyverse](https://tidyverse.org/) and so we use many of the same terms
+and concepts here.
 
 There are three aspects to this package:
 

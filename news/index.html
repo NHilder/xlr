@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">xlr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,15 +37,50 @@
 <h2 class="pkg-version" data-toc-text="development version" id="xlr-development-version">xlr (development version)<a class="anchor" aria-label="anchor" href="#xlr-development-version"></a></h2>
 </div>
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.0" id="xlr-110">xlr 1.1.0<a class="anchor" aria-label="anchor" href="#xlr-110"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-1-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h3>
+<ul><li>Added <code><a href="../reference/make_wider.html">make_wider()</a></code> function to easily pivot outputs from <code><a href="../reference/build_table.html">build_table()</a></code> and related functions for creating wider table formats.</li>
+<li>Added support for <code>exclude_codes</code> parameter in multiple response questions for the function <code><a href="../reference/build_mtable.html">build_mtable()</a></code>. This parameter supports passing values like <code>-99</code> that should be excluded from the analysis. See the documentation for <code><a href="../reference/build_mtable.html">build_mtable()</a></code>.</li>
+<li>Added column width support to <code><a href="../reference/xlr_format.html">xlr_format()</a></code>, instead of <code>xlr</code> trying to guess the width.</li>
+<li>Created a new type <code>xlr_n_percent</code>, which combines a count and a percentage. Like all other <code>xlr</code> types, it can be written to Excel.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="vector-arithmetic--type-system-improvements-1-1-0">Vector Arithmetic &amp; Type System Improvements<a class="anchor" aria-label="anchor" href="#vector-arithmetic--type-system-improvements-1-1-0"></a></h3>
+<ul><li>Added vector arithmetic support (<code><a href="https://vctrs.r-lib.org/reference/vec_math.html" class="external-link">vctrs::vec_math()</a></code>) for <code>xlr</code> types. Most base R vector operations are now supported (e.g., <code><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum()</a></code>, <code><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/median.html" class="external-link">median()</a></code>). See <code><a href="https://vctrs.r-lib.org/reference/vec_math.html" class="external-link">vctrs::vec_math()</a></code> for more details on supported operations.</li>
+<li>
+<code>xlr_integer</code> now supports division and conversion to numeric (returns <code>xlr_numeric</code>).</li>
+<li>Added support for type conversion between all <code>xlr</code> types. You can now convert all <code>xlr</code> types to each other, e.g., <code>xlr_numeric</code> to <code>xlr_integer</code>, <code>xlr_percent</code> to <code>xlr_integer</code>.</li>
+<li>
+<code>xlr_percent</code> now works with ggplot2 without errors.</li>
+<li>
+<code><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character()</a></code> on <code>xlr_percent</code> now returns formatted percentage strings.</li>
+<li>Refactored xlr classes to inherit from base types for better compatibility.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-1-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-1-0"></a></h3>
+<ul><li>Fixed a bug in <code><a href="../reference/build_qtable.html">build_qtable()</a></code> where an <code>NA</code> value in one column resulted in the entire row being removed.</li>
+<li>Improved error handling in internal tidyr function calls.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="documentation--testing-1-1-0">Documentation &amp; Testing<a class="anchor" aria-label="anchor" href="#documentation--testing-1-1-0"></a></h3>
+<ul><li>Relaxed restrictions on column value requirements for <code><a href="../reference/build_qtable.html">build_qtable()</a></code>. Response values for each column in the block only need to be a subset of the first column.</li>
+<li>Improved documentation for question-related functions.</li>
+<li>Added tests for ggplot2 compatibility.</li>
+<li>Updated snapshots for remote tests.</li>
+<li>Updated DESCRIPTION file for latest roxygen2 version.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.3" id="xlr-103">xlr 1.0.3<a class="anchor" aria-label="anchor" href="#xlr-103"></a></h2><p class="text-muted">CRAN release: 2025-03-07</p>
 <ul><li>CRAN re-submission:
-<ul><li>Fixed title and description to follows CRAN’s standards (moved from back-ticks to single quotes)!</li>
+<ul><li>Fixed title and description to follow CRAN’s standards (moved from back-ticks to single quotes)!</li>
 </ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.2" id="xlr-102">xlr 1.0.2<a class="anchor" aria-label="anchor" href="#xlr-102"></a></h2>
 <ul><li>CRAN re-submission:
-<ul><li>Fixed title to follows CRAN’s standards</li>
+<ul><li>Fixed title to follow CRAN’s standards.</li>
 </ul></li>
 </ul></div>
     <div class="section level2">
@@ -53,7 +88,7 @@
 <ul><li>CRAN re-submission. Fix issues:
 <ul><li>Made <code>Excel</code> referenced in back-ticks ``.</li>
 <li>Removed externally facing documentation for internal package functions.</li>
-<li>Change examples so that they no longer use <code>\dontrun</code> but instead create a temporary working directory following <code>readr</code> examples. We instead use <code>\dontshow</code> to hide setting this working directory.</li>
+<li>Changed examples so that they no longer use <code>\dontrun</code> but instead create a temporary working directory following <code>readr</code> examples. We instead use <code>\dontshow</code> to hide setting this working directory.</li>
 <li>Fixed typos in the vignette.</li>
 <li>Fixed line spacing issues with the Description due to inconsistent space sizing.</li>
 </ul></li>
