@@ -1,9 +1,9 @@
-# Summarise a question block
+# Summarize a Question Block
 
-This function helps analyse a block of questions or matrix questions
-into a single table. It also lets the user cut these questions by other
-questions in the data. The block of questions mush have the same
-response options.
+Analyzes a block of related questions (such as matrix questions) and
+presents them in a single summary table. Optionally cross-tabulates
+results by other variables. All questions in the block must share the
+same response options.
 
 ## Usage
 
@@ -24,67 +24,67 @@ build_qtable(
 
 - x:
 
-  a data frame or tidy object
+  A data frame or tibble containing survey data.
 
 - block_cols:
 
   \<[tidyr_tidy_select](https://tidyr.tidyverse.org/reference/tidyr_tidy_select.html)\>
-  statement. These are the columns that make up the question block, they
-  must have the same response option. Most question block columns start
-  with the same piece of text, so you should use
-  `starts_with('column_text')`. See the Examples below.
+  Columns that form the question block. All selected columns must have
+  identical response options. Tip: Use `starts_with('prefix')` when
+  block columns share a common prefix. See Examples.
 
 - cols:
 
   \<[tidyr_tidy_select](https://tidyr.tidyverse.org/reference/tidyr_tidy_select.html)\>
-  statement. These are the column(s) that we want to cut the questions
-  in the question block by.
+  Optional column(s) to cross-tabulate against the question block (for
+  example, demographics).
 
 - table_title:
 
-  a string. The title of the table sheet
+  Character string. Title for the output table.
 
 - use_questions:
 
-  a logical. If the data has column labels (was a imported .sav) file,
-  convert the column label to a footnote with the question.
+  Logical. If `TRUE` and data contains column labels (from .sav files),
+  adds the full question text as a footnote. Default is `FALSE`.
 
 - use_NA:
 
-  a logical. Whether to include `NA` values in the table. For more
-  complicated `NA` processing post creation, we recommend using filter.
+  Logical. Whether to include `NA` values in the table. Default is
+  `TRUE`. For advanced `NA` handling, use
+  [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) before
+  table creation.
 
 - wt:
 
-  a quoted or unquote column name. Specify a weighting variable, if
-  `NULL` no weight is applied.
+  Column name (quoted or unquoted) for weighting variable. If `NULL`
+  (default), no weighting is applied.
 
 - footnote:
 
-  a character vector. Optional parameter to pass a custom footnote to
-  the question, this parameter overwrites `use_questions`.
+  Character vector. Custom footnote text. When provided, overrides
+  `use_questions`.
 
 ## Value
 
-a `xlr_table` object. Use
-[write_xlsx](https://nhilder.github.io/xlr/reference/write_xlsx.md) to
-write to an `Excel` file. See
-[xlr_table](https://nhilder.github.io/xlr/reference/xlr_table.md) for
-more information.
+An `xlr_table` object. Write to Excel using
+[`write_xlsx()`](https://nhilder.github.io/xlr/reference/write_xlsx.md).
+See [xlr_table](https://nhilder.github.io/xlr/reference/xlr_table.md)
+for details.
 
 ## Details
 
-This function and its family
-([build_table](https://nhilder.github.io/xlr/reference/build_table.md),
-build_qtable) is designed to work with data with columns of type
-[`haven::labelled`](https://haven.tidyverse.org/reference/labelled.html),
-which is the default format of data read with
-[`haven::read_sav`](https://haven.tidyverse.org/reference/read_spss.html)/has
-the format of `.sav`. `.sav` is the default file function type of data
-from `SPSS` and can be exported from popular survey providers such as
-Qualtrics. When you read in data with
-[`haven::read_sav`](https://haven.tidyverse.org/reference/read_spss.html)
-it imports data with the questions, labels for the response options etc.
+This function works best with
+[`haven::labelled`](https://haven.tidyverse.org/reference/labelled.html)
+data, which is created when importing SPSS files (.sav) using
+[`haven::read_sav()`](https://haven.tidyverse.org/reference/read_spss.html).
+This format preserves question text and response option labels from
+survey platforms like Qualtrics.
+
+**Important:** All questions in the block must have identical response
+options. The function uses the first question to determine valid
+response values. If you encounter errors, convert the block columns to
+factors beforehand to ensure consistency.
 
 By default this function converts
 [labelled](https://haven.tidyverse.org/reference/labelled.html) to a
@@ -95,6 +95,11 @@ default (and underlying it is a
 See [labelled](https://haven.tidyverse.org/reference/labelled.html) and
 [read_sav](https://haven.tidyverse.org/reference/read_spss.html) if you
 would like more details on the importing type.
+
+## See also
+
+[`build_table()`](https://nhilder.github.io/xlr/reference/build_table.md),
+`build_qtable()`
 
 ## Examples
 

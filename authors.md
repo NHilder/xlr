@@ -9,14 +9,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/NHilder/xlr/blob/main/DESCRIPTION)
 
-Hilderson N (2025). *xlr: Create Table Summaries and Export Neat Tables
+Hilderson N (2026). *xlr: Create Table Summaries and Export Neat Tables
 to 'Excel'*. R package version 1.0.3.9000,
 <https://nhilder.github.io/xlr/>.
 
     @Manual{,
       title = {xlr: Create Table Summaries and Export Neat Tables to 'Excel'},
       author = {Nicholas Hilderson},
-      year = {2025},
+      year = {2026},
       note = {R package version 1.0.3.9000},
       url = {https://nhilder.github.io/xlr/},
     }

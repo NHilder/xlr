@@ -92,7 +92,7 @@ Check out the vignettes for more information on how to use the package.
   : Summarise a multiple response table
 
 - [`build_qtable()`](https://nhilder.github.io/xlr/reference/build_qtable.md)
-  : Summarise a question block
+  : Summarize a Question Block
 
 - [`build_table()`](https://nhilder.github.io/xlr/reference/build_table.md)
   : Create a one, two, three,..., n-way table
