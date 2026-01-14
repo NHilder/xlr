@@ -35,7 +35,7 @@
       ! The columns you selected as your question block do not have the same type!
       i Check the type of column `x2`?
 
-# When we select data that is a factor with two different levels then we get an error.
+# When we select data that is a factor with two different levels          then we get an error.
 
     Code
       build_qtable(df, c(x1, x2))
@@ -46,7 +46,7 @@
       i Consider converting your columns to factors before using `build_qtable()`.
       i Or start by checking the levels of column `x2`?
 
-# When we select data that is a character that when converted to a factor have different levels then we get an error
+# When we select data that is a character that when          converted to a factor have different levels then we get an error
 
     Code
       build_qtable(df, c(x1, x2))
