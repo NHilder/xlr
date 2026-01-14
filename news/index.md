@@ -1,7 +1,5 @@
 # Changelog
 
-## xlr (development version)
-
 ## xlr 1.1.0
 
 ### New Features
