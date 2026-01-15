@@ -225,7 +225,14 @@ build_mtable <- function(
       # uses the weight if it is not null, if NULL, it get's ignored
       tally(wt = {{wt}}, name = "N") |>
       # now filter the NA in the mcols var
-      filter(if_any(starts_with(mcols), ~ !is.na(.x))) |>
+      filter({
+        if (length(pick(starts_with(mcols))) == 0L) {
+          # Keep all rows when it selects nothing
+          TRUE
+        } else {
+          if_any(starts_with(mcols), ~ !is.na(.x))
+        }
+      }) |>
       relocate(c(N, N_group), .after = everything())
 
     # We add the percentage, and fix up the NA columns if we need too
