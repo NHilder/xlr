@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/NHilder/xlr/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/NHilder/xlr/blob/v1.1.0/DESCRIPTION)
 
 Hilderson N (2026). *xlr: Create Table Summaries and Export Neat Tables
 to 'Excel'*. R package version 1.1.0, <https://nhilder.github.io/xlr/>.

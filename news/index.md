@@ -2,6 +2,8 @@
 
 ## xlr 1.1.0
 
+CRAN release: 2026-01-14
+
 ### New Features
 
 - Added
