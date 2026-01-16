@@ -1,4 +1,4 @@
-# xlr (development version)
+# xlr 1.1.1
 ## Bugs
 * Refactored some internal code for NA handling to handle changes in `dplyr`
   code
