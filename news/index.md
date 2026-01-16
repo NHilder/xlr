@@ -2,6 +2,11 @@
 
 ## xlr (development version)
 
+### Bugs
+
+- Refactored some internal code for NA handling to handle changes in
+  `dplyr` code
+
 ## xlr 1.1.0
 
 CRAN release: 2026-01-14
