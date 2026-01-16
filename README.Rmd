@@ -29,7 +29,7 @@ It supports tables with footnotes, headers, and generating table of contents in 
 is not fully featured, but designed to be used when you are moving either statistical summaries
 or tables from R into `Excel`.
 
-This package is designed to work seamlessly with [tidyverse](https://www.tidyverse.org/) family 
+This package is designed to work seamlessly with [tidyverse](https://tidyverse.org/) family 
 of functions.
 
 It is currently experimental and subject to change based on peoples feedback.

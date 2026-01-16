@@ -2,7 +2,7 @@
 % Please edit documentation in R/build_question_block_table.R
 \name{build_qtable}
 \alias{build_qtable}
-\title{Summarise a question block}
+\title{Summarize a Question Block}
 \usage{
 build_qtable(
   x,
@@ -16,47 +16,49 @@ build_qtable(
 )
 }
 \arguments{
-\item{x}{a data frame or tidy object}
+\item{x}{A data frame or tibble containing survey data.}
 
-\item{block_cols}{<\link[tidyr]{tidyr_tidy_select}> statement. These are the
-columns that make up the question block, they must have the same response
-option. Most question block columns start with the same piece of text, so
-you should use \code{starts_with('column_text')}. See the Examples below.}
+\item{block_cols}{<\link[tidyr]{tidyr_tidy_select}> Columns that form the
+question block. All selected columns must have identical response options.
+Tip: Use \code{starts_with('prefix')} when block columns share a common prefix.
+See Examples.}
 
-\item{cols}{<\link[tidyr]{tidyr_tidy_select}> statement. These are the column(s) that we
-want to cut the questions in the question block by.}
+\item{cols}{<\link[tidyr]{tidyr_tidy_select}> Optional column(s) to
+cross-tabulate against the question block (for example, demographics).}
 
-\item{table_title}{a string. The title of the table sheet}
+\item{table_title}{Character string. Title for the output table.}
 
-\item{use_questions}{a logical. If the data has column labels (was a imported .sav)
-file, convert the column label to a footnote with the question.}
+\item{use_questions}{Logical. If \code{TRUE} and data contains column labels
+(from .sav files), adds the full question text as a footnote. Default is
+\code{FALSE}.}
 
-\item{use_NA}{a logical. Whether to include \code{NA} values in the table. For more complicated
-\code{NA} processing post creation, we recommend using filter.}
+\item{use_NA}{Logical. Whether to include \code{NA} values in the table. Default
+is \code{TRUE}. For advanced \code{NA} handling, use \code{filter()} before table creation.}
 
-\item{wt}{a quoted or unquote column name. Specify a weighting variable, if
-\code{NULL} no weight is applied.}
+\item{wt}{Column name (quoted or unquoted) for weighting variable. If \code{NULL}
+(default), no weighting is applied.}
 
-\item{footnote}{a character vector. Optional parameter to pass a custom
-footnote to the question, this parameter overwrites \code{use_questions}.}
+\item{footnote}{Character vector. Custom footnote text. When provided,
+overrides \code{use_questions}.}
 }
 \value{
-a \code{xlr_table} object. Use \link{write_xlsx} to write to an \code{Excel} file.
-See \link{xlr_table} for more information.
+An \code{xlr_table} object. Write to Excel using \code{\link[=write_xlsx]{write_xlsx()}}.
+See \link{xlr_table} for details.
 }
 \description{
-This function helps analyse a block of questions or matrix questions into a
-single table. It also lets the user cut these questions by other questions in
-the data. The block of questions mush have the same response options.
+Analyzes a block of related questions (such as matrix questions) and presents
+them in a single summary table. Optionally cross-tabulates results by other
+variables. All questions in the block must share the same response options.
 }
 \details{
-This function and its family (\link{build_table}, \link{build_qtable}) is designed to
-work with data with columns of type \code{haven::labelled},
-which is the default format of data read with \code{haven::read_sav}/has the format
-of \code{.sav}. \code{.sav} is the default file function type of data from \code{SPSS} and
-can be exported from popular survey providers such as Qualtrics. When you
-read in data with \code{haven::read_sav} it imports data with the questions,
-labels for the response options etc.
+This function works best with \code{haven::labelled} data, which is created when
+importing SPSS files (.sav) using \code{haven::read_sav()}. This format preserves
+question text and response option labels from survey platforms like Qualtrics.
+
+\strong{Important:} All questions in the block must have identical response options.
+The function uses the first question to determine valid response values. If
+you encounter errors, convert the block columns to factors beforehand to ensure
+consistency.
 
 By default this function converts \link[haven]{labelled} to a \link{xlr_vector}
 by default (and underlying it is a \code{character()} type).
@@ -112,4 +114,7 @@ build_qtable(
   wt = weight,
   footnote = paste0("This is a footnote, you can use it if you want ",
                     "more detail in your table."))
+}
+\seealso{
+\code{\link[=build_table]{build_table()}}, \code{\link[=build_qtable]{build_qtable()}}
 }

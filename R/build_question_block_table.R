@@ -1,37 +1,39 @@
-#' Summarise a question block
+#' Summarize a Question Block
 #'
-#' This function helps analyse a block of questions or matrix questions into a
-#' single table. It also lets the user cut these questions by other questions in
-#' the data. The block of questions mush have the same response options.
+#' Analyzes a block of related questions (such as matrix questions) and presents
+#' them in a single summary table. Optionally cross-tabulates results by other
+#' variables. All questions in the block must share the same response options.
 #'
-#' @param x a data frame or tidy object
-#' @param block_cols <\link[tidyr]{tidyr_tidy_select}> statement. These are the
-#' columns that make up the question block, they must have the same response
-#' option. Most question block columns start with the same piece of text, so
-#' you should use `starts_with('column_text')`. See the Examples below.
-#' @param cols <\link[tidyr]{tidyr_tidy_select}> statement. These are the column(s) that we
-#' want to cut the questions in the question block by.
-#' @param table_title a string. The title of the table sheet
-#' @param use_questions a logical. If the data has column labels (was a imported .sav)
-#' file, convert the column label to a footnote with the question.
-#' @param use_NA a logical. Whether to include `NA` values in the table. For more complicated
-#' `NA` processing post creation, we recommend using filter.
-#' @param wt a quoted or unquote column name. Specify a weighting variable, if
-#' `NULL` no weight is applied.
-#' @param footnote a character vector. Optional parameter to pass a custom
-#' footnote to the question, this parameter overwrites `use_questions`.
+#' @param x A data frame or tibble containing survey data.
+#' @param block_cols <\link[tidyr]{tidyr_tidy_select}> Columns that form the
+#'   question block. All selected columns must have identical response options.
+#'   Tip: Use `starts_with('prefix')` when block columns share a common prefix.
+#'   See Examples.
+#' @param cols <\link[tidyr]{tidyr_tidy_select}> Optional column(s) to
+#'   cross-tabulate against the question block (for example, demographics).
+#' @param table_title Character string. Title for the output table.
+#' @param use_questions Logical. If `TRUE` and data contains column labels
+#'   (from .sav files), adds the full question text as a footnote. Default is
+#'   `FALSE`.
+#' @param use_NA Logical. Whether to include `NA` values in the table. Default
+#'   is `TRUE`. For advanced `NA` handling, use `filter()` before table creation.
+#' @param wt Column name (quoted or unquoted) for weighting variable. If `NULL`
+#'   (default), no weighting is applied.
+#' @param footnote Character vector. Custom footnote text. When provided,
+#'   overrides `use_questions`.
 #'
-#' @return a `xlr_table` object. Use [write_xlsx] to write to an `Excel` file.
-#' See [xlr_table] for more information.
+#' @return An `xlr_table` object. Write to Excel using [write_xlsx()].
+#'   See [xlr_table] for details.
 #'
 #' @details
-#' This function and its family ([build_table], [build_qtable]) is designed to
-#' work with data with columns of type `haven::labelled`,
-#' which is the default format of data read with `haven::read_sav`/has the format
-#' of `.sav`. `.sav` is the default file function type of data from `SPSS` and
-#' can be exported from popular survey providers such as Qualtrics. When you
-#' read in data with `haven::read_sav` it imports data with the questions,
-#' labels for the response options etc.
+#' This function works best with `haven::labelled` data, which is created when
+#' importing SPSS files (.sav) using `haven::read_sav()`. This format preserves
+#' question text and response option labels from survey platforms like Qualtrics.
+#'
+#' **Important:** All questions in the block must have identical response options.
+#' The function uses the first question to determine valid response values. If
+#' you encounter errors, convert the block columns to factors beforehand to ensure
+#' consistency.
 #'
 #' By default this function converts \link[haven]{labelled} to a [xlr_vector]
 #' by default (and underlying it is a `character()` type).
@@ -40,6 +42,8 @@
 #' details on the importing type.
 #'
 #' @example inst/examples/build_question_block_table.R
+#'
+#' @seealso [build_table()], [build_qtable()]
 #'
 #' @export
 build_qtable <- function(
@@ -121,10 +125,12 @@ build_qtable <- function(
   # Get the levels for the column in the first position
   start <- block_levels[[1]]
   # Now test that all the levels are the same
-  # 1. Go through and see if all the elements in the vector
-  #     are equal to the first element (start), which therefore
-  #     means they are all equal (we don't care about order).
-  check_factor <- sapply(block_levels,\(y) setequal(start,y))
+  # 1. Go through and check that all of the elements in each question are at
+  # least a subset of the first question.
+  # This restriction means that all elements have to be present in the first
+  # question.
+  # Unsure about this restriction. It makes more complicated code.
+  check_factor <- sapply(block_levels,\(y) setequal(start,union(start,y)))
   # 2. Use all to check this is all true.
   if (!all(check_factor)){
     # If it is not equal we can try and given an informative error message
