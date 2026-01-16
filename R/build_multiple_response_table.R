@@ -143,9 +143,6 @@ build_mtable <- function(
               "i" = "For more complicated counts we recommend using {.fun tidyr::pivot_longer} and {.fun dplyr::left_join}."))
   }
 
-  #- Type conversion. First convert any symbols to strings or names------------
-  cols_names <- quo_name(enquo(cols))
-  cols_names <- if(cols_names == "NULL") NULL else cols_names
   # Additional information on the questions-------------------------------------
   # lastly if empty title or footnote set it to null
   if (table_title == "") table_title <- character()
@@ -425,9 +422,6 @@ apply_NA_rules <- function(x,
                            exclude_label = NULL,
                            call = caller_env()) {
   tmp_seen_value <- NULL
-  # check that cols is a string or NULL
-  # type_abort(cols, \(x) is_character(x) | is.null(x), "b")
-
   # generate name if not provided
   if (is.null(exclude_label)) {
     exclude_label <- paste0(exclude_codes, collapse = "_")
