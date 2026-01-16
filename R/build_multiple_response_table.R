@@ -145,7 +145,7 @@ build_mtable <- function(
 
   #- Type conversion. First convert any symbols to strings or names------------
   cols_names <- quo_name(enquo(cols))
-
+  cols_names <- if(cols_names == "NULL") NULL else cols_names
   # Additional information on the questions-------------------------------------
   # lastly if empty title or footnote set it to null
   if (table_title == "") table_title <- character()
@@ -209,7 +209,7 @@ build_mtable <- function(
                     })) |>
       apply_NA_rules(use_NA,
                      mcols,
-                     cols_names,
+                     {{cols}},
                      exclude_codes,
                      exclude_label) |>
       # Add group count
@@ -225,14 +225,8 @@ build_mtable <- function(
       # uses the weight if it is not null, if NULL, it get's ignored
       tally(wt = {{wt}}, name = "N") |>
       # now filter the NA in the mcols var
-      filter({
-        if (length(pick(starts_with(mcols))) == 0L) {
-          # Keep all rows when it selects nothing
-          TRUE
-        } else {
-          if_any(starts_with(mcols), ~ !is.na(.x))
-        }
-      }) |>
+      remove_NA(starts_with(mcols),
+                complete = FALSE) |>
       relocate(c(N, N_group), .after = everything())
 
     # We add the percentage, and fix up the NA columns if we need too
@@ -305,7 +299,7 @@ build_mtable <- function(
       # add the NA column if we need to
       apply_NA_rules(use_NA,
                      mcol_RHS,
-                     cols_names,
+                     {{cols}},
                      exclude_codes,
                      exclude_label) |>
       pivot_longer(starts_with(mcol_RHS),
@@ -324,7 +318,7 @@ build_mtable <- function(
       select(id, starts_with(mcol_LHS)) |>
       apply_NA_rules(use_NA,
                      mcol_LHS,
-                     cols_names,
+                     NULL, # cols must be null because we don't have it selected
                      exclude_codes,
                      exclude_label) |>
       pivot_longer(starts_with(mcol_LHS),
@@ -432,7 +426,7 @@ apply_NA_rules <- function(x,
                            call = caller_env()) {
   tmp_seen_value <- NULL
   # check that cols is a string or NULL
-  type_abort(cols, \(x) is_character(x) | is.null(x), "b")
+  # type_abort(cols, \(x) is_character(x) | is.null(x), "b")
 
   # generate name if not provided
   if (is.null(exclude_label)) {
@@ -473,8 +467,11 @@ apply_NA_rules <- function(x,
     x <- x |>
       # as the structure of a multiple response is usually that one (or more)
       # columns have the value, we use if_any instead of if all.
-      filter(if_any(starts_with(mcols), ~ !is.na(.x))) |>
-      filter(if_all(any_of(cols), ~ !is.na(.x)))
+      remove_NA(starts_with(mcols),complete = FALSE) |>
+      remove_NA({{cols}},complete = TRUE)
     return(x)
   }
 }
+
+
+
