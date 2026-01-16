@@ -38,6 +38,7 @@ Collate:
   data.R
   is_xlr_type.R
   make_wider.R
+  remove_NA.R
 Suggests: 
     knitr,
     rmarkdown,
