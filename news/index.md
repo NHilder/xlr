@@ -1,6 +1,8 @@
 # Changelog
 
-## xlr (development version)
+## xlr 1.1.1
+
+CRAN release: 2026-01-17
 
 ### Bugs
 
