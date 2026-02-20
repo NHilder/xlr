@@ -29,17 +29,35 @@ remove_NA <- function(.data,
     return(.data)
   }
 
+  # next grouping can cause unexpected behaviour, lets keep the groups,
+  # and restore them if we need to
+  # Lets first check if the data is grouped, this will hold the groups
+  # if they are
+  group_vars <- dplyr::group_vars(.data)
+  is_grouped <- dplyr::is_grouped_df(.data)
+  if (is_grouped){
+    .data <- .data |>
+      ungroup()
+  }
+
   if (complete){
     # Remove rows where ANY selected column has NA
     out <-
       .data |>
       filter(if_all(any_of(names(selection)), ~ !is.na(.x)))
-    return(out)
   } else {
     # Remove rows where ALL selected columns are NA
     out <-
       .data |>
       filter(if_any(any_of(names(selection)), ~ !is.na(.x)))
+  }
+  # now we restore the groups if we need to, and output
+  if (is_grouped){
+    out <- out |>
+      grouped_df(vars = group_vars)
+    return(out)
+  } else{
     return(out)
   }
+
 }

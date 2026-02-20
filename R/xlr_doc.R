@@ -18,6 +18,7 @@ NULL
 #' @importFrom dplyr case_when n n_distinct
 #' @importFrom dplyr left_join join_by group_by row_number any_of
 #' @importFrom dplyr add_count pick if_any add_tally tally if_all across if_else
+#' @importFrom dplyr grouped_df is_grouped_df group_vars
 #'
 #' @importFrom cli cli_abort cli_warn cli_alert cli_fmt cli_text cli_alert_info
 #' @importFrom cli cli_h1

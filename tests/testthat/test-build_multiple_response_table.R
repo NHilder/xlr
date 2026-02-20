@@ -828,7 +828,7 @@ test_that("build_mtable works when you specify exclude_codes for two mcols, with
   expect_equal(out, expected_output)
 })
 
-
+#- Apply NA Rules---------------
 test_that("apply_NA_rules adds NA indicator column when use_NA = TRUE", {
   df <- data.frame(
     q1_1 = c(NA, "A", NA),
