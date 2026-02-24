@@ -1,6 +1,8 @@
 # Changelog
 
-## xlr (development version)
+## xlr 1.1.2
+
+CRAN release: 2026-02-21
 
 - Updated code to fix a bug caused by `dplyr` dependency.
 
