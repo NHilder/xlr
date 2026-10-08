@@ -106,3 +106,12 @@
       ! You can't use `if_exists` with the deprecated `overwrite` or `append` arguments.
       i Use only `if_exists`.
 
+# write_xlsx() reports sheet errors against write_xlsx()
+
+    Code
+      write_xlsx(data.frame(), tmp_file, "Empty")
+    Condition
+      Error in `write_xlsx()`:
+      i In argument: `x`.
+      ! Your data frame or tibble must contain columns.
+

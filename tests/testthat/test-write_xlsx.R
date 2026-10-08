@@ -153,3 +153,8 @@ test_that("write_xlsx() errors when if_exists is used with the deprecated argume
                              if_exists = "overwrite", overwrite = TRUE),
                   error = TRUE)
 })
+
+test_that("write_xlsx() reports sheet errors against write_xlsx()", {
+  tmp_file <- tempfile(fileext = ".xlsx")
+  expect_snapshot(write_xlsx(data.frame(), tmp_file, "Empty"), error = TRUE)
+})

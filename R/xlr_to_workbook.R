@@ -124,7 +124,7 @@ xlr_to_workbook <- function(x,
   # now we have sorted through all the data we now add the worksheet data
 
   lapply(names(x),
-         function(sheet_name, call = caller_env()) {
+         function(sheet_name) {
            data <- x[[sheet_name]]
            # must be a xlr_table or data.frame
            if (is_xlr_table(data)) {
