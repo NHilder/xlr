@@ -115,3 +115,12 @@
       i In argument: `x`.
       ! Your data frame or tibble must contain columns.
 
+# write_xlsx() errors for duplicate sheet names in a list
+
+    Code
+      write_xlsx(list(a = mtcars, A = mtcars), tmp_file)
+    Condition
+      Error in `write_xlsx()`:
+      ! Sheet names must be unique, these names clash: "a" and "A".
+      i Sheet names are not case sensitive in `Excel`.
+

@@ -151,25 +151,36 @@ xlr_to_workbook <- function(x,
 
 
 create_list_names <- function(x,
-                           call = caller_env()){
+                              call = caller_env()){
   sheet_names <- names(x)
   # now we use the names that exist in the list, or if they are empty we set them
   if (is.null(sheet_names)){
-    sheet_names <- paste0("Table ",1:length(x))
+    sheet_names <- rep("", length(x))
   }
-  # if some of the names are missing we throw a warning
-  else if ("" %in% sheet_names){
-    # next check that any of the existing names would be a double up
-    # Throw an error if they do, otherwise add more names
-    bad_sheets <- grep("table [[:alnum:]]", sheet_names,ignore.case = TRUE)
-    if (length(bad_sheets) == 0){
-      sheet_names[sheet_names == ""] <- paste0("Table ",1:sum("" == sheet_names))
-      cli_alert("There are unnamed objects in argument {.arg x}. Generating names for the empty object.")
+  else if (any(sheet_names == "")){
+    cli_alert("There are unnamed objects in argument {.arg x}. Generating names for the empty object.")
+  }
+
+  # Excel sheet names are case-insensitive, so compare them in lower case.
+  # Generated names skip any "Table N" that is already used.
+  missing <- which(sheet_names == "")
+  n <- 0
+  for (i in missing){
+    repeat {
+      n <- n + 1
+      candidate <- paste0("Table ", n)
+      if (!tolower(candidate) %in% tolower(sheet_names)) break
     }
-    else{
-      cli_abort(c("The sheet names provided are invalid. You can't have missing sheet names, and a sheet named {.val {sheet_names[bad_sheets[1]]}}.",
-                "i" = "If you passed a named list to {.fun write_xlsx}, remove the names before preceeding, or name all the elements manually."))
-    }
+    sheet_names[i] <- candidate
+  }
+
+  lower_names <- tolower(sheet_names)
+  duplicated_lower <- lower_names[duplicated(lower_names)]
+  if (length(duplicated_lower) > 0){
+    duplicates <- unique(sheet_names[lower_names %in% duplicated_lower])
+    cli_abort(c("!" = "Sheet names must be unique, these names clash: {.val {duplicates}}.",
+                "i" = "Sheet names are not case sensitive in {.code Excel}."),
+              call = call)
   }
 
   return(sheet_names)

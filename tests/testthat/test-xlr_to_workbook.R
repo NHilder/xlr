@@ -41,8 +41,14 @@ test_that("create_list_names() does not duplicate when a table is called table 1
   sheet_names <- c("table 1","table 2","","table 3","","")
   names(list_data) <- sheet_names
 
-  expect_snapshot(create_list_names(list_data),
-                  error = TRUE)
+  # generated names skip the names that are used, ignoring case like Excel
+  expect_equal(suppressMessages(create_list_names(list_data)),
+               c("table 1","table 2","Table 4","table 3","Table 5","Table 6"))
+})
+
+test_that("create_list_names() errors for duplicate sheet names, ignoring case", {
+  list_data <- list(a = 1, b = 2, A = 3)
+  expect_snapshot(create_list_names(list_data), error = TRUE)
 })
 
 test_that("append_worksheet() creates worksheets as expected",{

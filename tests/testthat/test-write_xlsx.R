@@ -158,3 +158,10 @@ test_that("write_xlsx() reports sheet errors against write_xlsx()", {
   tmp_file <- tempfile(fileext = ".xlsx")
   expect_snapshot(write_xlsx(data.frame(), tmp_file, "Empty"), error = TRUE)
 })
+
+test_that("write_xlsx() errors for duplicate sheet names in a list", {
+  tmp_file <- tempfile(fileext = ".xlsx")
+  expect_snapshot(write_xlsx(list(a = mtcars, A = mtcars), tmp_file),
+                  error = TRUE)
+  expect_false(file.exists(tmp_file))
+})

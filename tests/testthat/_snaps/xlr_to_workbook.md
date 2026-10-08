@@ -7,14 +7,14 @@
     Output
       [1] "Table 1" "test1"   "Table 2" "test2"   "Table 3" "Table 4"
 
-# create_list_names() does not duplicate when a table is called table 1 and some is missing
+# create_list_names() errors for duplicate sheet names, ignoring case
 
     Code
       create_list_names(list_data)
     Condition
-      Error in `create_list_names()`:
-      ! The sheet names provided are invalid. You can't have missing sheet names, and a sheet named "table 1".
-      i If you passed a named list to `write_xlsx()`, remove the names before preceeding, or name all the elements manually.
+      Error:
+      ! Sheet names must be unique, these names clash: "a" and "A".
+      i Sheet names are not case sensitive in `Excel`.
 
 # append_worksheet() creates an error when we try to overwrite data that exists
 

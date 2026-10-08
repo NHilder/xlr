@@ -19,6 +19,10 @@
 
 ## Bug fixes
 
+* `write_xlsx()` with a list: generated names for unnamed elements skip any
+  `"Table N"` name that is already used, instead of erroring. Duplicate sheet
+  names now give a clear error, ignoring case as `Excel` does.
+
 * `xlr_format()` now accepts the openxlsx border style `"slantDashDot"`, and
   no longer accepts the misspelt `"dastDotDot"` and `"slantDashDosh"` (which
   openxlsx doesn't support). `border_style` is now validated even when
