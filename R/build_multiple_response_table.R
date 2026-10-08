@@ -173,11 +173,7 @@ build_mtable <- function(
       x_selected |>
       # Convert haven labels by default
       mutate(across(where(haven::is.labelled),
-                    \(.f) {
-                      .f <- haven::as_factor(.f)
-                      attr(.f, "label") <- NULL
-                      .f
-                    })) |>
+                    labelled_to_factor)) |>
       apply_NA_rules(use_NA,
                      mcols,
                      {{cols}},
@@ -240,11 +236,7 @@ build_mtable <- function(
     x_selected <-
       x_selected |>
       mutate(across(where(haven::is.labelled),
-                    \(.f) {
-                      .f <- haven::as_factor(.f)
-                      attr(.f, "label") <- NULL
-                      .f
-                    })) |>
+                    labelled_to_factor)) |>
       mutate(id = row_number())
 
     # next we need to create quo names for the columns if required

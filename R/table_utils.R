@@ -88,6 +88,17 @@ format_N <- function(x, weighted, extra_cols = character()){
   mutate(x, across(all_of(c("N", extra_cols)), \(.x) xlr_numeric(.x, dp = 1)))
 }
 
+#' Convert a haven labelled vector to a factor without the question label
+#'
+#' @param x a `haven_labelled` vector.
+#'
+#' @noRd
+labelled_to_factor <- function(x){
+  x <- haven::as_factor(x)
+  attr(x, "label") <- NULL
+  x
+}
+
 my_starts_with <- function(pattern,vars){
   lapply(pattern, \(x) grep(paste0("^",x),vars)) |>
     unlist(use.names = FALSE)

@@ -77,11 +77,7 @@ build_table <- function(
     x_selected |>
     remove_NA_opt(use_NA) |>
     mutate(across(where(haven::is.labelled),
-                  \(.f) {
-                    .f <- haven::as_factor(.f)
-                    attr(.f, "label") <- NULL
-                    .f
-                  })) |>
+                  labelled_to_factor)) |>
     group_by(across({{cols}})) |>
     # uses the weight if it is not null, if NULL, it get's ignored
     tally(wt = !!wt, name = "N") |>

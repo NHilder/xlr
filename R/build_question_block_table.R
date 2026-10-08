@@ -105,13 +105,7 @@ build_qtable <- function(
   # If they are haven labelled convert to a factor using haven
   if (haven::is.labelled(x_block_cols[[1]])){
     x_block_cols_factor <- mutate(x_block_cols,
-                           across(everything(),
-                                  \(.f) {
-                                        .f <- haven::as_factor(.f)
-                                        attr(.f, "label") <- NULL
-                                        .f}
-                                  ))
-
+                                  across(everything(), labelled_to_factor))
   }
   else if (is.factor(x_block_cols[[1]])){
     x_block_cols_factor <- x_block_cols
@@ -193,11 +187,7 @@ build_qtable <- function(
   final_table <-
     long_data |>
     mutate(across(where(haven::is.labelled),
-                  \(.f) {
-                    .f <- haven::as_factor(.f)
-                    attr(.f, "label") <- NULL
-                    .f
-                  })) |>
+                  labelled_to_factor)) |>
     group_by(across({{cols}}),`Question Block`,value) |>
     # uses the weight if it is not null, if NULL, it get's ignored
     tally(wt = !!wt, name = "N") |>
