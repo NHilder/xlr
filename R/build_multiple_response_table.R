@@ -77,6 +77,9 @@ build_mtable <- function(
   N <- N_group <- id <- NULL
 
   # Input validation ----------------------------------------------------------
+  # check that dots are empty
+  check_dots_empty()
+
   # Simple validation of arguments, we validate the columns below cause they
   # depend differently
   validate_table_inputs(x,
@@ -84,6 +87,21 @@ build_mtable <- function(
                         use_questions,
                         use_NA,
                         footnote)
+  # mcols are column prefixes, not a tidyselect selection, so they must be
+  # strings
+  if (!is_character(mcols) || length(mcols) == 0 ||
+      anyNA(mcols) || any(mcols == "")){
+    cli_abort(c("i" = "In argument: {.arg mcols}.",
+                "!" = "{.arg mcols} must be a character vector of column prefixes, not {.obj_type_friendly {mcols}}.",
+                "i" = "For example, use {.code \"Q2\"} for the columns {.code Q2_1}, {.code Q2_2}, ..."))
+  }
+  # Test that there are at most two mcols specified anything more that
+  # is too complicated
+  if (length(mcols) > 2){
+    cli_abort(c("i" = "In arguments: {.arg mcols}.",
+              "x" = "You cannot specify more than two multiple response columns.",
+              "i" = "For more complicated counts we recommend using {.fun tidyr::pivot_longer} and {.fun dplyr::left_join}."))
+  }
   # validate that the columns are in x
   checked <- check_columns_exist(x,
                                  {{cols}},
@@ -91,9 +109,6 @@ build_mtable <- function(
                                  wt = {{wt}})
   x_selected <- checked$data
   wt <- checked$wt
-
-  # check that dots are empty
-  check_dots_empty()
 
 
   # Check that mcols has at most one unique non-missing value
@@ -116,14 +131,6 @@ build_mtable <- function(
       c("x" = "In arguments: {.arg x} and {.arg mcols}.",
         "i" = "Data frame columns {.code {names_error}} must have at most one non-missing value.")
     )
-  }
-
-  # Next test that there are at most two mcols specified anything more that
-  # is too complicated
-  if (length(mcols) > 2){
-    cli_abort(c("i" = "In arguments: {.arg mcols}.",
-              "x" = "You cannot specify more than two multiple response columns.",
-              "i" = "For more complicated counts we recommend using {.fun tidyr::pivot_longer} and {.fun dplyr::left_join}."))
   }
 
   # Additional information on the questions-------------------------------------

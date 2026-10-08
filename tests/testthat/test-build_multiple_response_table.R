@@ -1030,3 +1030,10 @@ test_that("build_mtable() is not affected by columns named like internal variabl
                  dplyr::select(-exclude_codes),
                expected)
 })
+
+test_that("build_mtable() gives a clear error when mcols is not a string", {
+  df <- data.frame(c1 = c(0, 1, 1), c2 = c(1, 0, 0))
+  expect_snapshot(build_mtable(df, c), error = TRUE)
+  expect_snapshot(build_mtable(df, 1), error = TRUE)
+  expect_snapshot(build_mtable(df, ""), error = TRUE)
+})

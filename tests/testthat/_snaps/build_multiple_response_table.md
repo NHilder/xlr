@@ -109,3 +109,33 @@
       i Data frame columns `enjoy_fruit_apple`, `enjoy_fruit_banana`, and `enjoy_fruit_pear` must have at most one non-missing value.
       i Did you forget to specify a value(s) for `exclude_codes`?
 
+# build_mtable() gives a clear error when mcols is not a string
+
+    Code
+      build_mtable(df, c)
+    Condition
+      Error in `build_mtable()`:
+      i In argument: `mcols`.
+      ! `mcols` must be a character vector of column prefixes, not a primitive function.
+      i For example, use `"Q2"` for the columns `Q2_1`, `Q2_2`, ...
+
+---
+
+    Code
+      build_mtable(df, 1)
+    Condition
+      Error in `build_mtable()`:
+      i In argument: `mcols`.
+      ! `mcols` must be a character vector of column prefixes, not a number.
+      i For example, use `"Q2"` for the columns `Q2_1`, `Q2_2`, ...
+
+---
+
+    Code
+      build_mtable(df, "")
+    Condition
+      Error in `build_mtable()`:
+      i In argument: `mcols`.
+      ! `mcols` must be a character vector of column prefixes, not `""`.
+      i For example, use `"Q2"` for the columns `Q2_1`, `Q2_2`, ...
+
