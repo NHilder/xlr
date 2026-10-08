@@ -1004,3 +1004,9 @@ test_that("xlr_to_workbook() appends to an existing and makes the correct TOC", 
                overwrite = TRUE)
 })
 
+
+test_that("xlr_format_to_openxlsx_format() applies text_rotation", {
+  style <- xlr_format_to_openxlsx_format(xlr_format(text_rotation = 45L))
+  expect_equal(style$textRotation, 45)
+  expect_null(xlr_format_to_openxlsx_format(xlr_format())$textRotation)
+})

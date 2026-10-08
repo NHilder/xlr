@@ -796,7 +796,7 @@ xlr_format_to_openxlsx_format <- function(x,
 
   type_abort(x,is_xlr_format,xlr_format(),call = call)
 
-  text_rotation <- attr(xlr_format(),which="text_rotation")
+  text_rotation <- attr(x,which="text_rotation")
   if (text_rotation == 0){
     text_rotation <- NULL
   }
