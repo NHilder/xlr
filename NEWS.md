@@ -1,5 +1,17 @@
 # xlr (development version)
 
+## Breaking changes
+
+* `write_xlsx()` has a new `if_exists` argument (`"overwrite"`, `"append"` or
+  `"error"`) to choose what happens when the file already exists. If it isn't
+  set and the file exists, you are asked what to do in an interactive
+  session, and an error is thrown otherwise. Previously the file was appended
+  to by default. The `overwrite` and `append` arguments are deprecated and
+  give a warning. `if_exists` takes the position of `overwrite`, so pass the
+  deprecated arguments by name.
+* `write_xlsx()` no longer deletes the existing file before saving, so a failed
+  save leaves the original file in place.
+
 ## Bug fixes
 
 * `xlr_format()` now accepts the openxlsx border style `"slantDashDot"`, and

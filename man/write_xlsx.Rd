@@ -8,12 +8,13 @@ write_xlsx(
   x,
   file,
   sheet_name = NULL,
-  overwrite = FALSE,
-  append = TRUE,
+  if_exists = NULL,
   TOC = FALSE,
   TOC_title = NA_character_,
   overwrite_sheets = TRUE,
-  excel_data_table = TRUE
+  excel_data_table = TRUE,
+  overwrite = NULL,
+  append = NULL
 )
 }
 \arguments{
@@ -24,10 +25,17 @@ write_xlsx(
 \item{sheet_name}{a sheet name (optional). Only valid for when you pass a single
 object to \code{x}.}
 
-\item{overwrite}{logical. Whether to overwrite the file/worksheet or not.}
+\item{if_exists}{what to do if \code{file} already exists. One of:
+\itemize{
+\item \code{"overwrite"}: replace the file.
+\item \code{"append"}: add the sheets to the existing file. Use \code{overwrite_sheets}
+to control what happens to sheets that already exist.
+\item \code{"error"}: throw an error and leave the file unchanged.
+}
 
-\item{append}{logical. Whether or not to append a worksheet to an existing
-file.}
+If \code{NULL} (the default) and the file exists, you are asked what to do in an
+interactive session, otherwise an error is thrown. It is ignored if the file
+does not exist.}
 
 \item{TOC}{logical. Whether to create a table of contents with
 the document. Works only when you pass a \code{list} to \code{x}. To add a table of
@@ -40,6 +48,9 @@ file.}
 
 \item{excel_data_table}{logical. Whether to save the data as an \code{Excel} table
 in the worksheet. These are more accessible than data in the sheet.}
+
+\item{overwrite, append}{Deprecated, use \code{if_exists}
+instead.}
 }
 \value{
 None
@@ -64,10 +75,13 @@ write_xlsx(mtcars,
            "example_file.xlsx",
            sheet_name = "Example sheet")
 
-# you must specify a sheet name
+# you must specify a sheet name.
+# If the file already exists, use `if_exists` to choose whether to "append" to
+# or "overwrite" it
 write_xlsx(example_tibble,
            "example_file.xlsx",
-           sheet_name = "Example sheet")
+           sheet_name = "Example sheet",
+           if_exists = "append")
 
 # You can write a xlr_table.
 # When you write a xlr_table you can specify the formatting as well as titles
@@ -78,7 +92,8 @@ example_xlr_table <- xlr_table(mtcars,
 
 write_xlsx(example_xlr_table,
            "example_file.xlsx",
-           "Example sheet")
+           "Example sheet",
+           if_exists = "append")
 
 # like openxlsx, you can also pass a list
 table_list <- list("Sheet name 1" = xlr_table(mtcars,
@@ -89,9 +104,11 @@ table_list <- list("Sheet name 1" = xlr_table(mtcars,
                                               "This is a footnote as well"))
 
 write_xlsx(table_list,
-           "example_file.xlsx")
+           "example_file.xlsx",
+           if_exists = "overwrite")
 \dontshow{
-  # restore wd
+  # remove the example file and restore wd
+  unlink("example_file.xlsx")
   setwd(oldWd)
 }
 }

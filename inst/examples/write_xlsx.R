@@ -10,10 +10,13 @@ write_xlsx(mtcars,
            "example_file.xlsx",
            sheet_name = "Example sheet")
 
-# you must specify a sheet name
+# you must specify a sheet name.
+# If the file already exists, use `if_exists` to choose whether to "append" to
+# or "overwrite" it
 write_xlsx(example_tibble,
            "example_file.xlsx",
-           sheet_name = "Example sheet")
+           sheet_name = "Example sheet",
+           if_exists = "append")
 
 # You can write a xlr_table.
 # When you write a xlr_table you can specify the formatting as well as titles
@@ -24,7 +27,8 @@ example_xlr_table <- xlr_table(mtcars,
 
 write_xlsx(example_xlr_table,
            "example_file.xlsx",
-           "Example sheet")
+           "Example sheet",
+           if_exists = "append")
 
 # like openxlsx, you can also pass a list
 table_list <- list("Sheet name 1" = xlr_table(mtcars,
@@ -35,8 +39,10 @@ table_list <- list("Sheet name 1" = xlr_table(mtcars,
                                               "This is a footnote as well"))
 
 write_xlsx(table_list,
-           "example_file.xlsx")
+           "example_file.xlsx",
+           if_exists = "overwrite")
 \dontshow{
-  # restore wd
+  # remove the example file and restore wd
+  unlink("example_file.xlsx")
   setwd(oldWd)
 }

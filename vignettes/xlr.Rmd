@@ -407,12 +407,16 @@ The output looks like this in `Excel`:
 table in `Excel`.](img/data.frame_example.png)
 
 When you output a `xlr_table` with this function additional formatting
-will be applied to the data as well as the title and a footnote.
+will be applied to the data as well as the title and a footnote. As
+`example.xlsx` already exists, we use `if_exists` to choose whether to
+`"overwrite"` the file or `"append"` sheets to it. If you don't set it,
+`write_xlsx()` asks you what to do.
 
 ```{R}
 write_xlsx(table,
            file = "example.xlsx",
-           sheet_name = "example_sheet")
+           sheet_name = "example_sheet",
+           if_exists = "overwrite")
 ```
 
 The output looks like this in `Excel`:
@@ -432,7 +436,8 @@ table <- update_theme(table,
                                                  text_style = "underline"))
 write_xlsx(table,
            file = "example.xlsx",
-           sheet_name = "example_sheet")
+           sheet_name = "example_sheet",
+           if_exists = "overwrite")
 ```
 
 The output looks like this:

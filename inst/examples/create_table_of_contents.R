@@ -21,6 +21,7 @@ create_table_of_contents(output_file,
                          # the first cell has a text description
                          pull_titles = FALSE)
 \dontshow{
-  # restore wd
+  # remove the example file and restore wd
+  unlink("example_file.xlsx")
   setwd(oldWd)
 }

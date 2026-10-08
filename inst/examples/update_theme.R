@@ -28,6 +28,7 @@ write_xlsx(bt,
            "Test")
 
 \dontshow{
-  # restore wd
+  # remove the example file and restore wd
+  unlink("example.xlsx")
   setwd(oldWd)
 }

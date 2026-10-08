@@ -57,7 +57,8 @@ Imports:
   tibble,
   pillar,
   tidyr,
-  tidyselect
+  tidyselect,
+  utils
 Depends: 
     R (>= 4.1.0)
 LazyData: true
