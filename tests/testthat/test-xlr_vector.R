@@ -141,3 +141,12 @@ test_that("casting between xlr_vectors keeps the excel_format of the target", {
   to <- xlr_vector(character(), excel_format = "@")
   expect_equal(attr(vec_cast(xlr_vector("a"), to), "excel_format"), "@")
 })
+
+test_that("vec_ptype2() of two xlr_vectors is a zero length prototype", {
+  x <- xlr_vector(c("a", "b"), excel_format = "@")
+  out <- vec_ptype2(x, xlr_vector("c", excel_format = "@"))
+  expect_length(out, 0)
+  expect_equal(attr(out, "excel_format"), "@")
+  expect_equal(vec_c(x, xlr_vector("c", excel_format = "@")),
+               xlr_vector(c("a", "b", "c"), excel_format = "@"))
+})

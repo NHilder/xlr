@@ -132,7 +132,7 @@ vec_ptype2.xlr_vector.xlr_vector <- function(x,y,...){
   if (attr(x,which = "excel_format") != attr(y,which = "excel_format")){
     cli_warn('Attribute {.var excel_format} does not match, taking the attributes from the left-hand side.')
   }
-  new_xlr_vector(x,
+  new_xlr_vector(vec_ptype(vec_data(x)),
                  excel_format = attr(x,which = "excel_format"),
                  style = pull_style(x))
 }
