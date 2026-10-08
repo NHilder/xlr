@@ -191,3 +191,7 @@ test_that("update_theme() with no formats leaves the table unchanged", {
   x <- xlr_table(mtcars[1:3, 1:3], "title", "footnote")
   expect_equal(update_theme(x), x)
 })
+
+test_that("new_xlr_table() errors clearly when x is not a data frame", {
+  expect_snapshot(new_xlr_table(1), error = TRUE)
+})

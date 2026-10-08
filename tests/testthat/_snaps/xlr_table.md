@@ -86,3 +86,12 @@
       # i 90 more rows
       test_footnote
 
+# new_xlr_table() errors clearly when x is not a data frame
+
+    Code
+      new_xlr_table(1)
+    Condition
+      Error:
+      i In argument: `x`.
+      ! `x` must be a data frame or tibble, not a number.
+

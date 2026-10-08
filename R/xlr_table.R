@@ -193,8 +193,8 @@ new_xlr_table <- function(x,
   # check if x inherits a dataframe
   if (!is.data.frame(x)) {
     cli_abort(
-      c("i" = "In argument: {.arg {argname}}.",
-        "{.arg x} must be a data frame or tibble, not a {.type {x}}."),
+      c("i" = "In argument: {.arg x}.",
+        "!" = "{.arg x} must be a data frame or tibble, not {.type {x}}."),
       call = call
     )
   }
