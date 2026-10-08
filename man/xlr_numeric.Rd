@@ -15,7 +15,7 @@ xlr_numeric(
 
 is_xlr_numeric(x)
 
-as_xlr_numeric(x, dp = 0L, scientific = FALSE, style = xlr_format_numeric())
+as_xlr_numeric(x, dp = 2L, scientific = FALSE, style = xlr_format_numeric())
 }
 \arguments{
 \item{x}{\itemize{

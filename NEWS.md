@@ -11,6 +11,8 @@
   deprecated arguments by name.
 * `write_xlsx()` no longer deletes the existing file before saving, so a failed
   save leaves the original file in place.
+* `as_xlr_numeric()` now defaults to `dp = 2L`, the same as `xlr_numeric()`
+  (it was `0L`).
 
 ## Bug fixes
 

@@ -208,3 +208,9 @@ test_that("xlr_numeric() reports invalid arguments against xlr_numeric()", {
   expect_snapshot(xlr_numeric(1, scientific = NA), error = TRUE)
   expect_snapshot(xlr_numeric(1, scientific = c(TRUE, FALSE)), error = TRUE)
 })
+
+test_that("as_xlr_numeric() uses the same default dp as xlr_numeric()", {
+  expect_equal(pull_dp(as_xlr_numeric(1.234)), pull_dp(xlr_numeric(1.234)))
+  expect_equal(pull_dp(as_xlr_numeric("1.234")), 2L)
+  expect_equal(as_xlr_numeric(1.234), xlr_numeric(1.234))
+})

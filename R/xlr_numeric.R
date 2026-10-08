@@ -138,7 +138,7 @@ is_xlr_numeric <- function(x) {
 #' @export
 #' @rdname xlr_numeric
 as_xlr_numeric <- function(x,
-                           dp = 0L,
+                           dp = 2L,
                            scientific = FALSE,
                            style = xlr_format_numeric()){
   UseMethod("as_xlr_numeric")
@@ -146,7 +146,7 @@ as_xlr_numeric <- function(x,
 
 #' @export
 as_xlr_numeric.default <- function(x,
-                                   dp = 0L,
+                                   dp = 2L,
                                    scientific = FALSE,
                                    style = xlr_format_numeric()){
   vec_cast(x,
@@ -157,7 +157,7 @@ as_xlr_numeric.default <- function(x,
 
 #' @export
 as_xlr_numeric.character <- function(x,
-                                     dp = 0L,
+                                     dp = 2L,
                                      scientific = FALSE,
                                      style = xlr_format_numeric()){
   # if R can work it out, cast it to a xlr_numeric with default settings
