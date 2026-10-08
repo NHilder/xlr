@@ -195,3 +195,7 @@ test_that("update_theme() with no formats leaves the table unchanged", {
 test_that("new_xlr_table() errors clearly when x is not a data frame", {
   expect_snapshot(new_xlr_table(1), error = TRUE)
 })
+
+test_that("update_theme() errors clearly for a non xlr_table", {
+  expect_snapshot(update_theme(mtcars), error = TRUE)
+})

@@ -95,3 +95,12 @@
       i In argument: `x`.
       ! `x` must be a data frame or tibble, not a number.
 
+# update_theme() errors clearly for a non xlr_table
+
+    Code
+      update_theme(mtcars)
+    Condition
+      Error in `update_theme()`:
+      i In argument: `x`.
+      ! `x` must be a <xlr_table>, not a data frame.
+

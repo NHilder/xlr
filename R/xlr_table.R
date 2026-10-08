@@ -21,8 +21,10 @@
 #'    * for `xlr_table()` : a `data.frame`, or `tibble`. See notes for further details.
 #'    * for `is_xlr_table()` : An object
 #'    * for `as_xlr_table()` a `data.frame`, or `tibble`.
-#' @param title a string that is the title
-#' @param footnote a string that is the footnote
+#' @param title a string that is the title, or `NULL` or `character()` (the
+#' default) for no title.
+#' @param footnote a character vector that is the footnote, with one element
+#' per line, or `NULL` or `character()` (the default) for no footnote.
 #'
 #' @return a `xlr_table` S3 class
 #'
@@ -30,10 +32,14 @@
 #'
 #' @example inst/examples/xlr_table.R
 #'
-#' @seealso [update_theme()], [as_base_r()]
+#' @seealso [update_theme()], [as_base_r()], [xlr_table_accessors] to get and
+#' set the title, footnote and formats.
 xlr_table <- function(x,
                        title = character(),
                        footnote = character()) {
+  # NULL means there is no title or footnote
+  title <- title %||% character()
+  footnote <- footnote %||% character()
   # first we attempt to convert x to a tibble if possible
   x <- as_tibble(x)
 
@@ -85,9 +91,10 @@ as_xlr_table.data.frame <- function(x,
 #' you write you `xlr_table` to `Excel` with [write_xlsx()].
 #'
 #' Only the formats you pass are changed, any format you leave as `NULL` keeps
-#' its current value in `x`. To reset all the formats to the defaults, re-create
-#' the table, for example
-#' `xlr_table(as_base_r(x), attr(x, "title"), attr(x, "footnote"))`.
+#' its current value in `x`. To change a single format you can also use the
+#' setters in [xlr_table_accessors], e.g. [set_title_format()]. To reset all
+#' the formats to the defaults, re-create the table, for example
+#' `xlr_table(as_base_r(x), get_title(x), get_footnote(x))`.
 #'
 #' If you want to change the style of the *columns* in the data, you should convert them
 #' to a [xlr_vector], [xlr_numeric], [xlr_integer] or [xlr_percent] type if they are
@@ -114,7 +121,7 @@ update_theme <- function(x,
                          footnote_format = NULL,
                          column_heading_format = NULL,
                          table_body_format = NULL) {
-  type_abort(x, is_xlr_table, xlr_table())
+  type_abort(x, is_xlr_table, string_type = "a {.cls xlr_table}")
   title_format <- title_format %||% pull_title_format(x)
   footnote_format <- footnote_format %||% pull_footnote_format(x)
   column_heading_format <- column_heading_format %||% pull_column_heading_format(x)
@@ -125,15 +132,11 @@ update_theme <- function(x,
   type_abort(column_heading_format, is_xlr_format, xlr_format())
   type_abort(table_body_format, is_xlr_format, xlr_format())
 
-  new_xlr_table(
-    x,
-    pull_title(x),
-    pull_footnote(x),
-    title_format,
-    footnote_format,
-    column_heading_format,
-    table_body_format
-  )
+  modify_xlr_table(x,
+                   title_format = title_format,
+                   footnote_format = footnote_format,
+                   column_heading_format = column_heading_format,
+                   table_body_format = table_body_format)
 }
 
 # The default formats of a xlr_table

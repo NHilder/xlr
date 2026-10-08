@@ -37,9 +37,10 @@ you write you \code{xlr_table} to \code{Excel} with \code{\link[=write_xlsx]{wri
 }
 \details{
 Only the formats you pass are changed, any format you leave as \code{NULL} keeps
-its current value in \code{x}. To reset all the formats to the defaults, re-create
-the table, for example
-\code{xlr_table(as_base_r(x), attr(x, "title"), attr(x, "footnote"))}.
+its current value in \code{x}. To change a single format you can also use the
+setters in \link{xlr_table_accessors}, e.g. \code{\link[=set_title_format]{set_title_format()}}. To reset all
+the formats to the defaults, re-create the table, for example
+\code{xlr_table(as_base_r(x), get_title(x), get_footnote(x))}.
 
 If you want to change the style of the \emph{columns} in the data, you should convert them
 to a \link{xlr_vector}, \link{xlr_numeric}, \link{xlr_integer} or \link{xlr_percent} type if they are
@@ -69,8 +70,8 @@ bt <- update_theme(bt,
 
 # To go back to the default formats, re-create the table
 bt_default <- xlr_table(as_base_r(bt),
-                        attr(bt, "title"),
-                        attr(bt, "footnote"))
+                        get_title(bt),
+                        get_footnote(bt))
 # To see the change you must write to an Excel file
 write_xlsx(bt,
            "example.xlsx",

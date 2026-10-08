@@ -18,6 +18,7 @@ Roxygen: list(markdown = TRUE)
 Collate:
   as_base_r.R
   xlr_table.R
+  xlr_table_accessors.R
   xlr_to_workbook.R
   build_multiple_response_table.R
   build_table.R

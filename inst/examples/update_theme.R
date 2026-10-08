@@ -20,8 +20,8 @@ bt <- update_theme(bt,
 
 # To go back to the default formats, re-create the table
 bt_default <- xlr_table(as_base_r(bt),
-                        attr(bt, "title"),
-                        attr(bt, "footnote"))
+                        get_title(bt),
+                        get_footnote(bt))
 # To see the change you must write to an Excel file
 write_xlsx(bt,
            "example.xlsx",

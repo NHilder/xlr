@@ -1,5 +1,17 @@
 # xlr (development version)
 
+## New features
+
+* New getters and setters for the attributes of a `xlr_table`:
+  `get_title()`/`set_title()`, `get_footnote()`/`set_footnote()`,
+  `get_title_format()`/`set_title_format()`,
+  `get_footnote_format()`/`set_footnote_format()`,
+  `get_column_heading_format()`/`set_column_heading_format()` and
+  `get_table_body_format()`/`set_table_body_format()`. See
+  `?xlr_table_accessors`.
+* `xlr_table()` and `as_xlr_table()` accept `NULL` for `title` and `footnote`
+  to mean no title or footnote.
+
 ## Breaking changes
 
 * `write_xlsx()` has a new `if_exists` argument (`"overwrite"`, `"append"` or

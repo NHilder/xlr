@@ -20,9 +20,11 @@ as_xlr_table(x, title = character(), footnote = character())
 \item for \code{as_xlr_table()} a \code{data.frame}, or \code{tibble}.
 }}
 
-\item{title}{a string that is the title}
+\item{title}{a string that is the title, or \code{NULL} or \code{character()} (the
+default) for no title.}
 
-\item{footnote}{a string that is the footnote}
+\item{footnote}{a character vector that is the footnote, with one element
+per line, or \code{NULL} or \code{character()} (the default) for no footnote.}
 }
 \value{
 a \code{xlr_table} S3 class
@@ -80,5 +82,6 @@ write_xlsx(x,
 }
 }
 \seealso{
-\code{\link[=update_theme]{update_theme()}}, \code{\link[=as_base_r]{as_base_r()}}
+\code{\link[=update_theme]{update_theme()}}, \code{\link[=as_base_r]{as_base_r()}}, \link{xlr_table_accessors} to get and
+set the title, footnote and formats.
 }
