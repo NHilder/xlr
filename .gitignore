@@ -9,3 +9,4 @@ example.xlsx
 .Rdata
 .httr-oauth
 .quarto
+tests/testthat/_output_excel_snaps/

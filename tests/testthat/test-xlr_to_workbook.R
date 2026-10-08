@@ -225,7 +225,7 @@ test_that("setting col_widths works as expected when writing to Excel. Cannot be
     xlr_table("test")
   xlr_table_to_sheet(test_table, wb = wb,"test2")
 
-  test_output <- test_path("_output_excel_snaps/column_widths.xlsx")
+  test_output <- excel_output_path("column_widths.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -457,8 +457,7 @@ test_that("add_TOC_to_workbook() writes hyperlinks to each sheet correctly and s
 
   expect_true(TRUE)
   # now write the data
-  skip_on_cran()
-  test_output <- test_path("_output_excel_snaps/add_TOC_to_workbook.xlsx")
+  test_output <- excel_output_path("add_TOC_to_workbook.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -511,8 +510,7 @@ test_that("add_TOC_to_workbook() adds the sheet names and titles from an existin
                  NA,
                  "test_3"))
   # now write the data
-  skip_on_cran()
-  test_output <- test_path("_output_excel_snaps/add_TOC_to_workbook_old_workbook.xlsx")
+  test_output <- excel_output_path("add_TOC_to_workbook_old_workbook.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -551,7 +549,7 @@ test_that("data_to_worksheet() generates data correctly",{
 
   # This is a like a snapshot test, we look whether the data is what we think
   # it should be
-  test_output <- test_path("_output_excel_snaps/data_to_worksheet.xlsx")
+  test_output <- excel_output_path("data_to_worksheet.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -602,7 +600,7 @@ test_that("data_to_worksheet() adds data correctly, we check all types",{
 
   # This is a like a snapshot test, we look whether the data is what we think
   # it should be
-  test_output <- test_path("_output_excel_snaps/data_to_worksheet_data_table.xlsx")
+  test_output <- excel_output_path("data_to_worksheet_data_table.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -638,7 +636,7 @@ test_that("data_to_worksheet() can change the data table names",{
   skip_on_cran()
   # This is a like a snapshot test, we look whether the data is what we think
   # it should be
-  test_output <- test_path("_output_excel_snaps/data_to_worksheet_data_table_name.xlsx")
+  test_output <- excel_output_path("data_to_worksheet_data_table_name.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -703,8 +701,7 @@ test_that("xlr_table_to_sheet() works", {
   # expect_true(equal_openxlsx_workbook(wb,wb_test))
 
   #- save the data to check manually
-  skip_on_cran()
-  test_output <- test_path("_output_excel_snaps/xlr_table_to_sheet.xlsx")
+  test_output <- excel_output_path("xlr_table_to_sheet.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -771,8 +768,7 @@ test_that("dataframe_to_sheet() works", {
   # expect_true(equal_workbook_data(wb,wb_test))
   # now see if they have the same data
   # expect_true(equal_openxlsx_workbook(wb,wb_test))
-  skip_on_cran()
-  test_output <- test_path("_output_excel_snaps/dataframe_to_sheet.xlsx")
+  test_output <- excel_output_path("dataframe_to_sheet.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -887,8 +883,7 @@ test_that("xlr_to_workbook() creates a file from a list of xlr_tables w/o TOC", 
   # now see if they have the same data
   # expect_true(equal_openxlsx_workbook(wb,wb_test))
 
-  skip_on_cran()
-  test_output <- test_path("_output_excel_snaps/xlr_table_to_workbook.xlsx")
+  test_output <- excel_output_path("xlr_table_to_workbook.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -932,8 +927,7 @@ test_that("xlr_to_workbook() creates a file from a list of xlr_tables", {
   # expect_true(equal_openxlsx_workbook(wb,wb_test))
 
 
-  skip_on_cran()
-  test_output <- test_path("_output_excel_snaps/xlr_table_to_workbook_TOC.xlsx")
+  test_output <- excel_output_path("xlr_table_to_workbook_TOC.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -967,8 +961,7 @@ test_that("xlr_to_workbook() appends to an existing workbook", {
   # now see if they have the same data
   # expect_true(equal_openxlsx_workbook(wb,wb_test))
 
-  skip_on_cran()
-  test_output <- test_path("_output_excel_snaps/xlr_table_to_workbook_old_wb.xlsx")
+  test_output <- excel_output_path("xlr_table_to_workbook_old_wb.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,
@@ -1002,8 +995,7 @@ test_that("xlr_to_workbook() appends to an existing and makes the correct TOC", 
   # now see if they have the same data
   # expect_true(equal_openxlsx_workbook(wb,wb_test))
 
-  skip_on_cran()
-  test_output <- test_path("_output_excel_snaps/xlr_table_to_workbook_old_wb_2.xlsx")
+  test_output <- excel_output_path("xlr_table_to_workbook_old_wb_2.xlsx")
   # we use openxlsx to write it
   saveWorkbook(wb,
                test_output,

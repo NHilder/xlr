@@ -157,7 +157,7 @@ test_that("create_table_of_contents() creates a TOC (formatting to be checked ma
   # first create a temporary table_of_contents file
   example_path <- test_path("test_xlsx_files","example_workbook_no_TOC.xlsx")
   #
-  snap_path <- test_path("_output_excel_snaps","create_table_of_contents.xlsx")
+  snap_path <- excel_output_path("create_table_of_contents.xlsx")
   # now we first make a copy of this example file to the snaps folder and
   # then run table of contents, and overwrite the old version if it exists
   file.copy(example_path,snap_path,overwrite = TRUE)
