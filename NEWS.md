@@ -19,6 +19,9 @@
 
 ## Bug fixes
 
+* `create_table_of_contents(overwrite = TRUE)` now replaces the existing table
+  of contents, instead of writing over it and leaving old links and titles.
+
 * `write_xlsx()` with a list: generated names for unnamed elements skip any
   `"Table N"` name that is already used, instead of erroring. Duplicate sheet
   names now give a clear error, ignoring case as `Excel` does.

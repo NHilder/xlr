@@ -181,3 +181,29 @@ test_that("set_TOC_column_width() only widens the column for long sheet names", 
   set_TOC_column_width(wb, "TOC", strrep("a", 50))
   expect_equal(as.vector(wb$colWidths[[1]]), "30")
 })
+
+test_that("create_table_of_contents() clears the old table of contents when overwriting", {
+  tmp_file <- tempfile(fileext = ".xlsx")
+  on.exit(unlink(tmp_file))
+  write.xlsx(list(alpha = data.frame(a = 1:3),
+                  beta = data.frame(b = 1:2),
+                  gamma = data.frame(c = 1)),
+             tmp_file)
+  create_table_of_contents(tmp_file, "Contents", pull_titles = TRUE)
+
+  wb <- loadWorkbook(tmp_file)
+  removeWorksheet(wb, "gamma")
+  saveWorkbook(wb, tmp_file, overwrite = TRUE)
+  create_table_of_contents(tmp_file, "Contents v2",
+                           overwrite = TRUE, pull_titles = FALSE)
+
+  wb <- loadWorkbook(tmp_file)
+  expect_equal(sheets(wb), c("Table of Contents", "alpha", "beta"))
+  toc <- wb$worksheets[[1]]$sheet_data
+  # the title and one link for each sheet, with no titles left in column B
+  expect_equal(sort(toc$rows), 1:3)
+  expect_true(all(toc$cols == 1))
+  # the links still only appear once on each sheet
+  alpha <- wb$worksheets[[2]]$sheet_data
+  expect_equal(sum(grepl("Table of Contents", alpha$f)), 1)
+})

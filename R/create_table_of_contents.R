@@ -67,14 +67,16 @@ create_table_of_contents_workbook <- function(wb,
                   "i" = "Set {.code overwrite = TRUE} if you wish to overwrite it."),
                 call = call)
     }
-
+    # remove the old table of contents so none of its content is left behind
+    removeWorksheet(wb, TOC_sheet_name)
   }
-  else{
-    # add the worksheet if it doesn't exist and make it the first worksheet
-    addWorksheet(wb,TOC_sheet_name)
-    # reorder the worksheets so the TOC_sheet_name is first
-    # this is gross because it has to be the number not the sheet_name
-    worksheetOrder(wb) <- c(length(names(wb)),1:(length(names(wb))-1))
+  # add the worksheet and make it the first worksheet
+  addWorksheet(wb,TOC_sheet_name)
+  # reorder the worksheets so the TOC_sheet_name is first
+  # this is gross because it has to be the number not the sheet_name
+  number_sheets <- length(sheets(wb))
+  if (number_sheets > 1){
+    worksheetOrder(wb) <- c(number_sheets, 1:(number_sheets - 1))
   }
   # set the TOC_sheet_name as the active sheet (so it is the sheet you first see when you
   # open the work book)
