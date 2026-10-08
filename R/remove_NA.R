@@ -22,8 +22,12 @@ remove_NA <- function(.data,
                       complete = TRUE,
                       call = caller_env()){
 
+  # renaming is not allowed, as we filter on the names of the selection
+  selection <- eval_select(enquo(cols),
+                           .data,
+                           allow_rename = FALSE,
+                           error_call = call)
   # Check if the selection is empty, if it is return data unchanged
-  selection <- eval_select(enquo(cols), .data, error_call = call)
   if (length(selection) == 0){
     return(.data)
   }

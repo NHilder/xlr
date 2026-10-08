@@ -338,3 +338,9 @@ test_that("remove_NA handles NA in factor columns", {
   expect_s3_class(result$x, "factor")
 })
 
+
+test_that("remove_NA errors when the selection renames a column", {
+  df <- data.frame(a = c(1, NA, 3), b = c(NA, NA, 3))
+  expect_snapshot(remove_NA(df, c(x = a)), error = TRUE)
+  expect_snapshot(remove_NA(df, c(x = a), complete = FALSE), error = TRUE)
+})
