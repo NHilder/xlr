@@ -6,23 +6,26 @@
 \usage{
 update_theme(
   x,
-  title_format = xlr_format(font_size = 12, text_style = "bold"),
-  footnote_format = xlr_format(font_size = 9, text_style = "italic"),
-  column_heading_format = xlr_format(font_size = 11, text_style = "bold", border =
-    c("top", "bottom"), halign = "center", wrap_text = TRUE),
-  table_body_format = xlr_format(border = c("top", "left", "right", "bottom"))
+  title_format = NULL,
+  footnote_format = NULL,
+  column_heading_format = NULL,
+  table_body_format = NULL
 )
 }
 \arguments{
 \item{x}{a \code{xlr_table}}
 
-\item{title_format}{a \code{xlr_format} object to format the title}
+\item{title_format}{a \code{xlr_format} object to format the title, or \code{NULL} to
+keep the current format.}
 
-\item{footnote_format}{a \code{xlr_format} object to format the footnote}
+\item{footnote_format}{a \code{xlr_format} object to format the footnote, or
+\code{NULL} to keep the current format.}
 
-\item{column_heading_format}{a \code{xlr_format} object to format the column heading}
+\item{column_heading_format}{a \code{xlr_format} object to format the column
+heading, or \code{NULL} to keep the current format.}
 
-\item{table_body_format}{a \code{xlr_format} object to format the body}
+\item{table_body_format}{a \code{xlr_format} object to format the body, or \code{NULL}
+to keep the current format.}
 }
 \value{
 Returns a \link{xlr_table} object.
@@ -33,6 +36,11 @@ This changes how the titles, footnotes, columns, and body objects look when
 you write you \code{xlr_table} to \code{Excel} with \code{\link[=write_xlsx]{write_xlsx()}}.
 }
 \details{
+Only the formats you pass are changed, any format you leave as \code{NULL} keeps
+its current value in \code{x}. To reset all the formats to the defaults, re-create
+the table, for example
+\code{xlr_table(as_base_r(x), attr(x, "title"), attr(x, "footnote"))}.
+
 If you want to change the style of the \emph{columns} in the data, you should convert them
 to a \link{xlr_vector}, \link{xlr_numeric}, \link{xlr_integer} or \link{xlr_percent} type if they are
 not already, and then update the \link{xlr_format} attribute, by setting
@@ -50,8 +58,19 @@ bt <- xlr_table(mtcars,
 # now we want to update the title
 # This changes what it look likes when we print it to `Excel`
 bt <- update_theme(bt,
-                   xlr_format(font_size = 12,
-                               text_style = c("bold","underline")))
+                   title_format = xlr_format(font_size = 12,
+                                             text_style = c("bold","underline")))
+
+# Only the formats you pass are changed, so this updates the footnote and
+# keeps the title format from above
+bt <- update_theme(bt,
+                   footnote_format = xlr_format(font_size = 9,
+                                                font_colour = "grey40"))
+
+# To go back to the default formats, re-create the table
+bt_default <- xlr_table(as_base_r(bt),
+                        attr(bt, "title"),
+                        attr(bt, "footnote"))
 # To see the change you must write to an Excel file
 write_xlsx(bt,
            "example.xlsx",

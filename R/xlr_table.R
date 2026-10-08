@@ -86,16 +86,25 @@ as_xlr_table.data.frame <- function(x,
 #' This changes how the titles, footnotes, columns, and body objects look when
 #' you write you `xlr_table` to `Excel` with [write_xlsx()].
 #'
+#' Only the formats you pass are changed, any format you leave as `NULL` keeps
+#' its current value in `x`. To reset all the formats to the defaults, re-create
+#' the table, for example
+#' `xlr_table(as_base_r(x), attr(x, "title"), attr(x, "footnote"))`.
+#'
 #' If you want to change the style of the *columns* in the data, you should convert them
 #' to a [xlr_vector], [xlr_numeric], [xlr_integer] or [xlr_percent] type if they are
 #' not already, and then update the [xlr_format] attribute, by setting
 #' the `style` parameter.
 #'
 #' @param x a `xlr_table`
-#' @param title_format a `xlr_format` object to format the title
-#' @param footnote_format a `xlr_format` object to format the footnote
-#' @param column_heading_format a `xlr_format` object to format the column heading
-#' @param table_body_format a `xlr_format` object to format the body
+#' @param title_format a `xlr_format` object to format the title, or `NULL` to
+#' keep the current format.
+#' @param footnote_format a `xlr_format` object to format the footnote, or
+#' `NULL` to keep the current format.
+#' @param column_heading_format a `xlr_format` object to format the column
+#' heading, or `NULL` to keep the current format.
+#' @param table_body_format a `xlr_format` object to format the body, or `NULL`
+#' to keep the current format.
 #'
 #' @return Returns a [xlr_table] object.
 #'
@@ -103,21 +112,16 @@ as_xlr_table.data.frame <- function(x,
 #'
 #' @export
 update_theme <- function(x,
-                         title_format = xlr_format(font_size = 12,
-                                                    text_style = "bold"),
-                         footnote_format = xlr_format(font_size = 9,
-                                                       text_style = "italic"),
-                         column_heading_format = xlr_format(
-                           font_size = 11,
-                           text_style = "bold",
-                           border = c("top", "bottom"),
-                           halign = "center",
-                           wrap_text = TRUE
-                         ),
-                         # having the table body format is temporary like this, a lot of the
-                         # elements don't make sense, but we can update it in future
-                         table_body_format = xlr_format(border = c("top", "left", "right", "bottom"))) {
+                         title_format = NULL,
+                         footnote_format = NULL,
+                         column_heading_format = NULL,
+                         table_body_format = NULL) {
   type_abort(x, is_xlr_table, xlr_table())
+  title_format <- title_format %||% pull_title_format(x)
+  footnote_format <- footnote_format %||% pull_footnote_format(x)
+  column_heading_format <- column_heading_format %||% pull_column_heading_format(x)
+  table_body_format <- table_body_format %||% pull_table_body_format(x)
+
   type_abort(title_format, is_xlr_format, xlr_format())
   type_abort(footnote_format, is_xlr_format, xlr_format())
   type_abort(column_heading_format, is_xlr_format, xlr_format())
@@ -129,8 +133,33 @@ update_theme <- function(x,
     pull_footnote(x),
     title_format,
     footnote_format,
-    column_heading_format
+    column_heading_format,
+    table_body_format
   )
+}
+
+# The default formats of a xlr_table
+default_title_format <- function() {
+  xlr_format(font_size = 12,
+             text_style = "bold")
+}
+default_footnote_format <- function() {
+  xlr_format(font_size = 9,
+             text_style = "italic")
+}
+default_column_heading_format <- function() {
+  xlr_format(font_size = 11,
+             font_colour = "black",
+             text_style = "bold",
+             border = c("top", "bottom"),
+             halign = "center",
+             background_colour = "white",
+             wrap_text = TRUE)
+}
+# having the table body format is temporary like this, a lot of the
+# elements don't make sense, but we can update it in future
+default_table_body_format <- function() {
+  xlr_format(border = c("top", "bottom"))
 }
 
 #' Validate the xlr table
@@ -156,22 +185,10 @@ validate_xlr_table <- function(x,
 new_xlr_table <- function(x,
                            title = character(),
                            footnote = character(),
-                           title_format = xlr_format(font_size = 12,
-                                                      text_style = "bold"),
-                           footnote_format = xlr_format(font_size = 9,
-                                                         text_style = "italic"),
-                           column_heading_format = xlr_format(
-                             font_size = 11,
-                             font_colour = "black",
-                             text_style = "bold",
-                             border = c("top", "bottom"),
-                             halign = "center",
-                             background_colour = "white",
-                             wrap_text = TRUE
-                           ),
-                           # having the table body format is temporary like this, a lot of the
-                           # elements don't make sense, but we can update it in future
-                           table_body_format = xlr_format(border = c("top", "bottom")),
+                           title_format = default_title_format(),
+                           footnote_format = default_footnote_format(),
+                           column_heading_format = default_column_heading_format(),
+                           table_body_format = default_table_body_format(),
                            call = caller_env()) {
   # check if x inherits a dataframe
   if (!is.data.frame(x)) {

@@ -168,3 +168,26 @@ test_that("convert_to_xlr_types does not convert date",{
                lubridate::as_datetime(c("2023-01-01","2023-01-01")))
 })
 
+
+test_that("update_theme() only changes the formats that are passed", {
+  x <- xlr_table(mtcars[1:3, 1:3], "title", "footnote")
+  new_body <- xlr_format(border = "left")
+  new_title <- xlr_format(font_size = 20)
+
+  out <- update_theme(x, table_body_format = new_body)
+  expect_equal(pull_table_body_format(out), new_body)
+  expect_equal(pull_title_format(out), pull_title_format(x))
+  expect_equal(pull_footnote_format(out), pull_footnote_format(x))
+  expect_equal(pull_column_heading_format(out), pull_column_heading_format(x))
+
+  out <- update_theme(out, title_format = new_title)
+  expect_equal(pull_title_format(out), new_title)
+  expect_equal(pull_table_body_format(out), new_body)
+  expect_equal(pull_title(out), "title")
+  expect_equal(pull_footnote(out), "footnote")
+})
+
+test_that("update_theme() with no formats leaves the table unchanged", {
+  x <- xlr_table(mtcars[1:3, 1:3], "title", "footnote")
+  expect_equal(update_theme(x), x)
+})
