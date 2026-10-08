@@ -1024,3 +1024,11 @@ test_that("xlr_table_to_sheet() only styles the footnote rows", {
   }))
   expect_equal(sort(styled_rows), c(5, 6))
 })
+
+test_that("column_to_style() uses GENERAL for other numeric classes", {
+  general <- xlr_format_to_openxlsx_format(xlr_format(), "GENERAL")
+  difftime_col <- as.difftime(c(1.5, 2), units = "secs")
+  expect_equal(column_to_style(difftime_col), general)
+  expect_equal(column_to_style(xlr_n_percent(1L, 0.5)),
+               xlr_format_to_openxlsx_format(xlr_format_numeric(), "GENERAL"))
+})

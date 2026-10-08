@@ -721,7 +721,7 @@ column_to_style <- function(col){
   if (is_xlr_n_percent(col)) {
     column_cell_format <- "GENERAL"
   }
-  if (is_xlr_percent(col)){
+  else if (is_xlr_percent(col)){
     column_cell_format <- paste0(generate_dp(pull_dp(col)),"%")
   }
   else if(is_xlr_integer(col) || is.integer(col)){
@@ -747,9 +747,6 @@ column_to_style <- function(col){
   }
   else if(inherits(col,"Date")){
     column_cell_format <- "dd/mm/yyyy"
-  }
-  else if(is.numeric(col)){
-    column_cell_format <- "numFmt"
   }
   else{
     column_cell_format <- "GENERAL"
