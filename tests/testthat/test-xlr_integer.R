@@ -187,3 +187,11 @@ test_that("xlr_integer casting throughs an error when you lose precision",{
   expect_snapshot(vec_cast(c(1.2,4.2,4.5),xlr_integer()),
                   error = TRUE)
 })
+
+test_that("casting to xlr_integer keeps the attributes of the target", {
+  style <- xlr_format_numeric(font_size = 14)
+  to <- xlr_integer(style = style)
+  expect_equal(vec_cast(xlr_numeric(2), to), xlr_integer(2L, style = style))
+  expect_equal(vec_cast(xlr_percent(1), to), xlr_integer(1L, style = style))
+  expect_error(vec_cast(xlr_numeric(2.5), to))
+})

@@ -13,6 +13,9 @@
   save leaves the original file in place.
 * `as_xlr_numeric()` now defaults to `dp = 2L`, the same as `xlr_numeric()`
   (it was `0L`).
+* Casting between xlr types (e.g. `vec_cast(x, xlr_numeric(dp = 3))`) now keeps
+  the `dp`, `scientific`, `style` and `excel_format` of the target, instead of
+  using the defaults or the attributes of `x`.
 
 ## Bug fixes
 

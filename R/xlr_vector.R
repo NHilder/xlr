@@ -139,7 +139,8 @@ vec_ptype2.xlr_vector.xlr_vector <- function(x,y,...){
 #' @export
 vec_cast.xlr_vector.xlr_vector <- function(x,to,...){
   new_xlr_vector(vec_data(x),
-                  style = pull_style(to))
+                 excel_format = attr(to, which = "excel_format"),
+                 style = pull_style(to))
 }
 
 # Define generics needed by vctrs to have a well maintained class

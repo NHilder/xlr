@@ -195,7 +195,7 @@ vec_ptype2.xlr_numeric.xlr_numeric <- function(x,y,...){
 vec_cast.xlr_numeric.xlr_numeric <- function(x,to,...){
   new_xlr_numeric(vec_data(x),
                   dp = pull_dp(to),
-                  scientific = pull_attr(x,"scientific"),
+                  scientific = pull_attr(to,"scientific"),
                   style = pull_style(to))
 }
 #' @export
@@ -238,13 +238,13 @@ vec_cast.integer.xlr_numeric <- vec_cast.numeric.xlr_numeric
 vec_ptype2.xlr_numeric.xlr_percent <- function(x,y,...) x
 #' @export
 vec_cast.xlr_numeric.xlr_percent <- function(x,to,...) {
-  vec_cast(vec_data(x),xlr_numeric())
+  vec_cast(vec_data(x), to)
 }
 #' @export
 vec_ptype2.xlr_numeric.xlr_integer <- function(x,y,...) x
 #' @export
-vec_cast.xlr_numeric.xlr_integer<- function(x,to,...) {
-  vec_cast(vec_data(x),xlr_numeric())
+vec_cast.xlr_numeric.xlr_integer <- function(x,to,...) {
+  vec_cast(vec_data(x), to)
 }
 #- ARITHMETIC-------------------------------------------------------------------
 #' @export

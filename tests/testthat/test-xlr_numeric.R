@@ -214,3 +214,14 @@ test_that("as_xlr_numeric() uses the same default dp as xlr_numeric()", {
   expect_equal(pull_dp(as_xlr_numeric("1.234")), 2L)
   expect_equal(as_xlr_numeric(1.234), xlr_numeric(1.234))
 })
+
+test_that("casting to xlr_numeric keeps the attributes of the target", {
+  style <- xlr_format_numeric(font_size = 14)
+  to <- xlr_numeric(dp = 3L, scientific = TRUE, style = style)
+  expected <- xlr_numeric(0.5, dp = 3L, scientific = TRUE, style = style)
+
+  expect_equal(vec_cast(xlr_percent(0.5), to), expected)
+  expect_equal(vec_cast(xlr_numeric(0.5), to), expected)
+  expect_equal(vec_cast(xlr_integer(2L), to),
+               xlr_numeric(2, dp = 3L, scientific = TRUE, style = style))
+})

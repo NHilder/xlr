@@ -150,13 +150,13 @@ vec_cast.integer.xlr_integer <- function(x,to,...) vec_data(x)
 vec_ptype2.xlr_integer.xlr_percent <- function(x,y,...) x
 #' @export
 vec_cast.xlr_integer.xlr_percent <- function(x,to,...) {
-  vec_cast(vec_data(x),xlr_integer())
+  vec_cast(vec_data(x), to)
 }
 #' @export
 vec_ptype2.xlr_integer.xlr_numeric <- function(x,y,...) x
 #' @export
 vec_cast.xlr_integer.xlr_numeric <- function(x,to,...) {
-  vec_cast(vec_data(x),xlr_integer())
+  vec_cast(vec_data(x), to)
 }
 
 #-----------

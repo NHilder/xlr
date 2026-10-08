@@ -136,3 +136,8 @@ test_that("Explicit conversion works for xlr_vector to integer",{
   expect_equal(vec_cast(xlr_vector(1),as.integer(1)),as.integer(1))
 })
 
+
+test_that("casting between xlr_vectors keeps the excel_format of the target", {
+  to <- xlr_vector(character(), excel_format = "@")
+  expect_equal(attr(vec_cast(xlr_vector("a"), to), "excel_format"), "@")
+})
