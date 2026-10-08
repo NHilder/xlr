@@ -41,8 +41,6 @@ xlr_table <- function(x,
   x_fmt <- x |>
     mutate(across(everything(), ~ convert_to_xlr_types(.x)))
 
-  validate_xlr_table(x_fmt, title, footnote)
-
   # now create the xlr_table
   new_xlr_table(x_fmt,
                  title,
@@ -160,16 +158,6 @@ default_column_heading_format <- function() {
 # elements don't make sense, but we can update it in future
 default_table_body_format <- function() {
   xlr_format(border = c("top", "bottom"))
-}
-
-#' Validate the xlr table
-#' currently does nothing
-#' @noRd
-validate_xlr_table <- function(x,
-                                title,
-                                footnote,
-                                call = caller_env()) {
-
 }
 
 #' Creates the S3 class xlr_table
@@ -296,13 +284,6 @@ arrange.xlr_table <- function(.data, ...) {
   dplyr_generic(.data, arrange, ...)
 }
 
-# C---------------------
-# #' @export
-# count.xlr_table <- function(x, ..., wt, sort, name) {
-#   dplyr_generic(x, count, ..., wt, sort, name)
-# }
-
-
 # D---------------------
 #' @export
 distinct.xlr_table <- function(.data, ...) {
@@ -403,19 +384,6 @@ summarise.xlr_table <- function(.data, ...) {
 summarize.xlr_table <- function(.data, ...) {
   dplyr_generic(.data, summarize, ...)
 }
-
-#- T-------------------
-
-# #' @export
-# tally.xlr_table <- function(x, wt, sort, name) {
-#   dplyr_generic(x, tally, wt, sort, name)
-# }
-
-#- U-------------------
-# #' @export
-# ungroup.xlr_table <- function(x, ...) {
-#  dplyr_generic(x, ungroup, ...)
-#}
 
 
 #' create the dplyr generics for use

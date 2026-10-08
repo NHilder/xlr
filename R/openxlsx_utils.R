@@ -67,31 +67,6 @@ equal_workbook_data <- function(wb1,wb2){
   # return true if these are nearly equal
   isTRUE(all.equal(data1,data2))
 }
-# This is broken because GetStyle is broken
-# getStyles_safe <- function(wb,
-#                            call = caller_env()){
-#
-#   # first catch if it is a workbook
-#   tryCatch(getStyles(wb),
-#            error = function(e){
-#              if(conditionMessage(e)=="Workbook has no existing styles."){
-#                return(NULL)
-#              }
-#              else{
-#                return(e)
-#              }
-#            })
-# }
-#
-# equal_workbook_styles <- function(wb1,wb2){
-#   # for some reason openxlsx returns an error if there are no styles
-#   # instead of a warning, we need to catch it, and return NULL if it is an
-#   # error
-#   is_workbook_error(wb1)
-#   is_workbook_error(wb2)
-#   isTRUE(all.equal(getStyles_safe(wb1),getStyles_safe(wb2)))
-# }
-
 # now we define equal workbooks
 equal_openxlsx_workbook <- function(wb1,wb2){
   # first test both are openxlsx workbooks
@@ -99,7 +74,5 @@ equal_openxlsx_workbook <- function(wb1,wb2){
   is_workbook_error(wb2)
   # next test the contents
   all(equal_workbook_sheets(wb1,wb2),
-      equal_workbook_data(wb1,wb2)
-      # equal_workbook_styles(wb1,wb2)
-      )
+      equal_workbook_data(wb1,wb2))
 }

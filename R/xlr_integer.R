@@ -27,17 +27,7 @@ xlr_integer <- function(x = integer(),
   # first we try and cast everything to the right type
   x <- vec_cast(x, integer())
 
-  validate_xlr_integer(x,
-                        style)
-
   new_xlr_integer(x,style)
-}
-
-
-validate_xlr_integer <- function(x = integer(),
-                                  style = xlr_format_numeric(),
-                                  call = caller_env()){
-
 }
 
 

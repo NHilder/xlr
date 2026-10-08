@@ -37,21 +37,9 @@ xlr_vector <- function(x = vector(),
   if (!is.null(x) && !is_vector(x)){
     cli_abort('{x} is not a vector!')
   }
-  validate_xlr_vector(x = x,
-                       excel_format = excel_format,
-                       style = style)
-
   new_xlr_vector(x = x,
                   excel_format = excel_format,
                   style = style)
-}
-
-validate_xlr_vector <- function(
-    x = vector(),
-    excel_format = "",
-    style = xlr_format(),
-    call = caller_env()){
-
 }
 
 #' Constructor of xlr_vector
