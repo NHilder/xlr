@@ -449,16 +449,16 @@ validate_xlr_format <- function(
   type_abort(text_rotation,is_scalar_integer,1L,call=call)
 
   if (text_rotation < -90 || text_rotation > 90){
-    cli_abort(c("i" = "In argument: {.code wrap_text}.",
-                "!" = "{.code wrap_text} must be between -90 and 90."),
+    cli_abort(c("i" = "In argument: {.code text_rotation}.",
+                "!" = "{.code text_rotation} must be between -90 and 90."),
               call = call)
   }
 
-  # test text rotation is the right type of variable, and between [-90, 90]
+  # test indent is the right type of variable, and between [0, 250]
   type_abort(indent,is_scalar_integer,1L,call=call)
   if (indent < 0 || indent > 250){
-    cli_abort(c("i" = "In argument: {.code wrap_text}.",
-                "!" = "{.code wrap_text} must be between 0 and 250."),
+    cli_abort(c("i" = "In argument: {.code indent}.",
+                "!" = "{.code indent} must be between 0 and 250."),
               call = call)
   }
 

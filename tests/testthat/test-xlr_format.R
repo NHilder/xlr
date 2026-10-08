@@ -262,3 +262,8 @@ test_that("Dot's must be empty gives correct error", {
                   error = TRUE)
 })
 
+
+test_that("text_rotation and indent errors name the right argument", {
+  expect_snapshot(xlr_format(text_rotation = 100L), error = TRUE)
+  expect_snapshot(xlr_format(indent = 300L), error = TRUE)
+})

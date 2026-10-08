@@ -93,3 +93,21 @@
       x Problematic argument:
       * x = 123
 
+# text_rotation and indent errors name the right argument
+
+    Code
+      xlr_format(text_rotation = 100L)
+    Condition
+      Error in `xlr_format()`:
+      i In argument: `text_rotation`.
+      ! `text_rotation` must be between -90 and 90.
+
+---
+
+    Code
+      xlr_format(indent = 300L)
+    Condition
+      Error in `xlr_format()`:
+      i In argument: `indent`.
+      ! `indent` must be between 0 and 250.
+
