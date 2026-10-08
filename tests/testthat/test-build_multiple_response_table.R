@@ -1037,3 +1037,21 @@ test_that("build_mtable() gives a clear error when mcols is not a string", {
   expect_snapshot(build_mtable(df, 1), error = TRUE)
   expect_snapshot(build_mtable(df, ""), error = TRUE)
 })
+
+test_that("build_mtable() works with numeric (non-labelled) multiple response columns", {
+  df <- data.frame(g = c("a", "a", "b", "b", "b"),
+                   Q_1 = c(1, 0, 0, -99, NA),
+                   Q_2 = c(0, 2, 2, -99, NA))
+
+  out <- build_mtable(df, "Q", exclude_codes = c(0, -99))
+  expect_equal(as_base_r(out)$Q, c("1", "2", "0_-99"))
+  expect_equal(as_base_r(out)$N, c(1L, 2L, 1L))
+
+  out_na <- build_mtable(df, "Q", g, use_NA = TRUE, exclude_codes = c(0, -99))
+  expect_true(all(c("1", "2", "0_-99") %in% as_base_r(out_na)$Q))
+  expect_true(anyNA(as_base_r(out_na)$Q))
+
+  df_two <- dplyr::mutate(df, P_1 = c(1, NA, 1, NA, 1))
+  expect_no_error(build_mtable(df_two, c("Q", "P"), use_NA = TRUE,
+                               exclude_codes = c(0, -99)))
+})

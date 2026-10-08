@@ -206,7 +206,10 @@ build_mtable <- function(
       ungroup() |>
       pivot_longer(starts_with(mcols_n),
                    names_to = NULL,
-                   values_to = mcols_n) |>
+                   values_to = mcols_n,
+                   # the NA indicator columns are character, so the
+                   # responses are combined as character
+                   values_transform = as.character) |>
       filter(!is.na(!!sym_mcol)) |>
       group_by(across({{ cols }}),!!sym_mcol,N_group) |>
       # uses the weight if it is not null, if NULL, it get's ignored
@@ -285,7 +288,10 @@ build_mtable <- function(
                      exclude_label) |>
       pivot_longer(starts_with(mcol_RHS),
                    names_to = NULL,
-                   values_to = mcol_RHS) |>
+                   values_to = mcol_RHS,
+                   # the NA indicator columns are character, so the
+                   # responses are combined as character
+                   values_transform = as.character) |>
       filter(!is.na(!!sym_mcol_1))
 
     RHS_1 <- RHS |>
@@ -304,7 +310,10 @@ build_mtable <- function(
                      exclude_label) |>
       pivot_longer(starts_with(mcol_LHS),
                    names_to = NULL,
-                   values_to = mcol_LHS) |>
+                   values_to = mcol_LHS,
+                   # the NA indicator columns are character, so the
+                   # responses are combined as character
+                   values_transform = as.character) |>
       filter(!is.na(!!sym_mcol_2))
 
     # now join them together
