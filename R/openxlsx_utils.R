@@ -98,7 +98,7 @@ equal_openxlsx_workbook <- function(wb1,wb2){
   is_workbook_error(wb1)
   is_workbook_error(wb2)
   # next test the contents
-  any(equal_workbook_sheets(wb1,wb2),
+  all(equal_workbook_sheets(wb1,wb2),
       equal_workbook_data(wb1,wb2)
       # equal_workbook_styles(wb1,wb2)
       )

@@ -63,3 +63,17 @@ test_that("equal_workbook_data() works", {
 #   expect_(getStyles_safe(wb))
 #
 # })
+
+test_that("equal_openxlsx_workbook() needs the sheets and data to match", {
+  make_wb <- function(value, sheet = "s") {
+    wb <- createWorkbook()
+    addWorksheet(wb, sheet)
+    writeData(wb, sheet, data.frame(a = value))
+    wb
+  }
+  expect_true(equal_openxlsx_workbook(make_wb(1), make_wb(1)))
+  # same sheets, different data
+  expect_false(equal_openxlsx_workbook(make_wb(1), make_wb(2)))
+  # same data, different sheets
+  expect_false(equal_openxlsx_workbook(make_wb(1), make_wb(1, "t")))
+})
