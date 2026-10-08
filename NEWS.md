@@ -1,5 +1,12 @@
 # xlr (development version)
 
+## Bug fixes
+
+* `xlr_format()` now accepts the openxlsx border style `"slantDashDot"`, and
+  no longer accepts the misspelt `"dastDotDot"` and `"slantDashDosh"` (which
+  openxlsx doesn't support). `border_style` is now validated even when
+  `border_colour = NULL`.
+
 # xlr 1.1.2
 * Updated code to fix a bug caused by `dplyr` dependency.
 

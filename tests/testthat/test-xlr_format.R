@@ -86,15 +86,20 @@ test_that("test different border styles", {
   expect_silent(xlr_format(border_style = "dashDot"))
   expect_silent(xlr_format(border_style = "mediumDashDot"))
   expect_silent(xlr_format(border_style = "dashDotDot"))
-  expect_silent(xlr_format(border_style = "mediumDashDot"))
-  expect_silent(xlr_format(border_style = "dastDotDot"))
   expect_silent(xlr_format(border_style = "mediumDashDotDot"))
-  expect_silent(xlr_format(border_style = "slantDashDosh"))
+  expect_silent(xlr_format(border_style = "slantDashDot"))
+  # misspelt styles are not valid openxlsx styles
+  expect_error(xlr_format(border_style = "dastDotDot"))
+  expect_error(xlr_format(border_style = "slantDashDosh"))
+  # border_style is validated even if there is no border colour
+  expect_error(xlr_format(border = "top",
+                          border_colour = NULL,
+                          border_style = "bogus"))
 
   expect_error(xlr_format(border = c("left"),
-                          border_style = c("slantDashDosh","slantDashDosh")))
+                          border_style = c("slantDashDot","slantDashDot")))
   expect_error(xlr_format(border = c("left","right","top"),
-                          border_style = c("slantDashDosh","slantDashDosh")))
+                          border_style = c("slantDashDot","slantDashDot")))
 })
 
 test_that("border_colour error messages", {

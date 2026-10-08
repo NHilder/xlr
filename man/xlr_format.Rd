@@ -62,9 +62,9 @@ or a valid hex colour beginning with \code{"#"}.}
 
 \item{border_style}{Border line style vector the same length as the number of
 sides specified in \code{border}. The list of styles are \code{"none"}, \code{"thin"}, \code{"medium"},
-\code{"dashed"}, \code{"dotted"}, \code{"thick"}, \code{"double"}, \code{"hair"}, "\verb{mediumDashed"}, \code{"dashDot"},
-\code{"mediumDashDot"}, \code{"dashDotDot"}, \code{"mediumDashDot"}, \code{"dastDotDot"}, \code{"mediumDashDotDot"},
-\code{"slantDashDosh"}. See \link[openxlsx]{createStyle} for more details.}
+\code{"dashed"}, \code{"dotted"}, \code{"thick"}, \code{"double"}, \code{"hair"}, \code{"mediumDashed"}, \code{"dashDot"},
+\code{"mediumDashDot"}, \code{"dashDotDot"}, \code{"mediumDashDotDot"}, \code{"slantDashDot"}.
+See \link[openxlsx]{createStyle} for more details.}
 
 \item{background_colour}{Character. Set the background colour for the cell. Must be one of
 \code{colours()} or a valid hex colour beginning with \code{"#"}.}

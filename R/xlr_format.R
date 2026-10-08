@@ -18,10 +18,10 @@
 #' sides specified in `border`. Each element must be one of `colours()`
 #' or a valid hex colour beginning with `"#"`.
 #' @param border_style Border line style vector the same length as the number of
-#'sides specified in `border`. The list of styles are `"none"`, `"thin"`, `"medium"`,
-#' `"dashed"`, `"dotted"`, `"thick"`, `"double"`, `"hair"`, "`mediumDashed"`, `"dashDot"`,
-#' `"mediumDashDot"`, `"dashDotDot"`, `"mediumDashDot"`, `"dastDotDot"`, `"mediumDashDotDot"`,
-#' `"slantDashDosh"`. See \link[openxlsx]{createStyle} for more details.
+#' sides specified in `border`. The list of styles are `"none"`, `"thin"`, `"medium"`,
+#' `"dashed"`, `"dotted"`, `"thick"`, `"double"`, `"hair"`, `"mediumDashed"`, `"dashDot"`,
+#' `"mediumDashDot"`, `"dashDotDot"`, `"mediumDashDotDot"`, `"slantDashDot"`.
+#' See \link[openxlsx]{createStyle} for more details.
 #' @param background_colour Character. Set the background colour for the cell. Must be one of
 #'  `colours()` or a valid hex colour beginning with `"#"`.
 #' @param halign the horizontal alignment of cell contents. Must be either
@@ -395,7 +395,7 @@ validate_xlr_format <- function(
                 call = call)
     }
   }
-  # test border styles
+  # test border styles, these are the styles supported by openxlsx::createStyle()
   border_styles_vec <- c("none",
                          "thin",
                          "medium",
@@ -408,11 +408,9 @@ validate_xlr_format <- function(
                          "dashDot",
                          "mediumDashDot",
                          "dashDotDot",
-                         "mediumDashDot",
-                         "dastDotDot",
                          "mediumDashDotDot",
-                         "slantDashDosh")
-  if (!is.null(border_colour)){
+                         "slantDashDot")
+  if (!is.null(border_style)){
     arg_match(border_style,
               border_styles_vec,
               multiple = TRUE,
