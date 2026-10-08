@@ -112,17 +112,7 @@ create_table_of_contents_workbook <- function(wb,
 
   # lastly we fix the column widths so they are wide enough based on the sheet
   # names
-  max_sheet_length <- max(nchar(sheet_names))
-  # set the column width based on that
-  # we use the same bad formula as the function create_column_widths()
-  new_width <- case_when(max_sheet_length > 40 ~ 30,
-                         max_sheet_length > 9 ~ max_sheet_length - 5,
-                         TRUE ~ NA
-  )
-  setColWidths(wb,
-               TOC_sheet_name,
-               cols =  1,
-               widths = new_width)
+  set_TOC_column_width(wb, TOC_sheet_name, sheet_names)
 
   # now if we want to pull the titles in we do
   # lets
@@ -239,4 +229,29 @@ add_TOC_to_existing_sheet <- function(wb,
              cols = 1,
              stack = TRUE)
   })
+}
+
+#' Set the width of the table of contents link column
+#'
+#' Widens the column if the sheet names are long, otherwise the default width
+#' is kept.
+#'
+#' @param wb a `openxlsx` workbook.
+#' @param TOC_sheet_name the name of the table of contents sheet.
+#' @param sheet_names the sheet names listed in the table of contents.
+#'
+#' @noRd
+set_TOC_column_width <- function(wb,
+                                 TOC_sheet_name,
+                                 sheet_names){
+  max_sheet_length <- max(nchar(sheet_names))
+  new_width <- if (max_sheet_length > 40) 30
+               else if (max_sheet_length > 20) max_sheet_length - 5
+               else NA
+  if (!is.na(new_width)){
+    setColWidths(wb,
+                 TOC_sheet_name,
+                 cols = 1,
+                 widths = new_width)
+  }
 }

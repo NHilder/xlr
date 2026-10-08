@@ -168,3 +168,16 @@ test_that("create_table_of_contents() creates a TOC (formatting to be checked ma
   expect_true(TRUE)
 })
 
+
+test_that("set_TOC_column_width() only widens the column for long sheet names", {
+  wb <- createWorkbook()
+  addWorksheet(wb, "TOC")
+  set_TOC_column_width(wb, "TOC", c("short", "names"))
+  expect_length(wb$colWidths[[1]], 0)
+
+  set_TOC_column_width(wb, "TOC", strrep("a", 25))
+  expect_equal(as.vector(wb$colWidths[[1]]), "20")
+
+  set_TOC_column_width(wb, "TOC", strrep("a", 50))
+  expect_equal(as.vector(wb$colWidths[[1]]), "30")
+})

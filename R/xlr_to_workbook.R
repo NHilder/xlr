@@ -297,19 +297,7 @@ add_TOC_to_workbook <- function(wb,
   activeSheet(wb) <- TOC_sheet_name
   # lastly we fix the column widths so they are wide enough based on the sheet
   # names
-  max_sheet_length <- max(nchar(sheet_names))
-  # set the column width based on that
-  # we use the same bad formula as the function create_column_widths()
-  new_width <- case_when(max_sheet_length > 40 ~ 30,
-                         max_sheet_length > 20 ~ max_sheet_length - 5,
-                         TRUE ~ NA
-  )
-  if (!is.na(new_width)){
-    setColWidths(wb,
-                 TOC_sheet_name,
-                 cols =  1,
-                 widths = new_width)
-  }
+  set_TOC_column_width(wb, TOC_sheet_name, sheet_names)
 }
 
 xlr_table_to_sheet <- function(x,
