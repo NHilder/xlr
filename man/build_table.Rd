@@ -7,11 +7,11 @@
 build_table(
   x,
   cols,
-  table_title = "",
+  table_title = NULL,
   use_questions = FALSE,
   use_NA = FALSE,
   wt = NULL,
-  footnote = ""
+  footnote = NULL
 )
 }
 \arguments{
@@ -20,7 +20,9 @@ build_table(
 \item{cols}{<\link[tidyr]{tidyr_tidy_select}> These are the column(s) that we
 want to calculate the count and percentage of.}
 
-\item{table_title}{a string. The title of the table sheet.}
+\item{table_title}{a string. The title of the table, or \code{NULL} (the
+default) for no title. A title of \code{""} also means no title, but this will
+be deprecated in a future release.}
 
 \item{use_questions}{a logical. If the data has column labels convert the
 column label to a footnote with the question. See details for more information.}
@@ -31,8 +33,11 @@ column label to a footnote with the question. See details for more information.}
 \item{wt}{a quoted or unquote column name. Specify a weighting variable, if
 \code{NULL} no weight is applied.}
 
-\item{footnote}{a character vector. Optional parameter to pass a custom
-footnote to the question, this parameter overwrites \code{use_questions}.}
+\item{footnote}{a character vector. A footnote for the table, with one
+element per line, use \code{""} for an empty line. \code{NULL} (the default) means no
+footnote. You can't use it with \code{use_questions = TRUE}. A footnote of only
+\code{""} also means no footnote, but this will be deprecated in a future
+release.}
 }
 \value{
 a \code{xlr_table} object. Use \link{write_xlsx} to write to an \code{Excel} file.

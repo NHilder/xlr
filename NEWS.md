@@ -19,6 +19,14 @@
 
 ## Bug fixes
 
+* `build_table()`, `build_mtable()` and `build_qtable()` no longer error when
+  `footnote` has more than one element. Each element is a line of the
+  footnote, and `""` can be used for an empty line.
+* The `table_title` and `footnote` arguments of `build_table()`,
+  `build_mtable()` and `build_qtable()` now default to `NULL` for no title or
+  footnote. Passing `""` still means none, but this will be deprecated in a
+  future release.
+
 * `create_table_of_contents(overwrite = TRUE)` now replaces the existing table
   of contents, instead of writing over it and leaving old links and titles.
 

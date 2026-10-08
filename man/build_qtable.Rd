@@ -8,11 +8,11 @@ build_qtable(
   x,
   block_cols,
   cols = NULL,
-  table_title = "",
+  table_title = NULL,
   use_questions = FALSE,
   use_NA = FALSE,
   wt = NULL,
-  footnote = ""
+  footnote = NULL
 )
 }
 \arguments{
@@ -26,7 +26,9 @@ See Examples.}
 \item{cols}{<\link[tidyr]{tidyr_tidy_select}> Optional column(s) to
 cross-tabulate against the question block (for example, demographics).}
 
-\item{table_title}{Character string. Title for the output table.}
+\item{table_title}{a string. The title of the table, or \code{NULL} (the
+default) for no title. A title of \code{""} also means no title, but this will
+be deprecated in a future release.}
 
 \item{use_questions}{Logical. If \code{TRUE} and data contains column labels
 (from .sav files), adds the full question text as a footnote. Default is
@@ -38,8 +40,11 @@ is \code{TRUE}. For advanced \code{NA} handling, use \code{filter()} before tabl
 \item{wt}{Column name (quoted or unquoted) for weighting variable. If \code{NULL}
 (default), no weighting is applied.}
 
-\item{footnote}{Character vector. Custom footnote text. When provided,
-overrides \code{use_questions}.}
+\item{footnote}{a character vector. A footnote for the table, with one
+element per line, use \code{""} for an empty line. \code{NULL} (the default) means no
+footnote. You can't use it with \code{use_questions = TRUE}. A footnote of only
+\code{""} also means no footnote, but this will be deprecated in a future
+release.}
 }
 \value{
 An \code{xlr_table} object. Write to Excel using \code{\link[=write_xlsx]{write_xlsx()}}.

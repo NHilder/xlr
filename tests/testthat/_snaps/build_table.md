@@ -42,3 +42,12 @@
       Error in `build_table()`:
       ! Can't rename variables in this context.
 
+# build_table() errors with use_questions and a multi-line footnote
+
+    Code
+      build_table(mtcars, cyl, use_questions = TRUE, footnote = c("Note 1", "Note 2"))
+    Condition
+      Error in `build_table()`:
+      x You can't specify `use_question = TRUE` and have a footnote.
+      i Either set `use_question = FALSE` or do not have a footnote.
+

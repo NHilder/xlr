@@ -8,15 +8,20 @@
 #' @param x a data frame or tidy object.
 #' @param cols <\link[tidyr]{tidyr_tidy_select}> These are the column(s) that we
 #' want to calculate the count and percentage of.
-#' @param table_title a string. The title of the table sheet.
+#' @param table_title a string. The title of the table, or `NULL` (the
+#' default) for no title. A title of `""` also means no title, but this will
+#' be deprecated in a future release.
 #' @param use_questions a logical. If the data has column labels convert the
 #' column label to a footnote with the question. See details for more information.
 #' @param use_NA a logical. Whether to include `NA` values in the table. For more complicated
 #' `NA` processing post creation, we recommend using filter.
 #' @param wt a quoted or unquote column name. Specify a weighting variable, if
 #' `NULL` no weight is applied.
-#' @param footnote a character vector. Optional parameter to pass a custom
-#' footnote to the question, this parameter overwrites `use_questions`.
+#' @param footnote a character vector. A footnote for the table, with one
+#' element per line, use `""` for an empty line. `NULL` (the default) means no
+#' footnote. You can't use it with `use_questions = TRUE`. A footnote of only
+#' `""` also means no footnote, but this will be deprecated in a future
+#' release.
 #'
 #' @return a `xlr_table` object. Use [write_xlsx] to write to an `Excel` file.
 #' See [xlr_table] for more information.
@@ -42,11 +47,11 @@
 build_table <- function(
     x,
     cols,
-    table_title = "",
+    table_title = NULL,
     use_questions = FALSE,
     use_NA = FALSE,
     wt = NULL,
-    footnote = ""){
+    footnote = NULL){
   N <- NULL
   # Input validation ----------------------------------------------------------
 
@@ -64,8 +69,8 @@ build_table <- function(
 
   # Additional information on the questions-------------------------------------
   # If empty title or footnote set it to null
-  if (table_title == "") table_title <- character()
-  if (footnote == "") footnote <- character()
+  table_title <- as_table_text(table_title)
+  footnote <- as_table_text(footnote)
 
   # pull out the questions and include them in the footnote if true
   if (use_questions && length(footnote) == 0){

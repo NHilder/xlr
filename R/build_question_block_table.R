@@ -11,7 +11,9 @@
 #'   See Examples.
 #' @param cols <\link[tidyr]{tidyr_tidy_select}> Optional column(s) to
 #'   cross-tabulate against the question block (for example, demographics).
-#' @param table_title Character string. Title for the output table.
+#' @param table_title a string. The title of the table, or `NULL` (the
+#' default) for no title. A title of `""` also means no title, but this will
+#' be deprecated in a future release.
 #' @param use_questions Logical. If `TRUE` and data contains column labels
 #'   (from .sav files), adds the full question text as a footnote. Default is
 #'   `FALSE`.
@@ -19,8 +21,11 @@
 #'   is `TRUE`. For advanced `NA` handling, use `filter()` before table creation.
 #' @param wt Column name (quoted or unquoted) for weighting variable. If `NULL`
 #'   (default), no weighting is applied.
-#' @param footnote Character vector. Custom footnote text. When provided,
-#'   overrides `use_questions`.
+#' @param footnote a character vector. A footnote for the table, with one
+#' element per line, use `""` for an empty line. `NULL` (the default) means no
+#' footnote. You can't use it with `use_questions = TRUE`. A footnote of only
+#' `""` also means no footnote, but this will be deprecated in a future
+#' release.
 #'
 #' @return An `xlr_table` object. Write to Excel using [write_xlsx()].
 #'   See [xlr_table] for details.
@@ -50,11 +55,11 @@ build_qtable <- function(
     x,
     block_cols,
     cols = NULL,
-    table_title = "",
+    table_title = NULL,
     use_questions = FALSE,
     use_NA = FALSE,
     wt = NULL,
-    footnote = ""){
+    footnote = NULL){
   `Question Block` <- N <- value <- combined_col <- name <- label <- NULL
   # Input validation ----------------------------------------------------------
   # Simple validation of arguments, we validate the columns below cause they
@@ -163,9 +168,9 @@ build_qtable <- function(
   }
 
 
-  # lastly if empty title or footnote set it to null
-  if (table_title == "") table_title <- character()
-  if (footnote == "") footnote <- character()
+  # standardise an empty title or footnote to character()
+  table_title <- as_table_text(table_title)
+  footnote <- as_table_text(footnote)
 
   # pull out the questions and include them in the footnote if true
   if (use_questions && length(footnote) == 0){

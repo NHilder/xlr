@@ -283,3 +283,11 @@ test_that("remove_NA_opt() removes nothing from the data if FALSE",{
                           B = c(2,3),
                           C = c(2,3)))
 })
+
+test_that("as_table_text() treats NULL, character() and \"\" as no text", {
+  expect_equal(as_table_text(NULL), character())
+  expect_equal(as_table_text(character()), character())
+  expect_equal(as_table_text(""), character())
+  expect_equal(as_table_text(c("", "Note")), c("", "Note"))
+  expect_equal(as_table_text("Title"), "Title")
+})

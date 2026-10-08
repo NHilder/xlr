@@ -560,3 +560,12 @@ test_that("build_qtable correctly identifies first mismatched column", {
   )
 })
 
+
+test_that("build_qtable() keeps multi-line footnotes and accepts NULL", {
+  df <- create_block_question_df()
+  out <- build_qtable(df, starts_with("Q1"), footnote = c("Note 1", "Note 2"))
+  expect_equal(pull_footnote(out), c("Note 1", "Note 2"))
+  out <- build_qtable(df, starts_with("Q1"), table_title = NULL, footnote = NULL)
+  expect_equal(pull_title(out), character())
+  expect_equal(pull_footnote(out), character())
+})

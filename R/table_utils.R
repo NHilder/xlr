@@ -123,7 +123,8 @@ validate_table_inputs <- function(x,
              \(x) is_tibble(x) | is.data.frame(x),
              string_type = "a data frame or tibble",
              call = call)
-  type_abort(table_title, is_scalar_character,
+  type_abort(table_title,
+             \(x) is.null(x) || is_scalar_character(x) || identical(x, character()),
              "character",
              call = call)
   type_abort(use_questions,
@@ -134,15 +135,31 @@ validate_table_inputs <- function(x,
              is_true_or_false,
              string_type = "TRUE or FALSE",
              call = call)
-  type_abort(footnote, is_character, "",
+  type_abort(footnote, \(x) is.null(x) || is_character(x), "",
              call = call)
 
-  # throw an error if the use_question is true and the footnote is not ""
-  if (use_questions && is_scalar_character(footnote) && footnote != ""){
+  # throw an error if the use_question is true and there is a footnote
+  if (use_questions && length(as_table_text(footnote)) > 0){
     cli_abort(c("x" = "You can't specify {.code use_question = TRUE} and have a footnote.",
                 "i" = "Either set {.code use_question = FALSE} or do not have a footnote."),
               call = call)
   }
+}
+
+#' Standardise a title or footnote
+#'
+#' `NULL`, `character()` and a single `""` all mean there is no title or
+#' footnote. Anything else is kept as it is, so `""` in a longer footnote is an
+#' empty line.
+#'
+#' @param x `NULL` or a character vector.
+#'
+#' @return a character vector, `character()` if there is no text.
+#'
+#' @noRd
+as_table_text <- function(x){
+  if (is.null(x) || identical(x, "")) return(character())
+  x
 }
 
 #' Get the question labels from a series of columns and return it as a

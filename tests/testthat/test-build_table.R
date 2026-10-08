@@ -127,3 +127,24 @@ test_that("build_table() accepts the weight as a string or with all_of()", {
 test_that("build_table() errors when a selection renames a column", {
   expect_snapshot(build_table(mtcars, c(cylinders = cyl)), error = TRUE)
 })
+
+test_that("build_table() keeps multi-line footnotes", {
+  out <- build_table(mtcars, cyl, footnote = c("Note 1", "Note 2"))
+  expect_equal(pull_footnote(out), c("Note 1", "Note 2"))
+  out <- build_table(mtcars, cyl, footnote = c("", "Note"))
+  expect_equal(pull_footnote(out), c("", "Note"))
+})
+
+test_that("build_table() treats NULL, character() and \"\" as no title or footnote", {
+  for (empty in list(NULL, character(), "")) {
+    out <- build_table(mtcars, cyl, table_title = empty, footnote = empty)
+    expect_equal(pull_title(out), character())
+    expect_equal(pull_footnote(out), character())
+  }
+})
+
+test_that("build_table() errors with use_questions and a multi-line footnote", {
+  expect_snapshot(build_table(mtcars, cyl, use_questions = TRUE,
+                              footnote = c("Note 1", "Note 2")),
+                  error = TRUE)
+})
