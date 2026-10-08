@@ -1055,3 +1055,23 @@ test_that("build_mtable() works with numeric (non-labelled) multiple response co
   expect_no_error(build_mtable(df_two, c("Q", "P"), use_NA = TRUE,
                                exclude_codes = c(0, -99)))
 })
+
+test_that("common_label_prefix() returns the shared start of labels", {
+  expect_equal(common_label_prefix(c("Fruit? Apple", "Fruit? Pear")), "Fruit?")
+  expect_equal(common_label_prefix("Fruit? Apple"), "Fruit? Apple")
+  expect_equal(common_label_prefix(c("Fruit", "Fruit? Pear")), "Fruit")
+  expect_equal(common_label_prefix(c("", "Fruit")), "")
+})
+
+test_that("build_mtable() uses labels from later mcols when the first has none", {
+  df <- create_multi_response_df() |>
+    dplyr::select(-ends_with("_other")) |>
+    dplyr::mutate(across(starts_with("enjoy_fruit"), as.numeric))
+  df$enjoy_food_sweet <- haven::labelled(df$enjoy_food_sweet,
+                                         label = "What food do you enjoy? Sweet")
+  df$enjoy_food_savoury <- haven::labelled(df$enjoy_food_savoury,
+                                           label = "What food do you enjoy? Hearty")
+
+  out <- build_mtable(df, c("enjoy_fruit", "enjoy_food"), use_questions = TRUE)
+  expect_true("What food do you enjoy?" %in% pull_footnote(out))
+})

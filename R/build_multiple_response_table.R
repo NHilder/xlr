@@ -149,26 +149,10 @@ build_mtable <- function(
         summarise(across(starts_with(start_col), ~ attr(.x,which="label", exact = TRUE)))|>
         unlist(use.names = FALSE, recursive = TRUE)
 
-      # Check that there are labels, if not quit
-      if (length(q_lab) == 0) break
+      # Skip multiple response columns without labels
+      if (length(q_lab) == 0) next
 
-      # Find the first time that the labels are different, return the previous
-      # iteration, this will likely be the question label, can be edited by
-      # the user
-      for (i in 1:min(nchar(q_lab))){
-        q_lab_final <- substr(q_lab,1,i)
-        # If the strings are not identical, then stop, go back one
-        # (when it was last identical) and take that string
-        if (length(unique(q_lab_final)) != 1) {
-          q_lab_final <- substr(q_lab,1,i-1) |>
-            unique() |>
-            # next strip out the whitespace
-            trimws()
-          break
-        }
-      }
-      # add it if we exit
-      footnote <- unique(c(footnote,q_lab_final))
+      footnote <- unique(c(footnote, common_label_prefix(q_lab)))
     }
   }
 
@@ -356,6 +340,29 @@ build_mtable <- function(
                             extra_cols = group_col_name)
   }
   final_table
+}
+
+#' Get the common start of a set of question labels
+#'
+#' The labels of multiple response columns usually start with the question,
+#' followed by the response option. This returns the text up to the first
+#' character where the labels differ.
+#'
+#' @param labels a character vector of labels.
+#'
+#' @return a string, the common prefix of `labels`.
+#'
+#' @noRd
+common_label_prefix <- function(labels){
+  n <- min(nchar(labels))
+  for (i in seq_len(n)){
+    # When the labels first differ, take the part when they were last the same
+    if (length(unique(substr(labels, 1, i))) != 1) {
+      return(trimws(substr(labels[1], 1, i - 1)))
+    }
+  }
+  # One label is the start of all the others
+  substr(labels[1], 1, n)
 }
 
 #' Apply NA handling rules to multiple-response data

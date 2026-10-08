@@ -29,3 +29,11 @@ Candidate fixes:
 Considered `dp = getOption("xlr.dp", 2L)` for `xlr_numeric()` /
 `as_xlr_numeric()`. Deferred: it makes output depend on session state and
 would need the same treatment for every numeric type. Defaults are `2L` for now.
+
+## `build_mtable(use_questions = TRUE)` label prefix can cut into an option
+
+The question label is taken as the common prefix of the column labels, so
+options that share a first letter leave part of the option in the footnote.
+For example `"What food do you enjoy? Sweet"` and `"... Savoury"` give
+`"What food do you enjoy? S"`. A fix could cut back to the last space or
+punctuation mark when the prefix ends mid-word.
