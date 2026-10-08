@@ -193,27 +193,19 @@ importFrom(cli,
 )
 importFrom(dplyr,
   across,
-  add_count,
   add_tally,
-  any_of,
   arrange,
-  case_when,
-  count,
   distinct,
   filter,
   group_by,
-  group_vars,
   grouped_df,
   if_all,
   if_any,
   if_else,
-  is_grouped_df,
   join_by,
   left_join,
   mutate,
-  n,
   n_distinct,
-  pick,
   relocate,
   rename,
   rename_with,
@@ -233,14 +225,7 @@ importFrom(dplyr,
   ungroup
 )
 importFrom(grDevices,colours)
-importFrom(haven,
-  as_factor,
-  labelled
-)
-importFrom(methods,
-  is,
-  setOldClass
-)
+importFrom(methods,is)
 importFrom(pillar,
   pillar_shaft,
   tbl_format_footer,
@@ -252,8 +237,7 @@ importFrom(stats,
 )
 importFrom(tibble,
   as_tibble,
-  is_tibble,
-  tibble
+  is_tibble
 )
 importFrom(tidyr,
   build_wider_spec,

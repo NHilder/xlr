@@ -375,7 +375,7 @@ test_that("build_qtable removes NA for each question, instead of the entire obse
 # Test suite for build_qtable input validation
 test_that("build_qtable errors when block columns have different types", {
   # Create test data with mixed types
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     q1_numeric = c(1, 2, 3, 1, 2),
     q1_character = c("a", "b", "c", "a", "b"),
     q1_factor = factor(c("a", "b", "c", "a", "b"))
@@ -396,7 +396,7 @@ test_that("build_qtable errors when block columns have different types", {
 
 test_that("build_qtable errors when factor block columns have different levels", {
   # Create factors with different levels
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     q1 = factor(c("Yes", "No", "Yes", "No"), levels = c("Yes", "No")),
     q2 = factor(c("Yes", "No", "Yes", "No"), levels = c("Yes", "No", "Maybe")),
     q3 = factor(c("Agree", "Disagree", "Agree", "Disagree"),
@@ -417,7 +417,7 @@ test_that("build_qtable errors when factor block columns have different levels",
 })
 
 test_that("build_qtable errors with informative message showing problem column", {
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     q1 = factor(c("Yes", "No"), levels = c("Yes", "No")),
     q2 = factor(c("Yes", "No"), levels = c("Yes", "No")),
     q3 = factor(c("Yes", "No"), levels = c("Yes", "No", "Maybe"))
@@ -432,10 +432,10 @@ test_that("build_qtable errors with informative message showing problem column",
 
 test_that("build_qtable errors when haven_labelled columns have different labels", {
   # Create labelled data with different value labels
-  test_data <- tibble(
-    q1 = labelled(c(1, 2, 1, 2), labels = c("Yes" = 1, "No" = 2)),
-    q2 = labelled(c(1, 2, 1, 2), labels = c("Agree" = 1, "Disagree" = 2)),
-    q3 = labelled(c(1, 2, 1, 2), labels = c("Yes" = 1, "No" = 2, "Maybe" = 3))
+  test_data <- tibble::tibble(
+    q1 = haven::labelled(c(1, 2, 1, 2), labels = c("Yes" = 1, "No" = 2)),
+    q2 = haven::labelled(c(1, 2, 1, 2), labels = c("Agree" = 1, "Disagree" = 2)),
+    q3 = haven::labelled(c(1, 2, 1, 2), labels = c("Yes" = 1, "No" = 2, "Maybe" = 3))
   )
 
   # Should error: different labels
@@ -453,7 +453,7 @@ test_that("build_qtable errors when haven_labelled columns have different labels
 
 test_that("build_qtable handles edge cases with similar but not identical levels", {
   # Levels in different order (should still work with setequal)
-  test_data1 <- tibble(
+  test_data1 <- tibble::tibble(
     q1 = factor(c("Yes", "No"), levels = c("Yes", "No")),
     q2 = factor(c("No", "Yes"), levels = c("No", "Yes"))
   )
@@ -464,7 +464,7 @@ test_that("build_qtable handles edge cases with similar but not identical levels
   )
 
   # Levels with whitespace differences
-  test_data2 <- tibble(
+  test_data2 <- tibble::tibble(
     q1 = factor(c("Yes", "No"), levels = c("Yes", "No")),
     q2 = factor(c("Yes ", "No"), levels = c("Yes ", "No"))
   )
@@ -477,8 +477,8 @@ test_that("build_qtable handles edge cases with similar but not identical levels
 })
 
 test_that("build_qtable errors when mixing labelled and unlabelled columns", {
-  test_data <- tibble(
-    q1 = labelled(c(1, 2, 1, 2), labels = c("Yes" = 1, "No" = 2)),
+  test_data <- tibble::tibble(
+    q1 = haven::labelled(c(1, 2, 1, 2), labels = c("Yes" = 1, "No" = 2)),
     q2 = c(1, 2, 1, 2)  # plain numeric
   )
 
@@ -490,7 +490,7 @@ test_that("build_qtable errors when mixing labelled and unlabelled columns", {
 })
 
 test_that("build_qtable handles single column in block_cols", {
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     q1 = factor(c("Yes", "No", "Yes", "No"), levels = c("Yes", "No"))
   )
 
@@ -502,7 +502,7 @@ test_that("build_qtable handles single column in block_cols", {
 
 test_that("build_qtable errors with subset/superset level relationships", {
   # q2 is a superset of q1 levels
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     q1 = factor(c("Yes", "No"), levels = c("Yes", "No")),
     q2 = factor(c("Yes", "No"), levels = c("Yes", "No", "Maybe", "Don't Know"))
   )
@@ -516,7 +516,7 @@ test_that("build_qtable errors with subset/superset level relationships", {
 
 test_that("build_qtable errors when coerced factors have different levels", {
   # Character columns that when coerced to factors have different levels
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     q1 = c("a", "b", "c"),
     q2 = c("a", "b", "d")  # 'd' instead of 'c'
   )
@@ -529,7 +529,7 @@ test_that("build_qtable errors when coerced factors have different levels", {
 })
 
 test_that("build_qtable provides helpful error message context", {
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     satisfaction_q1 = factor(c("Yes", "No"), levels = c("Yes", "No")),
     satisfaction_q2 = factor(c("Yes", "No"), levels = c("Yes", "No")),
     satisfaction_q3 = factor(c("Good", "Bad"), levels = c("Good", "Bad"))
@@ -546,7 +546,7 @@ test_that("build_qtable provides helpful error message context", {
 })
 
 test_that("build_qtable correctly identifies first mismatched column", {
-  test_data <- tibble(
+  test_data <- tibble::tibble(
     q1 = factor(c("A", "B"), levels = c("A", "B")),
     q2 = factor(c("A", "B"), levels = c("A", "B")),
     q3 = factor(c("X", "Y"), levels = c("X", "Y")),  # First mismatch

@@ -36,7 +36,7 @@
 # Test arg `table_title` is a scalar character
 
     Code
-      build_mtable(tibble(x = 1), table_title = 1)
+      build_mtable(tibble::tibble(x = 1), table_title = 1)
     Condition
       Error in `build_mtable()`:
       i In argument: `table_title`.
@@ -45,7 +45,7 @@
 # Test arg `use_questions` is a scalar logical
 
     Code
-      build_mtable(tibble(x = 1), table_title = "A", use_questions = 1)
+      build_mtable(tibble::tibble(x = 1), table_title = "A", use_questions = 1)
     Condition
       Error in `build_mtable()`:
       i In argument: `use_questions`.

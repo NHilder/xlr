@@ -203,13 +203,13 @@ test_that("that errors from inputting an invalid column is caught correctly", {
 })
 
 test_that("Test arg `table_title` is a scalar character", {
-  expect_snapshot(build_mtable(tibble(x = 1), table_title = 1),
+  expect_snapshot(build_mtable(tibble::tibble(x = 1), table_title = 1),
                   error = TRUE)
 })
 
 test_that("Test arg `use_questions` is a scalar logical", {
   expect_snapshot(
-    build_mtable(tibble(x = 1), table_title = "A", use_questions = 1),
+    build_mtable(tibble::tibble(x = 1), table_title = "A", use_questions = 1),
     error = TRUE
   )
 })

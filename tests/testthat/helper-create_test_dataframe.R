@@ -46,7 +46,7 @@ create_block_question_df <-function(){
 
 create_multi_response_df <- function(){
 
-  tibble(
+  tibble::tibble(
     col_1 = c("a","a","b","b","c","c","c"),
     col_2 = haven::labelled(
       c(1,1,1,2,2,2,2),

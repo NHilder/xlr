@@ -9,31 +9,27 @@ NULL
 #' @import openxlsx
 #' @import rlang
 #' @importFrom vctrs vec_cast
-#' @importFrom tibble is_tibble tibble as_tibble
+#' @importFrom tibble is_tibble as_tibble
 #'
-#' @importFrom dplyr arrange count distinct filter mutate relocate rename
+#' @importFrom dplyr arrange distinct filter mutate relocate rename
 #' @importFrom dplyr rename_with rowwise select
 #' @importFrom dplyr slice slice_head slice_max slice_min slice_sample slice_tail
 #' @importFrom dplyr summarise summarize tally ungroup
-#' @importFrom dplyr case_when n n_distinct
-#' @importFrom dplyr left_join join_by group_by row_number any_of
-#' @importFrom dplyr add_count pick if_any add_tally tally if_all across if_else
-#' @importFrom dplyr grouped_df is_grouped_df group_vars
+#' @importFrom dplyr n_distinct
+#' @importFrom dplyr left_join join_by group_by row_number
+#' @importFrom dplyr if_any add_tally if_all across if_else
+#' @importFrom dplyr grouped_df
 #'
 #' @importFrom cli cli_abort cli_warn cli_alert cli_fmt cli_text cli_alert_info
 #' @importFrom cli cli_h1
 #'
 #' @importFrom grDevices colours
 #'
-#' @importFrom haven as_factor
-#'
-#' @importFrom methods setOldClass is
+#' @importFrom methods is
 #'
 #' @importFrom pillar tbl_sum tbl_format_footer
 #'
 #' @importFrom tidyr pivot_longer pivot_wider build_wider_spec pivot_wider_spec
-#'
-#' @importFrom haven labelled
 #'
 #' @importFrom tidyselect starts_with everything where all_of
 #' @importFrom tidyselect eval_select
