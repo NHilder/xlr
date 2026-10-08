@@ -35,7 +35,7 @@ xlr_vector <- function(x = vector(),
   # if it is not NULL then check it is a vector
   # a NULL vector is an empty vector and should have length 0
   if (!is.null(x) && !is_vector(x)){
-    cli_abort('{x} is not a vector!')
+    cli_abort("{.arg x} must be a vector, not {.obj_type_friendly {x}}.")
   }
   new_xlr_vector(x = x,
                   excel_format = excel_format,
@@ -147,7 +147,7 @@ vec_ptype2.numeric.xlr_vector <- function(x,y,...) x
 #' @export
 vec_ptype2.xlr_vector.numeric <- function(x,y,...){
   if(!is.numeric(vec_data(x))){
-    cli_abort("Can't combime `x` <xlr_vector> and `y` {.type y}, `x` must contain numeric data!")
+    cli_abort("Can't combine `x` <xlr_vector> and `y` {.type {y}}, `x` must contain numeric data!")
   }
   y
 }
@@ -165,7 +165,7 @@ vec_ptype2.double.xlr_vector <- function(x,y,...) x
 #' @export
 vec_ptype2.xlr_vector.double <- function(x,y,...){
   if(!is.numeric(vec_data(x))){
-    cli_abort("Can't combime `x` <xlr_vector> and `y` {.type y}, `x` must contain numeric data!")
+    cli_abort("Can't combine `x` <xlr_vector> and `y` {.type {y}}, `x` must contain numeric data!")
   }
   y
 }
@@ -182,7 +182,7 @@ vec_ptype2.integer.xlr_vector <- function(x,y,...) x
 #' @export
 vec_ptype2.xlr_vector.integer <- function(x,y,...){
   if(!is.numeric(vec_data(x))){
-    cli_abort("Can't combime `x` <xlr_vector> and `y` {.type y}, `x` must contain numeric data!")
+    cli_abort("Can't combine `x` <xlr_vector> and `y` {.type {y}}, `x` must contain numeric data!")
   }
   y
 }
@@ -199,7 +199,7 @@ vec_ptype2.complex.xlr_vector <- function(x,y,...) x
 #' @export
 vec_ptype2.xlr_vector.complex <- function(x,y,...){
   if(!is.numeric(vec_data(x)) & !is.complex(vec_data(x))){
-    cli_abort("Can't combime <xlr_vector> which has {.type {vec_data(x)}} type, <xlr_vector> must contain numeric data!")
+    cli_abort("Can't combine <xlr_vector> which has {.type {vec_data(x)}} type, <xlr_vector> must contain numeric data!")
   }
   y
 }

@@ -84,11 +84,11 @@ build_qtable <- function(
   # This is experimental, and might still give weird answers but will work
   # in most cases.
 
-  # Make the erorr a warning as the function might still be able to function
+  # Make the error a warning as the function might still be able to function
   start <- class(x_block_cols[[1]])[1]
   check_type <- sapply(x_block_cols,\(x) class(x)[1] == start)
   if (!all(check_type)){
-    # As we know there is a false, then we can assue which has an element in it
+    # As we know there is a false, then we can assume which has an element in it
     first_col_pos <- which(check_type == FALSE)[1]
     # we get the column names from using sapply, so we can call names
     first_col_name <- colnames(x_block_cols)[[first_col_pos]]
@@ -143,7 +143,7 @@ build_qtable <- function(
   }
 
   # Additional information on the questions-------------------------------------
-  # Pull out the labels for each colum and create a data.frame to join
+  # Pull out the labels for each column and create a data.frame to join
   # onto
   null_to_na <- \(x) if (is.null(x)) return(NA) else return(x)
    # set up the options for labels
@@ -168,7 +168,7 @@ build_qtable <- function(
   if (footnote == "") footnote <- character()
 
   # pull out the questions and include them in the footnote if true
-  if (use_questions & length(footnote) == 0){
+  if (use_questions && length(footnote) == 0){
     footnote <- get_question_from_label(x,!!enquo(cols))
   }
 
@@ -197,9 +197,9 @@ build_qtable <- function(
 
   #* This is some tricky code that joins on the question labels for the
   #* block, questions, irrespective of whether or not you use an option
-  #* or the quesiton actually has labels
+  #* or the question actually has labels
   #
-  #* If there are no labels we skip this peice of code
+  #* If there are no labels we skip this piece of code
   if (label_exist){
     final_table <-
       final_table |>

@@ -38,7 +38,7 @@ make_wider <- function(x,
 
   var_name <- enquo(x)
   # lets see if we can extract the name
-  if (!quo_is_call(var_name) & !quo_is_null(var_name)){
+  if (!quo_is_call(var_name) && !quo_is_null(var_name)){
     var_name <- as_name(var_name)
   } else {
     var_name <- "x"

@@ -106,10 +106,8 @@ xlr_format <- function(font_size = 11,
   text_rotation = vec_cast(text_rotation,integer())
   indent = vec_cast(indent,integer())
   col_width = vec_cast(col_width, double())
-  # first we do a bunch of coersions to null if something
-  # is null
-
-  # now validate inputes
+  
+  # now validate inputs
   validate_xlr_format(
     font_size,
     font_colour,
@@ -481,7 +479,6 @@ validate_xlr_format <- function(
 colour_error <- function(arg,
                          argName,
                          call){
-  # pull out the args nameEE
   if (!is_scalar_character(arg)){
     cli_abort(c("i" = "In argument: {.arg {argName}}.",
                 "!"="{.arg {argName}} must be {.type character}, not {.type {arg}}."),

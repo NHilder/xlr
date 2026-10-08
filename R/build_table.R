@@ -68,7 +68,7 @@ build_table <- function(
   if (footnote == "") footnote <- character()
 
   # pull out the questions and include them in the footnote if true
-  if (use_questions & length(footnote) == 0){
+  if (use_questions && length(footnote) == 0){
     footnote <- get_question_from_label(x,!!enquo(cols))
   }
   # Aggregation ---------------------------------------------------------------

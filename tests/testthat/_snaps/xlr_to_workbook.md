@@ -67,7 +67,7 @@
     Condition
       Warning:
       i In argument: `x`.
-      Your <xlr_table> "test" has no data in it's rows.
+      Your <xlr_table> "test" has no data in its rows.
 
 # dataframe_to_sheet() errors if the sheet does not exist
 
@@ -94,7 +94,7 @@
     Condition
       Warning:
       i In argument: `x`.
-      ! Your data frame or tibble has no data in it's rows.
+      ! Your data frame or tibble has no data in its rows.
 
 # xlr_to_workbook() creates an error when you pass an empty list
 

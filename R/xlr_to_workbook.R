@@ -332,7 +332,7 @@ xlr_table_to_sheet <- function(x,
   }
   if (nrow(data) == 0){
     cli_warn(c("i" = "In argument: {.arg x}.",
-                "Your <xlr_table> {.val {sheet_name}} has no data in it's rows."),
+                "Your <xlr_table> {.val {sheet_name}} has no data in its rows."),
              call = call)
   }
 
@@ -591,7 +591,7 @@ dataframe_to_sheet <- function(x,
   }
   if (nrow(data) == 0){
     cli_warn(c("i" = "In argument: {.arg x}.",
-               "!" = "Your data frame or tibble has no data in it's rows."),
+               "!" = "Your data frame or tibble has no data in its rows."),
              call = call)
   }
 

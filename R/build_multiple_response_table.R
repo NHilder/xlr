@@ -139,7 +139,7 @@ build_mtable <- function(
   if (footnote == "") footnote <- character()
 
   # pull out the questions and include them in the footnote if true
-  if (use_questions & length(footnote) == 0){
+  if (use_questions && length(footnote) == 0){
     footnote <- get_question_from_label(x,!!enquo(cols))
     # now lets get the multiple response questions out
     for (start_col in mcols){
@@ -227,10 +227,10 @@ build_mtable <- function(
 
     mcol_RHS <- mcols[1]
     mcol_LHS <- mcols[2]
-    # now my sym versions so we can deffuse them when we need too
+    # now my sym versions so we can defuse them when we need too
     sym_mcol_1 <- sym(mcol_RHS)
     sym_mcol_2 <- sym(mcol_LHS)
-    # We can gaurentee this is equal to 2
+    # We can guarantee this is equal to 2
 
     # First we tidy the x-selected columns to tidy them up
     x_selected <-
