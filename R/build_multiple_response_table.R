@@ -85,9 +85,12 @@ build_mtable <- function(
                         use_NA,
                         footnote)
   # validate that the columns are in x
-  x_selected <- check_columns_exist(x,
-                                    c(!!enquo(cols),!!enquo(wt)),
-                                    mcols)
+  checked <- check_columns_exist(x,
+                                 {{cols}},
+                                 mcols,
+                                 wt = {{wt}})
+  x_selected <- checked$data
+  wt <- checked$wt
 
   # check that dots are empty
   check_dots_empty()
@@ -113,26 +116,6 @@ build_mtable <- function(
       c("x" = "In arguments: {.arg x} and {.arg mcols}.",
         "i" = "Data frame columns {.code {names_error}} must have at most one non-missing value.")
     )
-  }
-
-  # Check that wt is numeric, if it exists
-  wt_quo <- enquo(wt)
-  if (!quo_is_null(wt_quo)){
-    # Check that weight is numeric
-    wt_string <- rlang::as_name(wt_quo)
-
-    wt_col <- x_selected[[wt_string]]
-
-    if (!is.numeric(wt_col)){
-      cli_abort(c("i" = "In argument: {.arg wt}.",
-                "!"="{.arg wt} must be {.type {1}}, not {.type {wt_col}}."))
-    }
-
-    # convert everything to a string, now wt will work both with a string
-    # input and a symbol
-    wt <- as.character(enexpr(wt))
-    # convert that string into a symbol
-    wt <- sym(wt)
   }
 
   # Next test that there are at most two mcols specified anything more that
@@ -212,7 +195,7 @@ build_mtable <- function(
       # Add group count
       group_by(across({{ cols }})) |>
       add_tally(name = "N_group",
-                       wt = {{wt}}) |>
+                       wt = !!wt) |>
       ungroup() |>
       pivot_longer(starts_with(mcols_n),
                    names_to = NULL,
@@ -220,7 +203,7 @@ build_mtable <- function(
       filter(!is.na({{sym_mcol}})) |>
       group_by(across({{ cols }}),{{sym_mcol}},N_group) |>
       # uses the weight if it is not null, if NULL, it get's ignored
-      tally(wt = {{wt}}, name = "N") |>
+      tally(wt = !!wt, name = "N") |>
       # now filter the NA in the mcols var
       remove_NA(starts_with(mcols),
                 complete = FALSE) |>
@@ -247,15 +230,9 @@ build_mtable <- function(
       xlr_table(table_title,
                  footnote)
 
-    # Now we apply some formatting depending if wts are applied, if the are
-    # we can gaurentee N is an integer, if not we treat it as a double to 1 dp
-    final_table <-
-      if (quo_is_null(wt_quo))
-        mutate(final_table, N = xlr_integer(N))
-    else
-      mutate(final_table,
-             N = xlr_numeric(N, dp = 1),
-             N_group = xlr_numeric(N_group, dp = 1))
+    final_table <- format_N(final_table,
+                            weighted = !is.null(wt),
+                            extra_cols = "N_group")
   } else{
 
     mcol_RHS <- mcols[1]
@@ -292,7 +269,7 @@ build_mtable <- function(
     # are in it, we are using the same techniques as the 1 column above
     RHS <-
       x_selected |>
-      select(id, {{cols}}, {{wt}}, starts_with(mcol_RHS)) |>
+      select(id, {{cols}}, !!wt, starts_with(mcol_RHS)) |>
       # add the NA column if we need to
       apply_NA_rules(use_NA,
                      mcol_RHS,
@@ -308,7 +285,7 @@ build_mtable <- function(
       # Add group count
       group_by(across(c({{cols}}, {{mcol_RHS}}))) |>
       add_tally(name = {{group_col_name}},
-                wt = {{wt}})
+                wt = !!wt)
 
     LHS <-
       x_selected |>
@@ -337,7 +314,7 @@ build_mtable <- function(
       select(-id) |>
       # Group by everything and then count it
       group_by(across(c({{cols}}, {{mcol_RHS}}, {{group_col_name}}, {{mcol_LHS}}))) |>
-      tally(wt= {{wt}}, name = "N") |>
+      tally(wt = !!wt, name = "N") |>
       ungroup() |>
       relocate(c(N, {{group_col_name}}), .after = everything())
 
@@ -358,15 +335,9 @@ build_mtable <- function(
       xlr_table(table_title,
                  footnote)
 
-    # Now we apply some formatting depending if wts are applied, if the are
-    # we can gaurentee N is an integer, if not we treat it as a double to 1 dp
-    final_table <-
-      if (quo_is_null(wt_quo))
-        mutate(final_table, N = xlr_integer(N))
-      else
-        mutate(final_table,
-               N = xlr_numeric(N, dp = 1),
-               "{group_col_name_quo}" := xlr_numeric({{ group_col_name_quo }},dp = 1))
+    final_table <- format_N(final_table,
+                            weighted = !is.null(wt),
+                            extra_cols = group_col_name)
   }
   final_table
 }

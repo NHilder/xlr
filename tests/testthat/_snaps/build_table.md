@@ -34,3 +34,11 @@
       x You can't specify `use_question = TRUE` and have a footnote.
       i Either set `use_question = FALSE` or do not have a footnote.
 
+# build_table() errors when a selection renames a column
+
+    Code
+      build_table(mtcars, c(cylinders = cyl))
+    Condition
+      Error in `build_table()`:
+      ! Can't rename variables in this context.
+

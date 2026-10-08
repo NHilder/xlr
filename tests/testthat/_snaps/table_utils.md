@@ -15,6 +15,40 @@
       Error in `test_fun()`:
       ! There are no columns that exist that start with `cats`.
 
+# check_columns_exist() errors for a bad weight
+
+    Code
+      check_columns_exist(df, a, wt = w)
+    Condition
+      Error:
+      i In argument: `wt`.
+      ! `wt` must be a number, not a character vector.
+
+---
+
+    Code
+      check_columns_exist(df, a, wt = c(w2, w3))
+    Condition
+      Error:
+      i In argument: `wt`.
+      ! `wt` must select a single column, not 2.
+
+# check_columns_exist() does not allow renaming
+
+    Code
+      check_columns_exist(mtcars, c(cylinders = cyl))
+    Condition
+      Error:
+      ! Can't rename variables in this context.
+
+---
+
+    Code
+      check_columns_exist(mtcars, cyl, wt = c(weight = wt))
+    Condition
+      Error:
+      ! Can't rename variables in this context.
+
 # validate_table_inputs() produces an error if not a data.frame
 
     Code

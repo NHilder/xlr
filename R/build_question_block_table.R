@@ -65,9 +65,11 @@ build_qtable <- function(
                         use_NA,
                         footnote)
   # validate that the columns are in x
-  x_selected <- check_columns_exist(x,
-                                    c(!!enquo(cols),!!enquo(wt),
-                                      !!enquo(block_cols)))
+  checked <- check_columns_exist(x,
+                                 c({{cols}}, {{block_cols}}),
+                                 wt = {{wt}})
+  x_selected <- checked$data
+  wt <- checked$wt
 
   # Validate the block question that each column has the same values or throw
   # an error
@@ -146,21 +148,6 @@ build_qtable <- function(
     )
   }
 
-  # Check that wt is numeric, if it exists
-  wt_quo <- enquo(wt)
-  if (!quo_is_null(wt_quo)){
-    wt_string <- rlang::as_name(wt_quo)
-    type_abort(x[[wt_string]], is.numeric, 1)
-
-    # convert everything to a string, now wt will work both with a string
-    # input and a symbol
-    wt <- as.character(enexpr(wt))
-    # convert that string into a symbol
-    wt <- sym(wt)
-  }
-
-  # Lets make a block_cols quo to use later
-  # block_cols_quo <- sym(block_cols)
   # Additional information on the questions-------------------------------------
   # Pull out the labels for each colum and create a data.frame to join
   # onto
@@ -211,9 +198,9 @@ build_qtable <- function(
                     attr(.f, "label") <- NULL
                     .f
                   })) |>
-    group_by(across(!!enquo(cols)),`Question Block`,value) |>
+    group_by(across({{cols}}),`Question Block`,value) |>
     # uses the weight if it is not null, if NULL, it get's ignored
-    tally(wt = {{wt}}, name = "N") |>
+    tally(wt = !!wt, name = "N") |>
     mutate(Percent = xlr_percent(N/sum(N))) |>
     ungroup()
 
@@ -237,14 +224,7 @@ build_qtable <- function(
     xlr_table(table_title,
                footnote)
 
-  # Now we apply some formatting depending if wts are applied, if the are
-  # we can gaurentee N is an integer, if not we treat it as a double to 1 dp
-
-  if (quo_is_null(wt_quo))
-    mutate(final_table, N = xlr_integer(N))
-  else
-    mutate(final_table, N = xlr_numeric(N, dp = 1))
-
+  format_N(final_table, weighted = !is.null(wt))
 }
 
 

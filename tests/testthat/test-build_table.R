@@ -116,3 +116,14 @@ test_that("use_questions pulls out the column names (the questions) as expected"
                  "The sex of the participant",
                  "The gender of the participant"))
 })
+
+test_that("build_table() accepts the weight as a string or with all_of()", {
+  df <- create_block_question_df()
+  expected <- build_table(df, gender, wt = weight)
+  expect_equal(build_table(df, gender, wt = "weight"), expected)
+  expect_equal(build_table(df, gender, wt = all_of("weight")), expected)
+})
+
+test_that("build_table() errors when a selection renames a column", {
+  expect_snapshot(build_table(mtcars, c(cylinders = cyl)), error = TRUE)
+})

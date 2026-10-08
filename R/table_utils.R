@@ -1,41 +1,91 @@
 
-#' Checks if a column is in a data.frame
+#' Checks the selected columns exist in a data.frame
+#'
+#' Validates every column argument of the table functions in one place. The
+#' columns are selected with tidyselect, renaming is not allowed (the callers
+#' re-use the original selection afterwards).
 #'
 #' @param x a data.frame/tibble
-#' @param cols a vector of either symbols or strings representing the column
-#' names we wish to select.
-#' @param start_with_cols a character vector.
-#' @param x_arg the 'name' of the x_arg
+#' @param cols <tidy-select> the columns we wish to select.
+#' @param start_with_cols a character vector of column prefixes (for multiple
+#' response columns), or `NULL`.
+#' @param wt <tidy-select> the weight column, or `NULL`. Must select exactly
+#' one numeric column.
 #' @param call the caller environment.
 #'
 #' @details
-#' You must use !!enquo(cols) when passing down the columns from a higher
-#' function.
+#' Forward the column arguments from a higher function with `{{ }}`.
+#'
+#' @return a list with:
+#'   * `data`: `x` with only the selected (and weight) columns.
+#'   * `wt`: `NULL` if there is no weight, otherwise a symbol of the weight
+#'     column name.
 #'
 #' @noRd
 check_columns_exist <- function(x,
-                               cols,
-                               start_with_cols = NULL,
-                               x_arg = caller_arg(x),
-                               call = caller_env()){
+                                cols,
+                                start_with_cols = NULL,
+                                wt = NULL,
+                                call = caller_env()){
 
   pos <-
     if (is.null(start_with_cols)){
       tidyselect::eval_select(enquo(cols),
                               x,
-                              error_call = caller_env())
+                              allow_rename = FALSE,
+                              error_call = call)
     }
     else{
       # if there is no column that exists throw an error
       if (length(my_starts_with(start_with_cols,names(x))) == 0)
         cli_abort("There are no columns that exist that start with {.var {start_with_cols}}.",
                   call = call)
-      tidyselect::eval_select(expr(c({{cols}},starts_with(start_with_cols))),
+      tidyselect::eval_select(expr(c({{cols}},starts_with(!!start_with_cols))),
                               x,
-                              error_call = caller_env())
+                              allow_rename = FALSE,
+                              error_call = call)
     }
 
-  set_names(x[pos], names(pos))
+  wt_pos <- tidyselect::eval_select(enquo(wt),
+                                    x,
+                                    allow_rename = FALSE,
+                                    error_call = call)
+  wt_sym <- NULL
+  if (length(wt_pos) > 1){
+    cli_abort(c("i" = "In argument: {.arg wt}.",
+                "!" = "{.arg wt} must select a single column, not {length(wt_pos)}."),
+              call = call)
+  }
+  if (length(wt_pos) == 1){
+    wt_col <- x[[wt_pos]]
+    if (!is.numeric(wt_col)){
+      cli_abort(c("i" = "In argument: {.arg wt}.",
+                  "!" = "{.arg wt} must be {.type {1}}, not {.type {wt_col}}."),
+                call = call)
+    }
+    wt_sym <- sym(names(wt_pos))
+  }
+
+  list(data = x[unique(c(pos, wt_pos))],
+       wt = wt_sym)
+}
+
+#' Format the count columns of a table
+#'
+#' Without weights the counts are guaranteed to be integers, with weights we
+#' treat them as doubles to 1 dp.
+#'
+#' @param x a `xlr_table`
+#' @param weighted logical. Whether weights were applied.
+#' @param extra_cols character vector. Other count columns to format when
+#' weighted.
+#'
+#' @noRd
+format_N <- function(x, weighted, extra_cols = character()){
+  N <- NULL
+  if (!weighted) return(mutate(x, N = xlr_integer(N)))
+
+  mutate(x, across(all_of(c("N", extra_cols)), \(.x) xlr_numeric(.x, dp = 1)))
 }
 
 my_starts_with <- function(pattern,vars){

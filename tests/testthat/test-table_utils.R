@@ -1,13 +1,13 @@
 test_that("check_columns_exist() returns the corretly selected columns", {
-  expect_equal(check_columns_exist(mtcars,c(mpg,wt)), mtcars[,c("mpg","wt")])
-  expect_equal(check_columns_exist(mtcars,c("mpg","wt")), mtcars[,c("mpg","wt")])
+  expect_equal(check_columns_exist(mtcars,c(mpg,wt))$data, mtcars[,c("mpg","wt")])
+  expect_equal(check_columns_exist(mtcars,c("mpg","wt"))$data, mtcars[,c("mpg","wt")])
 })
 
 test_that("check_columns_exist() works inside another function", {
   outer_fun <- function(x,
                         cols){
     check_columns_exist(x,
-                        !!enquo(cols))
+                        !!enquo(cols))$data
   }
 
   expect_equal(outer_fun(mtcars,c(mpg,wt)), mtcars[,c("mpg","wt")])
@@ -16,10 +16,10 @@ test_that("check_columns_exist() works inside another function", {
 
 
 test_that("check_columns_exist() selects columns that start with terms correct", {
-  expect_equal(check_columns_exist(iris,Species,"Petal"),
+  expect_equal(check_columns_exist(iris,Species,"Petal")$data,
                iris[,c("Species","Petal.Length","Petal.Width")])
 
-  expect_equal(check_columns_exist(iris,Species,c("Sepal","Petal")),
+  expect_equal(check_columns_exist(iris,Species,c("Sepal","Petal"))$data,
                dplyr::select(iris,Species,everything()))
 })
 
@@ -31,7 +31,7 @@ test_that("check_columns_exist() selects columns that start with terms correct, 
                         sw){
     check_columns_exist(x,
                         !!enquo(cols),
-                        sw)
+                        sw)$data
   }
 
   expect_equal(outer_fun(iris,Species,"Petal"),
@@ -64,6 +64,26 @@ test_that("check_columns_exist() error produces an error if the starts_with colu
                            mpg,
                            "cats"),
                   error = TRUE)
+})
+
+test_that("check_columns_exist() returns the weight as a symbol", {
+  out <- check_columns_exist(mtcars, cyl, wt = wt)
+  expect_equal(out$data, mtcars[, c("cyl", "wt")])
+  expect_equal(out$wt, quote(wt))
+  expect_equal(check_columns_exist(mtcars, cyl, wt = "wt")$wt, quote(wt))
+  expect_equal(check_columns_exist(mtcars, cyl, wt = all_of("wt"))$wt, quote(wt))
+  expect_null(check_columns_exist(mtcars, cyl)$wt)
+})
+
+test_that("check_columns_exist() errors for a bad weight", {
+  df <- data.frame(a = 1:2, w = c("x", "y"), w2 = 1:2, w3 = 1:2)
+  expect_snapshot(check_columns_exist(df, a, wt = w), error = TRUE)
+  expect_snapshot(check_columns_exist(df, a, wt = c(w2, w3)), error = TRUE)
+})
+
+test_that("check_columns_exist() does not allow renaming", {
+  expect_snapshot(check_columns_exist(mtcars, c(cylinders = cyl)), error = TRUE)
+  expect_snapshot(check_columns_exist(mtcars, cyl, wt = c(weight = wt)), error = TRUE)
 })
 
 test_that("my_starts_with() selects from a vector",{
