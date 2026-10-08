@@ -34,10 +34,10 @@ xlr_numeric <- function(x = numeric(),
   x <- vec_cast(x, numeric())
   dp <- vec_recycle(vec_cast(dp,integer()), 1L)
 
-  validate_xlr_numeric(x,
-                       dp,
-                       scientific,
-                       style)
+  validate_xlr_numeric(x = x,
+                       dp = dp,
+                       scientific = scientific,
+                       style = style)
 
   new_xlr_numeric(x,dp,scientific,style)
 }
@@ -45,8 +45,13 @@ xlr_numeric <- function(x = numeric(),
 
 validate_xlr_numeric <- function(x = double(),
                                  dp = integer(),
+                                 scientific = FALSE,
                                  style = xlr_format_numeric(),
                                  call = caller_env()){
+  type_abort(scientific,
+             is_true_or_false,
+             string_type = "{.val {TRUE}} or {.val {FALSE}}",
+             call = call)
   if (dp < 0){
     cli_abort("'dp' must be greater than zero not equal to {dp}.",
               call = call)

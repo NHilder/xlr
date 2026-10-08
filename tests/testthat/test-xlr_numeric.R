@@ -202,3 +202,9 @@ test_that("xlr_numeric casting can work between xlr types",{
                   class = "xlr_numeric",
                   exact = FALSE)
 })
+
+test_that("xlr_numeric() reports invalid arguments against xlr_numeric()", {
+  expect_snapshot(xlr_numeric(1, dp = -1L), error = TRUE)
+  expect_snapshot(xlr_numeric(1, scientific = NA), error = TRUE)
+  expect_snapshot(xlr_numeric(1, scientific = c(TRUE, FALSE)), error = TRUE)
+})

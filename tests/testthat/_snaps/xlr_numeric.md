@@ -124,3 +124,29 @@
       <xlr_numeric[1]>
       [1] 2.00
 
+# xlr_numeric() reports invalid arguments against xlr_numeric()
+
+    Code
+      xlr_numeric(1, dp = -1L)
+    Condition
+      Error in `xlr_numeric()`:
+      ! 'dp' must be greater than zero not equal to -1.
+
+---
+
+    Code
+      xlr_numeric(1, scientific = NA)
+    Condition
+      Error in `xlr_numeric()`:
+      i In argument: `scientific`.
+      ! `scientific` must be TRUE or FALSE, not `NA`.
+
+---
+
+    Code
+      xlr_numeric(1, scientific = c(TRUE, FALSE))
+    Condition
+      Error in `xlr_numeric()`:
+      i In argument: `scientific`.
+      ! `scientific` must be TRUE or FALSE, not a logical vector.
+
