@@ -400,7 +400,7 @@ xlr_table_to_sheet <- function(x,
              style = xlr_format_to_openxlsx_format(pull_footnote_format(x),
                                                     "TEXT"),
              cols = 1,
-             rows = footnote_row:(footnote_row + length(footnote_val)))
+             rows = footnote_row:(footnote_row + length(footnote_val) - 1))
   }
 
   # next we add styling to the table format. This is a little different

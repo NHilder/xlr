@@ -1010,3 +1010,17 @@ test_that("xlr_format_to_openxlsx_format() applies text_rotation", {
   expect_equal(style$textRotation, 45)
   expect_null(xlr_format_to_openxlsx_format(xlr_format())$textRotation)
 })
+
+test_that("xlr_table_to_sheet() only styles the footnote rows", {
+  x <- xlr_table(data.frame(a = 1:2), "title", c("note 1", "note 2"))
+  wb <- createWorkbook()
+  addWorksheet(wb, "s")
+  xlr_table_to_sheet(x, wb, "s")
+
+  # title (1), heading (2), data (3:4), footnotes (5:6)
+  footnote_style <- xlr_format_to_openxlsx_format(pull_footnote_format(x), "TEXT")
+  styled_rows <- unlist(lapply(wb$styleObjects, \(s) {
+    if (isTRUE(all.equal(s$style, footnote_style))) s$rows
+  }))
+  expect_equal(sort(styled_rows), c(5, 6))
+})
