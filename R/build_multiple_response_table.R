@@ -399,7 +399,7 @@ common_label_prefix <- function(labels){
 #'
 #' The returned object preserves the same class as `x`.
 #'
-#' @keywords internal
+#' @noRd
 apply_NA_rules <- function(x,
                            use_NA,
                            mcols,

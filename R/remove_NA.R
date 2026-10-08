@@ -8,16 +8,15 @@
 #' @param .data A data frame or tibble
 #' @param cols <[`tidy-select`][dplyr::dplyr_tidy_select]> Columns to check for NA values.
 #'   If no columns are specified, returns the data unchanged.
-#' @param complete Logical. If `TRUE` (default), removes rows where all of the
-#'   specified columns contain NA. If `FALSE`, removes only rows where at least
-#'   one of the specified columns are NA.
+#' @param complete Logical. If `TRUE` (default), removes rows where any of the
+#'   specified columns are NA. If `FALSE`, removes only rows where all of the
+#'   specified columns are NA.
 #' @param call The execution environment of a currently running function, e.g.
 #'   `caller_env()`. Used for error reporting.
 #'
 #' @return A data frame with rows removed based on NA patterns
 #'
-#' @keywords internal
-
+#' @noRd
 remove_NA <- function(.data,
                       cols,
                       complete = TRUE,

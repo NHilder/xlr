@@ -127,14 +127,12 @@ vec_ptype_abbr.xlr_numeric <- function(x,...){
 
 #- Typing-----------------------------------------------------------------------
 
-#' Check if it is a percentage
 #' @export
 #' @rdname xlr_numeric
 is_xlr_numeric <- function(x) {
   inherits(x, "xlr_numeric")
 }
 
-#' now we can define a as_xlr_numeric function
 #' @export
 #' @rdname xlr_numeric
 as_xlr_numeric <- function(x,
