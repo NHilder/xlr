@@ -44,12 +44,12 @@ remove_NA <- function(.data,
     # Remove rows where ANY selected column has NA
     out <-
       .data |>
-      filter(if_all(any_of(names(selection)), ~ !is.na(.x)))
+      filter(if_all(all_of(names(selection)), ~ !is.na(.x)))
   } else {
     # Remove rows where ALL selected columns are NA
     out <-
       .data |>
-      filter(if_any(any_of(names(selection)), ~ !is.na(.x)))
+      filter(if_any(all_of(names(selection)), ~ !is.na(.x)))
   }
   # now we restore the groups if we need to, and output
   if (is_grouped){

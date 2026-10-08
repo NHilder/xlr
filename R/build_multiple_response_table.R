@@ -100,7 +100,7 @@ build_mtable <- function(
   x_check <-
     x_selected |>
     mutate(across(starts_with(mcols),
-                  ~ if_else(.x %in% c(exclude_codes),NA,.x))) |>
+                  ~ if_else(.x %in% !!exclude_codes,NA,.x))) |>
     select(starts_with(mcols) & where(\(x) n_distinct(x, na.rm = TRUE) > 1))
 
   if (ncol(x_check) > 0) {
@@ -200,8 +200,8 @@ build_mtable <- function(
       pivot_longer(starts_with(mcols_n),
                    names_to = NULL,
                    values_to = mcols_n) |>
-      filter(!is.na({{sym_mcol}})) |>
-      group_by(across({{ cols }}),{{sym_mcol}},N_group) |>
+      filter(!is.na(!!sym_mcol)) |>
+      group_by(across({{ cols }}),!!sym_mcol,N_group) |>
       # uses the weight if it is not null, if NULL, it get's ignored
       tally(wt = !!wt, name = "N") |>
       # now filter the NA in the mcols var
@@ -217,11 +217,11 @@ build_mtable <- function(
       mutate(
         Percent = xlr_percent(N / N_group),
         # add code to convert the NA string to an NA
-        "{sym_mcol}" := ifelse({{ sym_mcol }} == "NA", NA, vec_cast({{ sym_mcol }}, character()))
+        "{mcol}" := ifelse((!!sym_mcol) == "NA", NA, vec_cast(!!sym_mcol, character()))
       ) |>
       arrange(across({{cols}}),
-              ifelse({{sym_mcol}} == exclude_label,1,0),
-              {{sym_mcol}})
+              ifelse((!!sym_mcol) == !!exclude_label,1,0),
+              !!sym_mcol)
 
 
     # now tidy up the table
@@ -279,12 +279,12 @@ build_mtable <- function(
       pivot_longer(starts_with(mcol_RHS),
                    names_to = NULL,
                    values_to = mcol_RHS) |>
-      filter(!is.na({{sym_mcol_1}}))
+      filter(!is.na(!!sym_mcol_1))
 
     RHS_1 <- RHS |>
       # Add group count
-      group_by(across(c({{cols}}, {{mcol_RHS}}))) |>
-      add_tally(name = {{group_col_name}},
+      group_by(across(c({{cols}}, all_of(mcol_RHS)))) |>
+      add_tally(name = group_col_name,
                 wt = !!wt)
 
     LHS <-
@@ -298,7 +298,7 @@ build_mtable <- function(
       pivot_longer(starts_with(mcol_LHS),
                    names_to = NULL,
                    values_to = mcol_LHS) |>
-      filter(!is.na({{sym_mcol_2}}))
+      filter(!is.na(!!sym_mcol_2))
 
     # now join them together
     output <-
@@ -306,28 +306,28 @@ build_mtable <- function(
       left_join(LHS,
                 by = join_by(id),
                 relationship = "many-to-many") |>
-      filter(!(is.na({{sym_mcol_2}})))
+      filter(!is.na(!!sym_mcol_2))
 
     output <-
       output|>
       # Drop the ID
       select(-id) |>
       # Group by everything and then count it
-      group_by(across(c({{cols}}, {{mcol_RHS}}, {{group_col_name}}, {{mcol_LHS}}))) |>
+      group_by(across(c({{cols}}, all_of(c(mcol_RHS, group_col_name, mcol_LHS))))) |>
       tally(wt = !!wt, name = "N") |>
       ungroup() |>
-      relocate(c(N, {{group_col_name}}), .after = everything())
+      relocate(c(N, all_of(group_col_name)), .after = everything())
 
 
     output <-
       output |>
       # Add proportion to end
-      mutate(Percent = xlr_percent(N / {{group_col_name_quo}}),
+      mutate(Percent = xlr_percent(N / !!group_col_name_quo),
              # add code to convert the NA string to an NA
-             "{mcol_RHS}" := ifelse({{ sym_mcol_1 }} == "NA",NA,vec_cast({{ sym_mcol_1 }}, character())),
-             "{mcol_LHS}" := ifelse({{ sym_mcol_2 }} == "NA",NA,vec_cast({{ sym_mcol_2 }}, character())),
+             "{mcol_RHS}" := ifelse((!!sym_mcol_1) == "NA",NA,vec_cast(!!sym_mcol_1, character())),
+             "{mcol_LHS}" := ifelse((!!sym_mcol_2) == "NA",NA,vec_cast(!!sym_mcol_2, character()))
              ) |>
-      arrange(across({{cols}}),{{sym_mcol_1}},{{sym_mcol_2}})
+      arrange(across({{cols}}),!!sym_mcol_1,!!sym_mcol_2)
 
     # now tidy up the table
     final_table <-
@@ -404,14 +404,14 @@ apply_NA_rules <- function(x,
 
     x <- x |>
       mutate(
-        tmp_seen_value = if_all(starts_with(mcols), ~ .x %in% exclude_codes),
+        tmp_seen_value = if_all(starts_with(mcols), ~ .x %in% !!exclude_codes),
         # this is done in this order to avoid overwrite the names
         across(
           starts_with(mcols),
-          ~ if_else(.x %in% exclude_codes, NA, .x)
+          ~ if_else(.x %in% !!exclude_codes, NA, .x)
         ),
         # lastly write the new column value
-        !!seen_col_name := if_else(tmp_seen_value, exclude_label,NA)
+        !!seen_col_name := if_else(tmp_seen_value, !!exclude_label, NA)
       ) |>
       select(-tmp_seen_value)
   }

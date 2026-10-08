@@ -1016,3 +1016,17 @@ test_that("apply_NA_rules handles more complex data correctly, with NAs",{
 
 })
 
+
+test_that("build_mtable() is not affected by columns named like internal variables", {
+  df <- create_multi_response_df() |>
+    dplyr::select(-enjoy_fruit_other) |>
+    dplyr::mutate(across(starts_with("enjoy_fruit"),
+                         ~ dplyr::if_else(is.na(.x), "0", as.character(haven::as_factor(.x)))))
+  expected <- build_mtable(df, "enjoy_fruit", col_1, exclude_codes = "0")
+
+  df_clash <- dplyr::mutate(df, exclude_codes = col_1, exclude_label = col_1)
+  expect_equal(build_mtable(df_clash, "enjoy_fruit", c(col_1, exclude_codes),
+                            exclude_codes = "0") |>
+                 dplyr::select(-exclude_codes),
+               expected)
+})
