@@ -19,7 +19,7 @@ particularly useful if \code{top_variable} is a numeric vector and you want to c
 syntactic variable names.}
 }
 \value{
-A \link{xlr_table} (if x is a \link{xlr_table}) or \link[tibble:tibble]{tibble::tibble} (if \link[tibble:tibble]{tibble::tibble} or
+A \link{xlr_table} (if x is a \link{xlr_table}) or \link[tibble:tibble]{tibble} (if \link[tibble:tibble]{tibble} or
 \code{data.frame}) in a wider format with columns containing
 \code{xlr_n_percent} vectors.
 }

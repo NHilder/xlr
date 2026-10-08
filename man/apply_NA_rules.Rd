@@ -35,7 +35,7 @@ indicator column. If \code{NULL}, it is constructed automatically by
 concatenating \code{exclude_codes} values with underscores.}
 
 \item{call}{Environment used for error reporting, typically from
-\code{\link[rlang:stack]{rlang::caller_env()}}.}
+\code{\link[rlang:caller_env]{rlang::caller_env()}}.}
 }
 \value{
 A modified \code{data.frame} that:

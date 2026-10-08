@@ -182,72 +182,90 @@ export(xlr_vector)
 import(openxlsx)
 import(rlang)
 import(vctrs)
-importFrom(cli,cli_abort)
-importFrom(cli,cli_alert)
-importFrom(cli,cli_alert_info)
-importFrom(cli,cli_fmt)
-importFrom(cli,cli_h1)
-importFrom(cli,cli_text)
-importFrom(cli,cli_warn)
-importFrom(dplyr,across)
-importFrom(dplyr,add_count)
-importFrom(dplyr,add_tally)
-importFrom(dplyr,any_of)
-importFrom(dplyr,arrange)
-importFrom(dplyr,case_when)
-importFrom(dplyr,count)
-importFrom(dplyr,distinct)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,group_vars)
-importFrom(dplyr,grouped_df)
-importFrom(dplyr,if_all)
-importFrom(dplyr,if_any)
-importFrom(dplyr,if_else)
-importFrom(dplyr,is_grouped_df)
-importFrom(dplyr,join_by)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,n)
-importFrom(dplyr,n_distinct)
-importFrom(dplyr,pick)
-importFrom(dplyr,relocate)
-importFrom(dplyr,rename)
-importFrom(dplyr,rename_with)
-importFrom(dplyr,row_number)
-importFrom(dplyr,rowwise)
-importFrom(dplyr,select)
-importFrom(dplyr,slice)
-importFrom(dplyr,slice_head)
-importFrom(dplyr,slice_max)
-importFrom(dplyr,slice_min)
-importFrom(dplyr,slice_sample)
-importFrom(dplyr,slice_tail)
-importFrom(dplyr,summarise)
-importFrom(dplyr,summarize)
-importFrom(dplyr,symdiff)
-importFrom(dplyr,tally)
-importFrom(dplyr,ungroup)
+importFrom(cli,
+  cli_abort,
+  cli_alert,
+  cli_alert_info,
+  cli_fmt,
+  cli_h1,
+  cli_text,
+  cli_warn
+)
+importFrom(dplyr,
+  across,
+  add_count,
+  add_tally,
+  any_of,
+  arrange,
+  case_when,
+  count,
+  distinct,
+  filter,
+  group_by,
+  group_vars,
+  grouped_df,
+  if_all,
+  if_any,
+  if_else,
+  is_grouped_df,
+  join_by,
+  left_join,
+  mutate,
+  n,
+  n_distinct,
+  pick,
+  relocate,
+  rename,
+  rename_with,
+  row_number,
+  rowwise,
+  select,
+  slice,
+  slice_head,
+  slice_max,
+  slice_min,
+  slice_sample,
+  slice_tail,
+  summarise,
+  summarize,
+  symdiff,
+  tally,
+  ungroup
+)
 importFrom(grDevices,colours)
-importFrom(haven,as_factor)
-importFrom(haven,labelled)
-importFrom(methods,is)
-importFrom(methods,setOldClass)
-importFrom(pillar,pillar_shaft)
-importFrom(pillar,tbl_format_footer)
-importFrom(pillar,tbl_sum)
-importFrom(stats,median)
-importFrom(stats,quantile)
-importFrom(tibble,as_tibble)
-importFrom(tibble,is_tibble)
-importFrom(tibble,tibble)
-importFrom(tidyr,build_wider_spec)
-importFrom(tidyr,pivot_longer)
-importFrom(tidyr,pivot_wider)
-importFrom(tidyr,pivot_wider_spec)
-importFrom(tidyselect,all_of)
-importFrom(tidyselect,eval_select)
-importFrom(tidyselect,everything)
-importFrom(tidyselect,starts_with)
-importFrom(tidyselect,where)
+importFrom(haven,
+  as_factor,
+  labelled
+)
+importFrom(methods,
+  is,
+  setOldClass
+)
+importFrom(pillar,
+  pillar_shaft,
+  tbl_format_footer,
+  tbl_sum
+)
+importFrom(stats,
+  median,
+  quantile
+)
+importFrom(tibble,
+  as_tibble,
+  is_tibble,
+  tibble
+)
+importFrom(tidyr,
+  build_wider_spec,
+  pivot_longer,
+  pivot_wider,
+  pivot_wider_spec
+)
+importFrom(tidyselect,
+  all_of,
+  eval_select,
+  everything,
+  starts_with,
+  where
+)
 importFrom(vctrs,vec_cast)

@@ -15,7 +15,6 @@ Description: A high-level interface for creating and exporting summary tables to
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Collate:
   as_base_r.R
   xlr_table.R
@@ -65,3 +64,4 @@ LazyData: true
 VignetteBuilder: knitr
 URL: https://nhilder.github.io/xlr/, https://github.com/NHilder/xlr
 BugReports: https://github.com/NHilder/xlr/issues
+Config/roxygen2/version: 8.1.0
