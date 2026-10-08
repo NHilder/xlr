@@ -200,13 +200,6 @@ vec_arith.numeric.xlr_integer <- function(op, x, y, ...){
   vec_arith_base(op,x,y)
 }
 
-# next we define a list of generics for arithmetic
-#' @export
-#' @method vec_arith.xlr_integer numeric
-vec_arith.xlr_integer.numeric <- function(op, x, y, ...){
-  vec_arith_base(op,x,y)
-}
-
 #' @export
 vec_math.xlr_integer <- function(.fn, .x, ...){
   vec_math_base(.fn, .x, ...)

@@ -113,11 +113,6 @@ as.character.xlr_percent <- function(x,...){
 }
 
 #- Formatting-------------------------------------------------------------------
-# Helpful functions to pull out the attributes in
-# percent
-pull_dp <- function(x) attr(x,which = "dp")
-pull_style <-function(x) attr(x,which = "style")
-
 #' @export
 format.xlr_percent <- function(x, ...){
   dp <- pull_dp(x)
